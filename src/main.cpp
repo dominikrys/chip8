@@ -1,22 +1,16 @@
 #include "chip8.h"
 #include <iostream>
 
-int main()
-{
-/*
-    Chip8 chip8{};
-
+int main() {
     // Set up renderer and register input callbacks
-    initialiseGraphics();
-    intialiseInput();
+    //initialiseGraphics();
+    //intialiseInput();
 
-    // Initialise chip8 system and load game into memory
-    chip8.initialize();
-    chip8.loadGame("pong");
-
-    */
-
+    Chip8 chip8{};
+    chip8.loadGame("C:\\projects\\chip-8\\bin\\games\\pong.ch8");
 /*
+ * TODO:
+ *
     for (;;)
     {
         // Emulate one CPU cycle
