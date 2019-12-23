@@ -8,23 +8,19 @@ int main() {
 
     Chip8 chip8{};
     chip8.loadGame("C:\\projects\\chip-8\\bin\\games\\pong.ch8");
-/*
- * TODO:
- *
+
     for (;;)
     {
         // Emulate one CPU cycle
-        chip8.emulatteCycle();
+        chip8.emulateCycle();
 
         if (chip8.drawFlag())
         {
-            drawScreen();
+            //drawScreen();
         }
     }
 
-    chip8.setKeys();
-    */
+    //chip8.setKeys()
 
-    std::cout << "main";
     return 0;
 }

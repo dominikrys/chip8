@@ -12,6 +12,8 @@ public:
 
     void emulateCycle();
 
+    bool drawFlag();
+
     void loadGame(const std::string &filepath);
 
 private:
@@ -58,5 +60,5 @@ private:
                     0xF0, 0x80, 0xF0, 0x80, 0x80  // F
             };
 
-    bool drawFlag;
+    bool drawFlag_;
 };

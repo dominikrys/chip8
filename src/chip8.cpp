@@ -56,7 +56,7 @@ void Chip8::initialize() {
     delayTimer = 0;
     soundTimer = 0;
 
-    drawFlag = true;
+    drawFlag_ = true;
 }
 
 void Chip8::emulateCycle() {
@@ -79,10 +79,6 @@ void Chip8::emulateCycle() {
                     std::cout << "Unknown opcode: 0x" + opcode;
                     break;
             }
-            break;
-        case 0xA000: // ANNN: Sets I to the address NNN
-            I = opcode & 0X0FFF;
-            pc += 2;
             break;
         case 0x2000: // 2NNN: Calls subroutine at NNN
             stack[sp] = pc;
@@ -107,6 +103,67 @@ void Chip8::emulateCycle() {
                 default:
                     std::cout << "Unknown opcode: 0x" + opcode;
                     break;
+            }
+            break;
+        case 0xA000: // ANNN: Sets I to the address NNN
+            I = opcode & 0X0FFF;
+            pc += 2;
+            break;
+        case 0xD000:
+        {
+            unsigned short x = V[(opcode & 0x0F00) >> 8];
+            unsigned short y = V[(opcode & 0x00F0) >> 4];
+            unsigned short height = opcode & 0x000F;
+            unsigned short pixel;
+
+            V[0xF] = 0;
+            for (int yline = 0; yline < height; yline++)
+            {
+                pixel = memory[I + yline];
+                for (int xline = 0; xline < 8; xline++) // 8 is the width of the sprite
+                {
+                    if ((pixel & (0x80 >> xline)) != 0) // go pixel by pixel checking if it's 0
+                    {
+                        if (gfx[(x + xline + ((y + yline) * 64))] == 1)
+                        {
+                            V[0xF] = 1; // set VF to 1 (collision detection)
+                        }
+                        gfx[x + xline + ((y + yline) * 64)] ^= 1; // set value in gfx by XORing with 1
+                    }
+                }
+            }
+
+            drawFlag_ = true;
+            pc += 2;
+        }
+            break;
+        case 0xE000:
+            switch (opcode & 0x00FF)
+            {
+                case 0x009E: // EX9E: Skips the next instruction if the key stored in VX is pressed
+                    if (key[V[(opcode & 0x0F00) >> 8]] != 0)
+                    {
+                        pc += 4;
+                    }
+                    else
+                    {
+                        pc += 2;
+                    }
+                    break;
+
+                case 0x00A1: // EXA1: Skips the next instruction if the key stored in VX isn't pressed
+                    if (key[V[(opcode & 0x0F00) >> 8]] == 0)
+                    {
+                        pc += 4;
+                    }
+                    else
+                    {
+                        pc += 2;
+                    }
+                    break;
+
+                default:
+                    std::cout << "Unknown opcode: 0x" + opcode;
             }
             break;
         case 0xF000:
@@ -173,4 +230,8 @@ void Chip8::loadGame(const std::string &filepath) {
     }
 
     ifs.close();
+}
+
+bool Chip8::drawFlag() {
+    return drawFlag_;
 }
