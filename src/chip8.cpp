@@ -14,6 +14,7 @@ Chip8::Chip8() : randGen(std::chrono::system_clock::now().time_since_epoch().cou
     sp = 0;
 
     clearScreen();
+    drawFlag_ = true;
 
     // Clear stack
     for (unsigned short &i : stack)
@@ -64,6 +65,7 @@ void Chip8::emulateCycle() {
             {
                 case 0x000: // 0x00E0: Clears the screen.
                     clearScreen();
+                    drawFlag_ = true;
                     pc += 2;
                     break;
                 case 0x000E: // 0x00EE: Returns from subroutine.
@@ -74,6 +76,9 @@ void Chip8::emulateCycle() {
                 default:
                     std::cout << "Unknown opcode: 0x" + opcode;
             }
+            break;
+        case 0x1000: // 1NNN: Jumps to address NNN
+            pc = opcode & 0x0FFF;
             break;
         case 0x2000: // 2NNN: Calls subroutine at NNN.
             stack[sp] = pc;
@@ -163,7 +168,7 @@ void Chip8::emulateCycle() {
                     break;
                 case 0x0006: // 8XY6: Stores the least significant bit of VX in VF and then shifts VX to the right by 1.
                     V[0xF] = V[(opcode & 0x0F00) >> 8] & 0x1;
-                    V[(opcode & 0x0F00u) >> 8] >>= 1;
+                    V[(opcode & 0x0F00) >> 8] >>= 1;
                     pc += 2;
                     break;
                 case 0x0007: // 8XY7: Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
@@ -207,7 +212,7 @@ void Chip8::emulateCycle() {
             pc += 2;
             break;
         case 0xC000: // CXNN: Sets VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN.
-            V[(opcode & 0x0F00) >> 8] = randByte(randGen) & (opcode & 0x00FF);;
+            V[(opcode & 0x0F00) >> 8] = randByte(randGen) & (opcode & 0x00FF);
             pc += 2;
             break;
         case 0xD000:
@@ -229,7 +234,7 @@ void Chip8::emulateCycle() {
                         {
                             V[0xF] = 1; // set VF to 1 (collision detection)
                         }
-                        gfx[x + xline + ((y + yline) * 64)] ^= 1; // set value in gfx by XORing with 1
+                        gfx[x + xline + ((y + yline) * 64) % (64 * 32)] ^= 1; // set value in gfx by XORing with 1
                     }
                 }
             }
@@ -284,10 +289,12 @@ void Chip8::emulateCycle() {
                         }
                     }
 
-                    if (keyPress)
+                    if (!keyPress)
                     {
-                        pc += 2; // Only increment pc if a keypress received
+                        return;
                     }
+
+                    pc += 2; // Only increment pc if a key is pressed
                 }
                     break;
                 case 0x0015: // FX15: Sets the delay timer to VX.
@@ -322,7 +329,8 @@ void Chip8::emulateCycle() {
                         memory[I + i] = V[i];
                     }
                     // SCHIP implementations ignores VY unlike the original. Games still work.
-                    // I += ((opcode & 0x0F00) >> 8) + 1; TODO:  add a mode to enable these
+                    // I += ((opcode & 0x0F00) >> 8) + 1;
+                    // TODO: add a mode to enable these
                     pc += 2;
                     break;
                 case 0X0065: // FX65: Fills V0 to VX (including VX) with values from memory starting at address I.
@@ -332,6 +340,7 @@ void Chip8::emulateCycle() {
                     }
                     // SCHIP implementations ignores VY unlike the original. Games still work.
                     // I += ((opcode & 0x0F00) >> 8) + 1;
+                    // TODO: add a mode to enable these
                     pc += 2;
                     break;
                 default:
@@ -374,9 +383,9 @@ void Chip8::loadGame(const std::string &filepath) {
     {
         throw std::runtime_error("No game loaded");
     }
-    else if (size > sizeof(memory) / sizeof(*memory))
+    else if (size > 4096 - 512)
     {
-        throw std::runtime_error("ROM too big!");
+        throw std::runtime_error("Error: ROM too big for memory");
     }
 
     std::vector<char> buffer((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
@@ -419,8 +428,6 @@ void Chip8::disableDrawFlag() {
 void Chip8::clearScreen() {
     for (unsigned char &i : gfx)
     {
-        i = 0;
+        i = 0x0;
     }
-
-    drawFlag_ = true;
 }

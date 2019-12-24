@@ -7,7 +7,7 @@ int main() {
     //intialiseInput();
 
     Chip8 chip8{};
-    chip8.loadGame("C:\\projects\\chip-8\\bin\\games\\pong.ch8");
+    chip8.loadGame("C:\\projects\\chip-8\\bin\\games\\test_opcode.ch8");
 
     for (;;)
     {
