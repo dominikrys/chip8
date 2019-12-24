@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <random>
 
 using opcode = unsigned short;
 
@@ -16,7 +17,13 @@ public:
 
     void loadGame(const std::string &filepath);
 
+    void renderConsole();
+
+    void disableDrawFlag();
+
 private:
+    void clearScreen();
+
     unsigned short opcode;
 
     /*
@@ -61,4 +68,7 @@ private:
             };
 
     bool drawFlag_;
+
+    std::default_random_engine randGen;
+    std::uniform_int_distribution<uint8_t> randByte;
 };

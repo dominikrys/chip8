@@ -16,7 +16,8 @@ int main() {
 
         if (chip8.drawFlag())
         {
-            //drawScreen();
+            chip8.renderConsole();
+            chip8.disableDrawFlag();
         }
     }
 
