@@ -8,7 +8,8 @@
 #include <iostream>
 
 const unsigned int SPRITE_WIDTH = 8;
-const unsigned int ROM_START_ADDRESS = 512;
+const unsigned int ROM_START_ADDRESS = 0x200;
+const unsigned int FONT_SET_START_ADDRESS = 0x050;
 
 Chip8::Chip8() : randGen(std::chrono::system_clock::now().time_since_epoch().count()) {
     pc = 0x200u;
@@ -19,37 +20,17 @@ Chip8::Chip8() : randGen(std::chrono::system_clock::now().time_since_epoch().cou
     clearScreen();
     drawFlag = true;
 
-    // Clear stack
-    for (uint16_t &i : stack)
-    {
-        i = 0;
-    }
-
-    // Clear registers
-    for (uint8_t &i : registers)
-    {
-        i = 0;
-    }
-
-    // Clear memory
-    for (uint8_t &i : memory)
-    {
-        i = 0;
-    }
-
-    // Clear keys
-    for (uint8_t &i : key)
-    {
-        i = 0;
-    }
+    memset(stack, 0, STACK_SIZE);
+    memset(registers, 0, REGISTER_COUNT);
+    memset(memory, 0, MEMORY_SIZE);
+    memset(key, 0, KEY_COUNT);
 
     // Load font set
     for (int i = 0; i < FONT_SET_SIZE; i++)
     {
-        memory[i] = fontSet[i]; // TODO: This should be offset by 0x50
+        memory[i + FONT_SET_START_ADDRESS] = fontSet[i];
     }
 
-    // Reset timers
     delayTimer = 0;
     soundTimer = 0;
 
@@ -58,7 +39,7 @@ Chip8::Chip8() : randGen(std::chrono::system_clock::now().time_since_epoch().cou
 
 void Chip8::emulateCycle() {
     // Fetch Opcode
-    opcode = memory[pc] << 8u | memory[pc + 1];
+    opcode = memory[pc] << 8u | memory[pc + 1u];
 
     // Decode Opcode
     switch (opcode & 0xF000u)
@@ -123,7 +104,7 @@ void Chip8::emulateCycle() {
             pc += 2;
             break;
         case 0x7000u: // 7XNN: Adds NN to VX. (Carry flag is not changed).
-            registers[(opcode & 0x0F00u) >> 8u] = (opcode & 0x00FFu);
+            registers[(opcode & 0x0F00u) >> 8u] += (opcode & 0x00FFu);
             pc += 2;
             break;
         case 0x8000u:
@@ -149,11 +130,11 @@ void Chip8::emulateCycle() {
                     if (registers[(opcode & 0x00F0u) >> 4u] >
                         (0xFFu - registers[(opcode & 0x0F00u) >> 8u])) // TODO: make this neater
                     {
-                        registers[0xFu] = 1; // carry
+                        registers[0xF] = 1; // carry
                     }
                     else
                     {
-                        registers[0xFu] = 0;
+                        registers[0xF] = 0;
                     }
                     registers[(opcode & 0x0F00u) >> 8u] += registers[(opcode & 0x00F0u) >> 4u];
                     pc += 2;
@@ -161,35 +142,35 @@ void Chip8::emulateCycle() {
                 case 0x0005u: // 8XY5: VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
                     if (registers[(opcode & 0x00F0u) >> 4u] > registers[(opcode & 0x0F00u) >> 8u])
                     {
-                        registers[0xFu] = 0; // borrow
+                        registers[0xF] = 0; // borrow
                     }
                     else
                     {
-                        registers[0xFu] = 1;
+                        registers[0xF] = 1;
                     }
                     registers[(opcode & 0x0F00u) >> 8u] -= registers[(opcode & 0x00F0u) >> 4u];
                     pc += 2;
                     break;
                 case 0x0006u: // 8XY6: Stores the least significant bit of VX in VF and then shifts VX to the right by 1.
-                    registers[0xFu] = registers[(opcode & 0x0F00u) >> 8u] & 0x1u;
+                    registers[0xF] = registers[(opcode & 0x0F00u) >> 8u] & 0x1u;
                     registers[(opcode & 0x0F00u) >> 8u] >>= 1u;
                     pc += 2;
                     break;
                 case 0x0007u: // 8XY7: Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
                     if (registers[(opcode & 0x0F00u) >> 8u] > registers[(opcode & 0x00F0u) >> 4u])
                     {
-                        registers[0xFu] = 0; // borrow
+                        registers[0xF] = 0; // borrow
                     }
                     else
                     {
-                        registers[0xFu] = 1;
+                        registers[0xF] = 1;
                     }
                     registers[(opcode & 0x0F00u) >> 8u] =
                             registers[(opcode & 0x00F0u) >> 4u] - registers[(opcode & 0x0F00u) >> 8u];
                     pc += 2;
                     break;
                 case 0x000Eu: // 8XYE: Stores the most significant bit of VX in VF and then shifts VX to the left by 1.
-                    registers[0xFu] = registers[(opcode & 0x0F00u) >> 8u] >> 7u;
+                    registers[0xF] = registers[(opcode & 0x0F00u) >> 8u] >> 7u;
                     registers[(opcode & 0x0F00u) >> 8u] <<= 1u;
                     pc += 2;
                     break;
@@ -221,25 +202,25 @@ void Chip8::emulateCycle() {
             break;
         case 0xD000u:
         {
-            uint16_t x = registers[(opcode & 0x0F00u) >> 8u];
-            uint16_t y = registers[(opcode & 0x00F0u) >> 4u];
-            uint16_t height = opcode & 0x000Fu;
+            uint8_t x = registers[(opcode & 0x0F00u) >> 8u];
+            uint8_t y = registers[(opcode & 0x00F0u) >> 4u];
+            uint8_t height = opcode & 0x000Fu;
 
-            registers[0xFu] = 0; // set VF to 0 (collision detection)
+            registers[0xF] = 0; // set VF to 0 (collision detection)
 
             for (unsigned int row = 0; row < height; row++)
             {
-                uint16_t spritePixel = memory[index + row];
+                uint8_t spritePixel = memory[index + row];
                 for (unsigned int column = 0; column < SPRITE_WIDTH; column++)
                 {
                     if (spritePixel & (0x80u >> column)) // go pixel by pixel checking if it's 0
                     {
-                        if (video[(x + column + ((y + row) * VIDEO_WIDTH))] == 1)
+                        if (video[(x + column + ((y + row) * VIDEO_WIDTH))] == 0xFFFFFFFF)
                         {
-                            registers[0xFu] = 1; // set VF to 1 (collision detection)
+                            registers[0xF] = 1; // set VF to 1 (collision detection)
                         }
                         // set value in video by XORing with 1
-                        video[x + column + ((y + row) * VIDEO_WIDTH) % (VIDEO_WIDTH * VIDEO_HEIGHT)] ^= 1u;
+                        video[x + column + ((y + row) * VIDEO_WIDTH) % (VIDEO_WIDTH * VIDEO_HEIGHT)] ^= 0xFFFFFFFF;
                     }
                 }
             }
@@ -311,15 +292,20 @@ void Chip8::emulateCycle() {
                     pc += 2;
                     break;
                 case 0x001Eu: // FX1E: Adds VX to I. VF is set to 1 when there is a range overflow (I+VX>0xFFF), and to 0 when there isn't
-                    if (index + registers[(opcode & 0x0F00u) >> 8u] > 0xFFFu) // TODO: make this nicer
-                        registers[0xFu] = 1;
+                    // TODO: make this nicer
+                    if (index + registers[(opcode & 0x0F00u) >> 8u] > 0xFFFu)
+                    {
+                        registers[0xF] = 1;
+                    }
                     else
-                        registers[0xFu] = 0;
+                    {
+                        registers[0xF] = 0;
+                    }
                     index += registers[(opcode & 0x0F00u) >> 8u];
                     pc += 2;
                     break;
                 case 0x0029u: // FX29: Sets I to the location of the sprite for the character in VX.
-                    index = registers[(opcode & 0x0F00u) >> 8u] * 0x5u; // TODO: offset correctly
+                    index = FONT_SET_START_ADDRESS + registers[(opcode & 0x0F00u) >> 8u] * 0x5u;
                     pc += 2;
                     break;
                 case 0x0033u: // FX33: Stores the Binary-coded decimal representation of VX at the addresses I, I plus 1, and I plus 2
@@ -366,6 +352,7 @@ void Chip8::emulateCycle() {
     {
         if (soundTimer == 1)
         {
+            // TODO: actually add a noise
             std::cout << "BEEP";
         }
         soundTimer--;
@@ -412,13 +399,10 @@ void Chip8::disableDrawFlag() {
 }
 
 void Chip8::clearScreen() {
-    for (uint8_t &i : video)
-    {
-        i = 0x0;
-    }
+    memset(video, 0, VIDEO_HEIGHT * VIDEO_WIDTH);
 }
 
-uint8_t *Chip8::getVideo() // todo: rename this and have it return a pointer
+uint32_t *Chip8::getVideo()
 {
     return video;
 }

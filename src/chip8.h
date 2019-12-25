@@ -21,7 +21,7 @@ public:
 
     void loadGame(const std::string &filepath);
 
-    uint8_t *getVideo();
+    uint32_t *getVideo();
 
     void disableDrawFlag();
 
@@ -40,7 +40,7 @@ private:
     uint16_t index{};
     uint16_t pc{};
 
-    uint8_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{}; // TODO: different data type that will work better with SDL?
+    uint32_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{}; // uint32_t used to work with SDL
 
     uint8_t delayTimer{};
     uint8_t soundTimer{};
