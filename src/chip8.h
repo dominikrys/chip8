@@ -3,7 +3,13 @@
 #include <string>
 #include <random>
 
-using opcode = unsigned short;
+const unsigned int KEY_COUNT = 16;
+const unsigned int MEMORY_SIZE = 4096;
+const unsigned int REGISTER_COUNT = 16;
+const unsigned int STACK_SIZE = 16;
+const unsigned int VIDEO_WIDTH = 64;
+const unsigned int VIDEO_HEIGHT = 32;
+const unsigned int FONT_SET_SIZE = 80;
 
 class Chip8 {
 public:
@@ -11,41 +17,40 @@ public:
 
     void emulateCycle();
 
-    bool drawFlag();
+    bool getDrawFlag();
 
     void loadGame(const std::string &filepath);
 
-    unsigned char* getGfx();
+    uint8_t *getVideo();
 
     void disableDrawFlag();
 
 private:
     void clearScreen();
 
-    unsigned short opcode;
-
     /*
     0x000-0x1FF - Chip 8 interpreter (contains font set in emu)
     0x050-0x0A0 - Used for the built in 4x5 pixel font set (0-F)
     0x200-0xFFF - Program ROM and work RAM
     */
-    unsigned char memory[4096];
-    unsigned char V[16]; // Registers
+    uint8_t memory[MEMORY_SIZE]{};
+    uint8_t registers[REGISTER_COUNT]{};
 
-    unsigned short I; // Index register
-    unsigned short pc; // Program counter
+    uint16_t opcode{};
+    uint16_t index{};
+    uint16_t pc{};
 
-    unsigned char gfx[64 * 32]; // Screen
+    uint8_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{}; // TODO: different data type that will work better with SDL?
 
-    unsigned char delayTimer;
-    unsigned char soundTimer;
+    uint8_t delayTimer{};
+    uint8_t soundTimer{};
 
-    unsigned short stack[16];
-    unsigned short sp;
+    uint16_t stack[STACK_SIZE]{};
+    uint16_t sp{};
 
-    unsigned char key[16];
+    uint8_t key[KEY_COUNT]{};
 
-    unsigned char fontSet[80] =
+    uint8_t fontSet[FONT_SET_SIZE] =
             {
                     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
                     0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -65,7 +70,7 @@ private:
                     0xF0, 0x80, 0xF0, 0x80, 0x80  // F
             };
 
-    bool drawFlag_;
+    bool drawFlag{};
 
     std::default_random_engine randGen;
     std::uniform_int_distribution<uint8_t> randByte;

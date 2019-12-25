@@ -22,9 +22,9 @@ int main() {
         // Emulate one CPU cycle
         chip8.emulateCycle();
 
-        if (chip8.drawFlag())
+        if (chip8.getDrawFlag())
         {
-            SDL_UpdateTexture(texture, nullptr, chip8.getGfx(), 32 * 8);
+            SDL_UpdateTexture(texture, nullptr, chip8.getVideo(), 32 * 8);
             SDL_RenderClear(renderer);
             SDL_RenderCopy(renderer, texture, nullptr, nullptr);
             SDL_RenderPresent(renderer);
