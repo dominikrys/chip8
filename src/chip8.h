@@ -15,7 +15,7 @@ public:
 
     void loadGame(const std::string &filepath);
 
-    void renderConsole();
+    unsigned char* getGfx();
 
     void disableDrawFlag();
 

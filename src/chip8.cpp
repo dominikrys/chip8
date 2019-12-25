@@ -3,9 +3,9 @@
 #include <fstream>
 #include <cstddef>
 #include <cstring>
-#include <iostream>
 #include <vector>
 #include <chrono>
+#include <iostream>
 
 Chip8::Chip8() : randGen(std::chrono::system_clock::now().time_since_epoch().count()) {
     pc = 0x200;
@@ -73,7 +73,7 @@ void Chip8::emulateCycle() {
                     pc = stack[sp];
                     pc += 2;
                     break;
-                default:
+                default:;
                     std::cout << "Unknown opcode: 0x" + opcode;
             }
             break;
@@ -188,9 +188,8 @@ void Chip8::emulateCycle() {
                     V[(opcode & 0x0F00) >> 8] <<= 1;
                     pc += 2;
                     break;
-                default:
+                default:;
                     std::cout << "Unknown opcode: 0x" + opcode;
-                    break;
             }
             break;
         case 0x9000: // 9XY0: Skips the next instruction if VX doesn't equal VY.
@@ -266,7 +265,7 @@ void Chip8::emulateCycle() {
                         pc += 2;
                     }
                     break;
-                default:
+                default:;
                     std::cout << "Unknown opcode: 0x" + opcode;
             }
             break;
@@ -343,11 +342,11 @@ void Chip8::emulateCycle() {
                     // TODO: add a mode to enable these
                     pc += 2;
                     break;
-                default:
+                default:;
                     std::cout << "Unknown opcode: 0x" + opcode;
             }
             break;
-        default:
+        default:;
             std::cout << "Unknown opcode: 0x" + opcode;
     }
 
@@ -402,25 +401,6 @@ bool Chip8::drawFlag() {
     return drawFlag_;
 }
 
-void Chip8::renderConsole() {
-    for (int y = 0; y < 32; y++)
-    {
-        for (int x = 0; x < 64; x++)
-        {
-            if (gfx[(y * 64) + x] == 0)
-            {
-                std::cout << "O";
-            }
-            else
-            {
-                std::cout << " ";
-            }
-        }
-        std::cout << "\n";
-    }
-    std::cout << "\n";
-}
-
 void Chip8::disableDrawFlag() {
     drawFlag_ = false;
 }
@@ -430,4 +410,9 @@ void Chip8::clearScreen() {
     {
         i = 0x0;
     }
+}
+
+unsigned char *Chip8::getGfx() // todo: rename this and have it return a pointer
+{
+    return gfx;
 }
