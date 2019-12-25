@@ -8,6 +8,7 @@
 #include <iostream>
 
 const unsigned int SPRITE_WIDTH = 8;
+const unsigned int ROM_START_ADDRESS = 512;
 
 Chip8::Chip8() : randGen(std::chrono::system_clock::now().time_since_epoch().count()) {
     pc = 0x200u;
@@ -223,22 +224,22 @@ void Chip8::emulateCycle() {
             uint16_t x = registers[(opcode & 0x0F00u) >> 8u];
             uint16_t y = registers[(opcode & 0x00F0u) >> 4u];
             uint16_t height = opcode & 0x000Fu;
-            uint16_t pixel;
 
-            registers[0xFu] = 0;
-            for (unsigned int yline = 0; yline < height; yline++)
+            registers[0xFu] = 0; // set VF to 0 (collision detection)
+
+            for (unsigned int row = 0; row < height; row++)
             {
-                pixel = memory[index + yline];
-                for (unsigned int xline = 0; xline < SPRITE_WIDTH; xline++)
+                uint16_t spritePixel = memory[index + row];
+                for (unsigned int column = 0; column < SPRITE_WIDTH; column++)
                 {
-                    if ((pixel & (0x80u >> xline)) != 0) // go pixel by pixel checking if it's 0
+                    if (spritePixel & (0x80u >> column)) // go pixel by pixel checking if it's 0
                     {
-                        if (video[(x + xline + ((y + yline) * VIDEO_WIDTH))] == 1)
+                        if (video[(x + column + ((y + row) * VIDEO_WIDTH))] == 1)
                         {
                             registers[0xFu] = 1; // set VF to 1 (collision detection)
                         }
-                        video[x + xline + ((y + yline) * VIDEO_WIDTH) %
-                                          (VIDEO_WIDTH * VIDEO_HEIGHT)] ^= 1u; // set value in video by XORing with 1
+                        // set value in video by XORing with 1
+                        video[x + column + ((y + row) * VIDEO_WIDTH) % (VIDEO_WIDTH * VIDEO_HEIGHT)] ^= 1u;
                     }
                 }
             }
@@ -251,7 +252,7 @@ void Chip8::emulateCycle() {
             switch (opcode & 0x00FFu)
             {
                 case 0x009Eu: // EX9E: Skips the next instruction if the key stored in VX is pressed
-                    if (key[registers[(opcode & 0x0F00u) >> 8u]] != 0)
+                    if (key[registers[(opcode & 0x0F00u) >> 8u]])
                     {
                         pc += 4;
                     }
@@ -286,7 +287,7 @@ void Chip8::emulateCycle() {
                     bool keyPress = false;
                     for (int i = 0; i < KEY_COUNT; i++)
                     {
-                        if (key[i] != 0)
+                        if (key[i])
                         {
                             registers[(opcode & 0x0F00u) >> 8u] = i;
                             keyPress = true;
@@ -373,8 +374,6 @@ void Chip8::emulateCycle() {
 
 void Chip8::loadGame(const std::string &filepath) {
     // TODO: add more error checking. Result type.
-    const unsigned int ROM_MEMORY_START_LOCATION = 512;
-
     std::ifstream ifs(filepath, std::ios::binary);
     if (!ifs)
     {
@@ -389,7 +388,7 @@ void Chip8::loadGame(const std::string &filepath) {
     {
         throw std::runtime_error("No game loaded");
     }
-    else if (size > MEMORY_SIZE - ROM_MEMORY_START_LOCATION)
+    else if (size > MEMORY_SIZE - ROM_START_ADDRESS)
     {
         throw std::runtime_error("Error: ROM too big for memory");
     }
@@ -398,7 +397,7 @@ void Chip8::loadGame(const std::string &filepath) {
 
     for (int i = 0; i < size; i++)
     {
-        memory[i + ROM_MEMORY_START_LOCATION] = buffer[i];
+        memory[i + ROM_START_ADDRESS] = buffer[i];
     }
 
     ifs.close();
