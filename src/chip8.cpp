@@ -23,7 +23,7 @@ Chip8::Chip8() : randGen(std::chrono::system_clock::now().time_since_epoch().cou
     memset(stack, 0, STACK_SIZE);
     memset(registers, 0, REGISTER_COUNT);
     memset(memory, 0, MEMORY_SIZE);
-    memset(key, 0, KEY_COUNT);
+    memset(keys, 0, KEY_COUNT);
 
     // Load font set
     for (int i = 0; i < FONT_SET_SIZE; i++)
@@ -233,7 +233,7 @@ void Chip8::emulateCycle() {
             switch (opcode & 0x00FFu)
             {
                 case 0x009Eu: // EX9E: Skips the next instruction if the key stored in VX is pressed
-                    if (key[registers[(opcode & 0x0F00u) >> 8u]])
+                    if (keys[registers[(opcode & 0x0F00u) >> 8u]])
                     {
                         pc += 4;
                     }
@@ -243,7 +243,7 @@ void Chip8::emulateCycle() {
                     }
                     break;
                 case 0x00A1u: // EXA1: Skips the next instruction if the key stored in VX isn't pressed
-                    if (key[registers[(opcode & 0x0F00u) >> 8u]] == 0)
+                    if (keys[registers[(opcode & 0x0F00u) >> 8u]] == 0)
                     {
                         pc += 4;
                     }
@@ -268,7 +268,7 @@ void Chip8::emulateCycle() {
                     bool keyPress = false;
                     for (int i = 0; i < KEY_COUNT; i++)
                     {
-                        if (key[i])
+                        if (keys[i])
                         {
                             registers[(opcode & 0x0F00u) >> 8u] = i;
                             keyPress = true;
@@ -405,4 +405,9 @@ void Chip8::clearScreen() {
 uint32_t *Chip8::getVideo()
 {
     return video;
+}
+
+uint8_t *Chip8::getKeys()
+{
+    return keys;
 }

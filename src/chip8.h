@@ -19,6 +19,8 @@ public:
 
     bool getDrawFlag();
 
+    uint8_t *getKeys();
+
     void loadGame(const std::string &filepath);
 
     uint32_t *getVideo();
@@ -48,7 +50,7 @@ private:
     uint16_t stack[STACK_SIZE]{};
     uint16_t sp{};
 
-    uint8_t key[KEY_COUNT]{};
+    uint8_t keys[KEY_COUNT]{};
 
     uint8_t fontSet[FONT_SET_SIZE] =
             {
