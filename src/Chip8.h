@@ -42,7 +42,7 @@ private:
     uint16_t index{};
     uint16_t pc{};
 
-    uint32_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{}; // uint32_t used to work with SDL
+    uint32_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{}; // uint32_t used to work with SDL well
 
     uint8_t delayTimer{};
     uint8_t soundTimer{};
