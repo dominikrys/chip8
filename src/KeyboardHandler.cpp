@@ -1,10 +1,11 @@
-#include "chip8.h"
-#include "SDL2/SDL.h"
-#include <chrono>
+#include "KeyboardHandler.h"
+#include <SDL2/SDL_events.h>
 
-const int VIDEO_SCALE = 15;
+KeyboardHandler::KeyboardHandler(uint8_t *keys) : keys{keys} {
 
-bool processInput(uint8_t *keys) {
+}
+
+bool KeyboardHandler::handle() {
     /*
     Keypad       Keyboard
     +-+-+-+-+    +-+-+-+-+
@@ -19,6 +20,9 @@ bool processInput(uint8_t *keys) {
      */
     bool quit = false;
     SDL_Event event;
+
+    // TODO: This supports only one key press at a time - unsure what the correct behaviour should be. If simultaneous
+    //  key presses are supported then this should be changed into ifs. Add mode for this?
     while (SDL_PollEvent(&event))
     {
         switch (event.type)
@@ -141,54 +145,4 @@ bool processInput(uint8_t *keys) {
     }
 
     return quit;
-}
-
-int main() {
-    SDL_Init(SDL_INIT_VIDEO); // todo: check error
-
-    // TODO: refactor SDL stuff out
-    auto window = SDL_CreateWindow("CHIP-8 Emulator8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                   VIDEO_WIDTH * VIDEO_SCALE, VIDEO_HEIGHT * VIDEO_SCALE, SDL_WINDOW_SHOWN);
-
-    auto renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-    auto texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, VIDEO_WIDTH,
-                                     VIDEO_HEIGHT);
-    Chip8 chip8{};
-    chip8.loadGame("bin/games/pong.ch8");
-
-    int cycleDelay = 0;
-
-    auto lastCycleTime = std::chrono::high_resolution_clock::now();
-
-    bool quit = false;
-
-    while (!quit)
-    {
-        quit = processInput(chip8.getKeys());
-
-        auto currentTime = std::chrono::high_resolution_clock::now();
-        auto timeSinceLastCycle = std::chrono::duration_cast<std::chrono::milliseconds>(
-                currentTime - lastCycleTime).count();
-
-        if (timeSinceLastCycle > cycleDelay)
-        {
-            lastCycleTime = currentTime;
-
-            chip8.emulateCycle();
-
-            if (chip8.getDrawFlag())
-            {
-                auto pitch = sizeof(chip8.getVideo()[0]) * VIDEO_WIDTH;
-                SDL_UpdateTexture(texture, nullptr, chip8.getVideo(), pitch);
-                SDL_RenderClear(renderer);
-                SDL_RenderCopy(renderer, texture, nullptr, nullptr);
-                SDL_RenderPresent(renderer);
-
-                chip8.disableDrawFlag();
-            }
-        }
-    }
-
-    return 0;
 }

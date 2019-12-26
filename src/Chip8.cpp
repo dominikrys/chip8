@@ -1,4 +1,4 @@
-#include "chip8.h"
+#include "Chip8.h"
 
 #include <fstream>
 #include <cstddef>
@@ -20,10 +20,10 @@ Chip8::Chip8() : randGen(std::chrono::system_clock::now().time_since_epoch().cou
     clearScreen();
     drawFlag = true;
 
-    memset(stack, 0, STACK_SIZE);
-    memset(registers, 0, REGISTER_COUNT);
-    memset(memory, 0, MEMORY_SIZE);
-    memset(keys, 0, KEY_COUNT);
+    std::fill_n(stack, STACK_SIZE, 0);
+    std::fill_n(registers, REGISTER_COUNT, 0);
+    std::fill_n(memory, MEMORY_SIZE, 0);
+    std::fill_n(keys, KEY_COUNT, 0);
 
     // Load font set
     for (int i = 0; i < FONT_SET_SIZE; i++)
@@ -399,15 +399,13 @@ void Chip8::disableDrawFlag() {
 }
 
 void Chip8::clearScreen() {
-    memset(video, 0, VIDEO_HEIGHT * VIDEO_WIDTH);
+    std::fill_n(video, VIDEO_WIDTH * VIDEO_HEIGHT, 0);
 }
 
-uint32_t *Chip8::getVideo()
-{
+uint32_t *Chip8::getVideo() {
     return video;
 }
 
-uint8_t *Chip8::getKeys()
-{
+uint8_t *Chip8::getKeys() {
     return keys;
 }
