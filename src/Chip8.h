@@ -21,7 +21,7 @@ public:
 
     uint8_t *getKeys();
 
-    void loadGame(const std::string &filepath);
+    void loadRom(const std::string &filepath);
 
     uint32_t *getVideo();
 

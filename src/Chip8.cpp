@@ -321,7 +321,7 @@ void Chip8::emulateCycle() {
                     }
                     // S-CHIP implementations ignores VY unlike the original. Games still work.
                     // I += ((opcode & 0x0F00) >> 8) + 1;
-                    // TODO: add a mode to enable these
+                    // TODO: add a 'quirk' mode to enable these + the Y shift
                     pc += 2;
                     break;
                 case 0x0065u: // FX65: Fills V0 to VX (including VX) with values from memory starting at address I.
@@ -359,7 +359,7 @@ void Chip8::emulateCycle() {
     }
 }
 
-void Chip8::loadGame(const std::string &filepath) {
+void Chip8::loadRom(const std::string &filepath) {
     // TODO: add more error checking. Result type.
     std::ifstream ifs(filepath, std::ios::binary);
     if (!ifs)
