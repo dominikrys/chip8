@@ -1,23 +1,7 @@
 #include "Audio.h"
 
-Audio::Audio() : amplitude{28000}, sampleRate{44100} {
-    auto check43 = SDL_Init(SDL_INIT_AUDIO); // TODO: check error
+Audio::Audio()  {
 
-    audioCallback.sampleRate = sampleRate;
-    audioCallback.amplitude = amplitude;
-
-    SDL_AudioSpec desiredSpec;
-    desiredSpec.freq = sampleRate;
-    desiredSpec.format = AUDIO_S16SYS;
-    desiredSpec.channels = 1;
-    desiredSpec.samples = 2048;
-    desiredSpec.callback = AudioCallback::forwardCallback;
-    desiredSpec.userdata = &audioCallback;
-
-
-    auto check = SDL_OpenAudio(&desiredSpec, &audioSpec); // TODO: check error
-    auto check2 = desiredSpec.format != audioSpec.format;
-    auto check3 = 2;
 }
 
 Audio::~Audio() {

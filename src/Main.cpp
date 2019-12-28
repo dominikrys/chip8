@@ -2,11 +2,10 @@
 #include "Chip8.h"
 #include "Renderer.h"
 #include "ArgsParser.h"
+#include "Audio.h"
 #include <chrono>
 #include <iostream>
 #include <charconv>
-#include "SDL2/SDL_audio.h"
-#include "Audio.h"
 
 void printUsage(const std::string &videoScale, const std::string &cycleDelay, bool quirkMode) {
     std::cout << std::boolalpha <<
