@@ -6,19 +6,15 @@
 #include <vector>
 #include <chrono>
 #include <iostream>
+#include <limits>
 
 const unsigned int SPRITE_WIDTH = 8;
 const unsigned int ROM_START_ADDRESS = 0x200;
 const unsigned int FONT_SET_START_ADDRESS = 0x050;
 
-Chip8::Chip8() : randGen(std::chrono::system_clock::now().time_since_epoch().count()) {
-    pc = 0x200u;
-    opcode = 0;
-    index = 0;
-    sp = 0;
-
+Chip8::Chip8() : pc{0x200u}, opcode{0}, index{0}, sp{0}, drawFlag{true}, soundFlag{false}, delayTimer{0}, soundTimer{0},
+                 randGen(std::chrono::system_clock::now().time_since_epoch().count()) {
     clearScreen();
-    drawFlag = true;
 
     std::fill_n(stack, STACK_SIZE, 0);
     std::fill_n(registers, REGISTER_COUNT, 0);
@@ -31,10 +27,8 @@ Chip8::Chip8() : randGen(std::chrono::system_clock::now().time_since_epoch().cou
         memory[i + FONT_SET_START_ADDRESS] = fontSet[i];
     }
 
-    delayTimer = 0;
-    soundTimer = 0;
-
-    randByte = std::uniform_int_distribution<uint8_t>(0, 255u);
+    randByte = std::uniform_int_distribution<uint8_t>(std::numeric_limits<uint8_t>::min(),
+                                                      std::numeric_limits<uint8_t>::max());
 }
 
 void Chip8::emulateCycle() {
@@ -352,7 +346,7 @@ void Chip8::emulateCycle() {
     {
         if (soundTimer == 1)
         {
-            // TODO: actually add a noise
+            soundFlag = true;
             std::cout << "BEEP";
         }
         soundTimer--;
@@ -408,4 +402,12 @@ uint32_t *Chip8::getVideo() {
 
 uint8_t *Chip8::getKeys() {
     return keys;
+}
+
+bool Chip8::getSoundFlag() {
+    return soundFlag;
+}
+
+void Chip8::disableSoundFlag() {
+    soundFlag = false;
 }

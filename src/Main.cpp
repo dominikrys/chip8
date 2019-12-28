@@ -5,6 +5,8 @@
 #include <chrono>
 #include <iostream>
 #include <charconv>
+#include "SDL2/SDL_audio.h"
+#include "Audio.h"
 
 void printUsage(const std::string &videoScale, const std::string &cycleDelay, bool quirkMode) {
     std::cout << std::boolalpha <<
@@ -55,6 +57,8 @@ int main(int argc, char **argv) {
 
     Renderer renderer{"CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, videoScale};
 
+    Audio audio{};
+
     auto lastCycleTime = std::chrono::high_resolution_clock::now();
 
     bool quit = false;
@@ -79,6 +83,14 @@ int main(int argc, char **argv) {
                 renderer.Update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
 
                 chip8.disableDrawFlag();
+            }
+
+            if (chip8.getSoundFlag())
+            {
+                // Play sound
+                audio.play();
+
+                chip8.disableSoundFlag();
             }
         }
     }

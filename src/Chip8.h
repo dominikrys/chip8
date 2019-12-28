@@ -17,15 +17,19 @@ public:
 
     void emulateCycle();
 
-    bool getDrawFlag();
-
     uint8_t *getKeys();
 
     void loadRom(const std::string &filepath);
 
     uint32_t *getVideo();
 
+    bool getDrawFlag();
+
     void disableDrawFlag();
+
+    bool getSoundFlag();
+
+    void disableSoundFlag();
 
 private:
     void clearScreen();
@@ -73,6 +77,8 @@ private:
             };
 
     bool drawFlag{};
+
+    bool soundFlag{};
 
     std::default_random_engine randGen;
     std::uniform_int_distribution<uint8_t> randByte;
