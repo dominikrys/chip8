@@ -18,6 +18,7 @@ add_executable(${PROJECT_NAME}
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -lmingw32")
 #set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
+set(ENV{SDL_AUDIODRIVER} "winmm")
 # SDL
 set(SDL2_DIR C:/SDL2-2.0.10/x86_64-w64-mingw32)
 set(SDL2_LIB_DIR ${SDL2_DIR}/lib)
