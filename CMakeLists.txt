@@ -11,8 +11,8 @@ add_executable(${PROJECT_NAME}
         src/Renderer.h
         src/KeyboardHandler.cpp
         src/KeyboardHandler.h
-        src/ArgsParser.cpp
-        src/ArgsParser.h src/Audio.cpp src/Audio.h)
+        src/Configurator.cpp
+        src/Configurator.h src/Audio.cpp src/Audio.h)
 
 # Set linker and compiler options
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17"#[[-Wall -Wextra -Werror -Wshadow -pedantic -Weffc++"]])

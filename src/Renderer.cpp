@@ -19,7 +19,7 @@ Renderer::~Renderer() {
     SDL_Quit();
 }
 
-void Renderer::Update(const void *pixels, int pitch) {
+void Renderer::update(const void *pixels, int pitch) {
     SDL_UpdateTexture(texture, nullptr, pixels, pitch);
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, nullptr, nullptr);
