@@ -6,17 +6,17 @@
 Configurator::Configurator(int &argc, char **argv) {
     for (int i = 1; i < argc; i++)
     {
-        tokens.emplace_back(argv[i]);
+        tokens_.emplace_back(argv[i]);
     }
 
 }
 
-std::string Configurator::getCmdOption(const std::string &option) {
+std::string Configurator::getArgValue(const std::string &option) {
     std::vector<std::string>::const_iterator itr;
 
-    itr = std::find(tokens.begin(), tokens.end(), option);
+    itr = std::find(tokens_.begin(), tokens_.end(), option);
 
-    if (itr != tokens.end() && ++itr != tokens.end())
+    if (itr != tokens_.end() && ++itr != tokens_.end())
     {
         return *itr;
     }
@@ -24,37 +24,37 @@ std::string Configurator::getCmdOption(const std::string &option) {
     return "";
 }
 
-bool Configurator::cmdOptionExists(const std::string &option) {
-    return std::find(tokens.begin(), tokens.end(), option) != tokens.end();
+bool Configurator::argExists(const std::string &option) {
+    return std::find(tokens_.begin(), tokens_.end(), option) != tokens_.end();
 }
 
 bool Configurator::configure(Config &config) {
-    config.romPath = getCmdOption("--rom");
-    if (config.romPath.empty())
+    config.romPath_ = getArgValue("--rom");
+    if (config.romPath_.empty())
     {
         return false;
     }
 
-    std::string videoScaleStr = getCmdOption("--scale");
+    std::string videoScaleStr = getArgValue("--scale");
     if (!videoScaleStr.empty())
     {
-        std::from_chars(videoScaleStr.data(), videoScaleStr.data() + videoScaleStr.size(), config.videoScale);
+        std::from_chars(videoScaleStr.data(), videoScaleStr.data() + videoScaleStr.size(), config.videoScale_);
     }
 
-    std::string cycleDelayStr = getCmdOption("--delay");
+    std::string cycleDelayStr = getArgValue("--delay");
     if (!cycleDelayStr.empty())
     {
-        std::from_chars(cycleDelayStr.data(), cycleDelayStr.data() + cycleDelayStr.size(), config.cycleDelay);
+        std::from_chars(cycleDelayStr.data(), cycleDelayStr.data() + cycleDelayStr.size(), config.cycleDelay_);
     }
 
-    if (cmdOptionExists("--quirk"))
+    if (argExists("--quirk"))
     {
         // TODO: Implement this
     }
 
-    if (cmdOptionExists("--mute"))
+    if (argExists("--mute"))
     {
-        config.mute = true;
+        config.mute_ = true;
     }
 
     return true;

@@ -14,14 +14,14 @@ void printUsage() {
               "                                                                                                    \n" \
               "Optional:                                                                                           \n" \
               "   --scale <scale factor>  Set scale factor of the window. Default: " +
-              std::to_string(defaultConfig.videoScale) + "\n" \
+              std::to_string(defaultConfig.videoScale_) + "\n" \
               "   --delay <delay>         Set delay between cycles in milliseconds. Default: " +
-              std::to_string(defaultConfig.cycleDelay) + "\n" \
-              "   --mute                  Disable sound. Default: " << defaultConfig.mute << "\n" \
+              std::to_string(defaultConfig.cycleDelay_) + "\n" \
+              "   --mute                  Disable sound. Default: " << defaultConfig.mute_ << "\n" \
               "   --altop                 Increment the index after executing the 8XY6 and 8XYE opcodes, as on the" \
               "                           original CHIP-8 and CHIP-48. This may help certain games, however should be " \
               "                           left disabled for SCHIP games Default: "
-              << defaultConfig.altOp << "\n";
+                                << defaultConfig.altOp_ << "\n";
     // TODO: add SCHIP or update this comment
 }
 
@@ -35,12 +35,12 @@ int main(int argc, char **argv) {
         std::exit(EXIT_FAILURE);
     }
 
-    Chip8 chip8{config.altOp};
-    chip8.loadRom(config.romPath);
+    Chip8 chip8{config.altOp_};
+    chip8.loadRom(config.romPath_);
 
-    KeyboardHandler keyboardHandler(chip8.getKeys());
-    Renderer renderer{"CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, config.videoScale};
-    Audio audio{config.mute};
+    KeyboardHandler keyboardHandler(chip8.keys());
+    Renderer renderer{"CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, config.videoScale_};
+    Audio audio{config.mute_};
 
     auto lastCycleTime = std::chrono::high_resolution_clock::now();
 
@@ -54,21 +54,21 @@ int main(int argc, char **argv) {
         auto timeSinceLastCycle = std::chrono::duration_cast<std::chrono::milliseconds>(
                 currentTime - lastCycleTime).count();
 
-        if (timeSinceLastCycle >= config.cycleDelay)
+        if (timeSinceLastCycle >= config.cycleDelay_)
         {
             lastCycleTime = currentTime;
 
-            chip8.emulateCycle();
+            chip8.cycle();
 
-            if (chip8.getDrawFlag())
+            if (chip8.drawFlag())
             {
-                auto buffer = chip8.getVideo();
+                auto buffer = chip8.video();
                 renderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
 
                 chip8.disableDrawFlag();
             }
 
-            if (chip8.getSoundFlag())
+            if (chip8.soundFlag())
             {
                 audio.play();
 

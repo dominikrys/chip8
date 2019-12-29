@@ -4,13 +4,13 @@
 #include <vector>
 
 struct Config {
-    Config() : videoScale{15}, cycleDelay{1}, mute{false}, altOp{false} {}
+    Config() : videoScale_{15}, cycleDelay_{1}, mute_{false}, altOp_{false} {}
 
-    int videoScale;
-    int cycleDelay;
-    bool mute;
-    bool altOp;
-    std::string romPath;
+    int videoScale_;
+    int cycleDelay_;
+    bool mute_;
+    bool altOp_;
+    std::string romPath_;
 };
 
 class Configurator {
@@ -20,9 +20,9 @@ public:
     bool configure(Config &config);
 
 private:
-    std::vector<std::string> tokens;
+    std::vector<std::string> tokens_{};
 
-    std::string getCmdOption(const std::string &option);
+    std::string getArgValue(const std::string &option);
 
-    bool cmdOptionExists(const std::string &option);
+    bool argExists(const std::string &option);
 };

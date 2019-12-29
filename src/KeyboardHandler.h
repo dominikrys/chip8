@@ -9,5 +9,5 @@ public:
     bool handle();
 
 private:
-    uint8_t *keys{};
+    uint8_t *keys_{};
 };

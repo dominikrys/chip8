@@ -11,11 +11,11 @@ public:
 private:
     static void audioCallback(void *data, Uint8 *buffer, int length);
 
-    SDL_AudioDeviceID audioDevice;
+    SDL_AudioDeviceID audioDevice_{};
 
-    bool muted;
-    const double sineFreq;
-    const int sampleFreq;
-    const double samplesPerSine;
-    uint32_t samplePos;
+    bool muted_{};
+    const double sineFreq_{};
+    const int sampleFreq_{};
+    const double samplesPerSine_{};
+    uint32_t samplePos_{};
 };

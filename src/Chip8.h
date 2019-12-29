@@ -15,48 +15,43 @@ class Chip8 {
 public:
     explicit Chip8(bool altOp);
 
-    void emulateCycle();
+    void cycle();
 
-    uint8_t *getKeys();
+    uint8_t *keys();
 
     void loadRom(const std::string &filepath);
 
-    uint32_t *getVideo();
+    uint32_t *video();
 
-    bool getDrawFlag();
+    bool drawFlag();
 
     void disableDrawFlag();
 
-    bool getSoundFlag();
+    bool soundFlag();
 
     void disableSoundFlag();
 
 private:
     void clearScreen();
 
-    /*
-    0x000-0x1FF - Chip 8 interpreter (contains font set in emu)
-    0x050-0x0A0 - Used for the built in 4x5 pixel font set (0-F)
-    0x200-0xFFF - Program ROM and work RAM
-    */
-    uint8_t memory[MEMORY_SIZE]{};
-    uint8_t registers[REGISTER_COUNT]{};
+    uint8_t memory_[MEMORY_SIZE]{};
+    uint8_t registers_[REGISTER_COUNT]{};
 
-    uint16_t opcode{};
-    uint16_t index{};
-    uint16_t pc{};
+    uint16_t opcode_{};
+    uint16_t index_{};
+    uint16_t pc_{};
 
-    uint32_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{}; // uint32_t used to work with SDL well
+    uint32_t video_[VIDEO_WIDTH * VIDEO_HEIGHT]{}; // uint32_t used to work with SDL well
 
-    uint8_t delayTimer{};
-    uint8_t soundTimer{};
+    uint8_t delayTimer_{};
+    uint8_t soundTimer_{};
 
-    uint16_t stack[STACK_SIZE]{};
-    uint16_t sp{};
+    uint16_t stack_[STACK_SIZE]{};
+    uint16_t sp_{};
 
-    uint8_t keys[KEY_COUNT]{};
+    uint8_t keys_[KEY_COUNT]{};
 
-    uint8_t fontSet[FONT_SET_SIZE] =
+    uint8_t fontSet_[FONT_SET_SIZE] =
             {
                     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
                     0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -76,12 +71,11 @@ private:
                     0xF0, 0x80, 0xF0, 0x80, 0x80  // F
             };
 
-    bool drawFlag{};
-
-    bool soundFlag{};
+    bool drawFlag_{};
+    bool soundFlag__{};
 
     bool altOp{};
 
-    std::default_random_engine randGen;
-    std::uniform_int_distribution<uint8_t> randByte;
+    std::default_random_engine randGen_;
+    std::uniform_int_distribution<uint8_t> randByte_;
 };
