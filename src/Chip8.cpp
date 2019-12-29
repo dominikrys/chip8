@@ -201,21 +201,25 @@ void Chip8::cycle() {
             uint8_t y = registers_[(opcode_ & 0x00F0u) >> 4u];
             uint8_t height = opcode_ & 0x000Fu;
 
-            registers_[0xF] = 0; // set VF to 0 (collision detection)
+            // Set VF to 0 (for collision detection)
+            registers_[0xF] = 0;
 
             for (unsigned int row = 0; row < height; row++)
             {
-                uint8_t spritePixel = memory_[index_ + row];
+                uint8_t spriteByte = memory_[index_ + row];
+
                 for (unsigned int column = 0; column < SPRITE_WIDTH; column++)
                 {
-                    if (spritePixel & (0x80u >> column)) // go pixel by pixel checking if it's 0
+                    // Go pixel by pixel checking if it's 0
+                    if (spriteByte & (0x80u >> column))
                     {
-                        // TODO: look at wraparound - works for most roms?
-                        if (video_[(x + column + ((y + row) * VIDEO_WIDTH))] == 0xFFFFFFFF)
+                        // Check collision. % (VIDEO_WIDTH * VIDEO_HEIGHT) is for wrapping the sprite around the screen
+                        if (video_[x + column + ((y + row) * VIDEO_WIDTH) % (VIDEO_WIDTH * VIDEO_HEIGHT)] == 0xFFFFFFFF)
                         {
-                            registers_[0xF] = 1; // set VF to 1 (collision detection)
+                            // Set VF to 1 (for collision detection)
+                            registers_[0xF] = 1;
                         }
-                        // set value in video by XORing with 1
+                        // Set value in video by XORing with 1.
                         video_[x + column + ((y + row) * VIDEO_WIDTH) % (VIDEO_WIDTH * VIDEO_HEIGHT)] ^= 0xFFFFFFFF;
                     }
                 }
