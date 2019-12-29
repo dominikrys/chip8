@@ -209,6 +209,7 @@ void Chip8::emulateCycle() {
                 {
                     if (spritePixel & (0x80u >> column)) // go pixel by pixel checking if it's 0
                     {
+                        // TODO: look at wraparound - works for most roms?
                         if (video[(x + column + ((y + row) * VIDEO_WIDTH))] == 0xFFFFFFFF)
                         {
                             registers[0xF] = 1; // set VF to 1 (collision detection)

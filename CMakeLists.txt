@@ -15,7 +15,7 @@ add_executable(${PROJECT_NAME}
         src/ArgsParser.h src/Audio.cpp src/Audio.h)
 
 # Set linker and compiler options
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -lmingw32")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17"#[[-Wall -Wextra -Werror -Wshadow -pedantic -Weffc++"]])
 #set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
 set(ENV{SDL_AUDIODRIVER} "winmm")

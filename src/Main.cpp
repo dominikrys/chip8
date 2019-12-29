@@ -20,7 +20,7 @@ void printUsage(const std::string &videoScale, const std::string &cycleDelay, bo
 
 int main(int argc, char **argv) {
     int videoScale = 15;
-    int cycleDelay = 0;
+    int cycleDelay = 1;
     bool quirkMode = false;
 
     ArgsParser argsParser{argc, argv};
@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
         auto timeSinceLastCycle = std::chrono::duration_cast<std::chrono::milliseconds>(
                 currentTime - lastCycleTime).count();
 
-        if (timeSinceLastCycle > cycleDelay)
+        if (timeSinceLastCycle >= cycleDelay)
         {
             lastCycleTime = currentTime;
 

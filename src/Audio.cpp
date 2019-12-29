@@ -5,7 +5,7 @@
 #include <thread>
 
 Audio::Audio()
-        : sineFreq{400},
+        : sineFreq{500},
           sampleFreq{44100},
           samplesPerSine{sampleFreq / sineFreq},
           samplePos{0} {
@@ -44,7 +44,7 @@ void Audio::play() {
             auto currentTime = std::chrono::high_resolution_clock::now();
             auto timeSinceStart = std::chrono::duration_cast<std::chrono::milliseconds>(
                     currentTime - startCycleTime).count();
-            if (timeSinceStart > duration)
+            if (timeSinceStart >= duration)
             {
                 SDL_PauseAudioDevice(audioDevice, 1);
                 playing = false;
