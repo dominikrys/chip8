@@ -13,7 +13,7 @@ const unsigned int FONT_SET_SIZE = 80;
 
 class Chip8 {
 public:
-    Chip8();
+    explicit Chip8(bool altOp);
 
     void emulateCycle();
 
@@ -79,6 +79,8 @@ private:
     bool drawFlag{};
 
     bool soundFlag{};
+
+    bool altOp{};
 
     std::default_random_engine randGen;
     std::uniform_int_distribution<uint8_t> randByte;

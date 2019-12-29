@@ -18,9 +18,11 @@ void printUsage() {
               "   --delay <delay>         Set delay between cycles in milliseconds. Default: " +
               std::to_string(defaultConfig.cycleDelay) + "\n" \
               "   --mute                  Disable sound. Default: " << defaultConfig.mute << "\n" \
-              "   --quirk                 Enable mode for alternate opcode behaviour. Default: "
-              << defaultConfig.quirkMode << "\n";
-
+              "   --altop                 Increment the index after executing the 8XY6 and 8XYE opcodes, as on the" \
+              "                           original CHIP-8 and CHIP-48. This may help certain games, however should be " \
+              "                           left disabled for SCHIP games Default: "
+              << defaultConfig.altOp << "\n";
+    // TODO: add SCHIP or update this comment
 }
 
 int main(int argc, char **argv) {
@@ -33,7 +35,7 @@ int main(int argc, char **argv) {
         std::exit(EXIT_FAILURE);
     }
 
-    Chip8 chip8{};
+    Chip8 chip8{config.altOp};
     chip8.loadRom(config.romPath);
 
     KeyboardHandler keyboardHandler(chip8.getKeys());

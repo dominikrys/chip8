@@ -4,12 +4,12 @@
 #include <vector>
 
 struct Config {
-    Config() : videoScale{15}, cycleDelay{1}, mute{false}, quirkMode{false} {}
+    Config() : videoScale{15}, cycleDelay{1}, mute{false}, altOp{false} {}
 
     int videoScale;
     int cycleDelay;
     bool mute;
-    bool quirkMode;
+    bool altOp;
     std::string romPath;
 };
 

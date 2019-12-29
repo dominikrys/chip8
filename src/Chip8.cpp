@@ -12,8 +12,9 @@ const unsigned int SPRITE_WIDTH = 8;
 const unsigned int ROM_START_ADDRESS = 0x200;
 const unsigned int FONT_SET_START_ADDRESS = 0x050;
 
-Chip8::Chip8() : pc{0x200u}, opcode{0}, index{0}, sp{0}, drawFlag{true}, soundFlag{false}, delayTimer{0}, soundTimer{0},
-                 randGen(std::chrono::system_clock::now().time_since_epoch().count()) {
+Chip8::Chip8(bool altOp) : pc{0x200u}, opcode{0}, index{0}, sp{0}, drawFlag{true}, soundFlag{false}, delayTimer{0},
+                           soundTimer{0}, altOp{altOp},
+                           randGen(std::chrono::system_clock::now().time_since_epoch().count()) {
     clearScreen();
 
     std::fill_n(stack, STACK_SIZE, 0);
@@ -121,8 +122,8 @@ void Chip8::emulateCycle() {
                     pc += 2;
                     break;
                 case 0x0004u: // 8XY4: Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't.
-                    if (registers[(opcode & 0x00F0u) >> 4u] >
-                        (0xFFu - registers[(opcode & 0x0F00u) >> 8u])) // TODO: make this neater
+                    // TODO: make this neater
+                    if (registers[(opcode & 0x00F0u) >> 4u] > (0xFFu - registers[(opcode & 0x0F00u) >> 8u]))
                     {
                         registers[0xF] = 1; // carry
                     }
@@ -314,9 +315,17 @@ void Chip8::emulateCycle() {
                     {
                         memory[index + i] = registers[i];
                     }
-                    // S-CHIP implementations ignores VY unlike the original. Games still work.
-                    // I += ((opcode & 0x0F00) >> 8) + 1;
-                    // TODO: add a 'quirk' mode to enable these + the Y shift
+
+                    // In CHIP-8 the value of VY should be shifted and stored in VX, however since the S-CHIP and
+                    // CHIP-48 implementations don't do this, I will omit it and won't include a flag to set it. Most
+                    // ROMs rely on this opcode to function like on the CHIP-48.
+
+                    if (altOp)
+                    {
+                        // Increment index like on CHIP-48. The majority of ROMs don't rely on this, however since some
+                        // do I've given the option to enable it. It should be disabled for SCHIP games. TODO: add SCHIP
+                        index += ((opcode & 0x0F00u) >> 8u) + 1;
+                    }
                     pc += 2;
                     break;
                 case 0x0065u: // FX65: Fills V0 to VX (including VX) with values from memory starting at address I.
@@ -324,9 +333,14 @@ void Chip8::emulateCycle() {
                     {
                         registers[i] = memory[index + i];
                     }
-                    // S-CHIP implementations ignores VY unlike the original. Games still work.
-                    // I += ((opcode & 0x0F00) >> 8) + 1;
-                    // TODO: add a mode to enable these
+
+                    // VY ignored. Same reasoning for this as above for FX55.
+
+                    if (altOp)
+                    {
+                        // VY ignored. Same reasoning for this as above for FX55.
+                        index += ((opcode & 0x0F00u) >> 8u) + 1;
+                    }
                     pc += 2;
                     break;
                 default:;
