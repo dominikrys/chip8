@@ -348,7 +348,6 @@ void Chip8::emulateCycle() {
         if (soundTimer == 1)
         {
             soundFlag = true;
-            // std::cout << "BEEP"; TODO: add this back in - maybe log when audo disabled?
         }
         soundTimer--;
     }

@@ -7,7 +7,7 @@
 #include <iostream>
 #include <charconv>
 
-void printUsage(const std::string &videoScale, const std::string &cycleDelay, bool quirkMode) {
+void printUsage(const std::string &videoScale, const std::string &cycleDelay, bool mute, bool quirkMode) {
     std::cout << std::boolalpha <<
               "Usage:                                                                                              \n" \
               "   --rom <path>            Load ROM from specified path.                                            \n" \
@@ -15,12 +15,14 @@ void printUsage(const std::string &videoScale, const std::string &cycleDelay, bo
               "Optional:                                                                                           \n" \
               "   --scale <scale factor>  Set scale factor of the window. Default: " + videoScale + "\n" \
               "   --delay <delay>         Set delay between cycles in milliseconds. Default: " + cycleDelay + "\n" \
+              "   --mute                  Disable sound. Default: " << mute << "\n" \
               "   --quirk                 Enable mode for alternate opcode behaviour. Default: " << quirkMode << "\n";
 }
 
 int main(int argc, char **argv) {
     int videoScale = 15;
     int cycleDelay = 1;
+    bool mute = false;
     bool quirkMode = false;
 
     ArgsParser argsParser{argc, argv};
@@ -28,7 +30,7 @@ int main(int argc, char **argv) {
     std::string romPath = argsParser.getCmdOption("--rom");
     if (romPath.empty())
     {
-        printUsage(std::to_string(cycleDelay), std::to_string(videoScale), quirkMode);
+        printUsage(std::to_string(cycleDelay), std::to_string(videoScale), mute, quirkMode);
         return 0;
     }
 
@@ -49,7 +51,10 @@ int main(int argc, char **argv) {
         // TODO: Implement this
     }
 
-    // TODO: add option to disable audio
+    if (argsParser.cmdOptionExists("--mute"))
+    {
+        mute = true;
+    }
 
     Chip8 chip8{};
     chip8.loadRom(romPath);
@@ -58,7 +63,7 @@ int main(int argc, char **argv) {
 
     Renderer renderer{"CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, videoScale};
 
-    Audio audio{};
+    Audio audio{mute};
 
     auto lastCycleTime = std::chrono::high_resolution_clock::now();
 

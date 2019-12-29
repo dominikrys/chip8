@@ -4,11 +4,18 @@
 #include <chrono>
 #include <thread>
 
-Audio::Audio()
-        : sineFreq{500},
+Audio::Audio(bool mute)
+        : muted{mute},
+          sineFreq{500},
           sampleFreq{44100},
           samplesPerSine{sampleFreq / sineFreq},
           samplePos{0} {
+
+    if (muted)
+    {
+        return;
+    }
+
     SDL_Init(SDL_INIT_AUDIO); // TODO: check error
 
     SDL_AudioSpec desiredSpec;
@@ -27,11 +34,20 @@ Audio::Audio()
 }
 
 Audio::~Audio() {
-    SDL_CloseAudioDevice(audioDevice);
-    SDL_CloseAudio();
+    if (!muted)
+    {
+        SDL_CloseAudioDevice(audioDevice);
+        SDL_CloseAudio();
+    }
 }
 
 void Audio::play() {
+    if (muted)
+    {
+        std::cout << "BEEP\n";
+        return;
+    }
+
     auto playFunc = [&]()
     {
         int duration = 75;
