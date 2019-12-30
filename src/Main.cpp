@@ -4,26 +4,6 @@
 #include "Configurator.h"
 #include "Audio.h"
 #include <chrono>
-#include <iostream>
-
-void printUsage() {
-    Config defaultConfig{};
-    std::cout << std::boolalpha <<
-              "Usage:                                                                                              \n" \
-              "   --rom <path>            Load ROM from specified path.                                            \n" \
-              "                                                                                                    \n" \
-              "Optional:                                                                                           \n" \
-              "   --scale <scale factor>  Set scale factor of the window. Default: " +
-              std::to_string(defaultConfig.videoScale_) + "\n" \
-              "   --delay <delay>         Set delay between cycles in milliseconds. Default: " +
-              std::to_string(defaultConfig.cycleDelay_) + "\n" \
-              "   --mute                  Disable sound. Default: " << defaultConfig.mute_ << "\n" \
-              "   --altop                 Increment the index after executing the 8XY6 and 8XYE opcodes, as on the" \
-              "                           original CHIP-8 and CHIP-48. This may help certain games, however should be " \
-              "                           left disabled for SCHIP games Default: "
-                                << defaultConfig.altOp_ << "\n";
-    // TODO: add SCHIP or update this comment
-}
 
 int main(int argc, char **argv) {
     Config config{};
@@ -31,7 +11,7 @@ int main(int argc, char **argv) {
 
     if (!configurator.configure(config))
     {
-        printUsage();
+        Configurator::printUsage();
         std::exit(EXIT_FAILURE);
     }
 

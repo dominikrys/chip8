@@ -17,6 +17,8 @@ class Configurator {
 public:
     Configurator(int &argc, char **argv);
 
+    static void printUsage();
+
     bool configure(Config &config);
 
 private:
