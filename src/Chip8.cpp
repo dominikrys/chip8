@@ -42,12 +42,12 @@ void Chip8::cycle() {
         case 0x0000u: // NOTE: opcode 0NNN excluded as we're not emulating an RCA 1802 chip
             switch (opcode_ & 0x000Fu)
             {
-                case 0x000u: // 0x00E0: Clears the screen.
+                case 0x000u: // 0x00E0: Clears the screen
                     clearScreen();
                     drawFlag_ = true;
                     pc_ += 2;
                     break;
-                case 0x000Eu: // 0x00EE: Returns from subroutine.
+                case 0x000Eu: // 0x00EE: Returns from subroutine
                     sp_--;
                     pc_ = stack_[sp_];
                     pc_ += 2;
@@ -59,7 +59,7 @@ void Chip8::cycle() {
         case 0x1000u: // 1NNN: Jumps to address NNN
             pc_ = opcode_ & 0x0FFFu;
             break;
-        case 0x2000u: // 2NNN: Calls subroutine at NNN.
+        case 0x2000u: // 2NNN: Calls subroutine at NNN
             stack_[sp_] = pc_;
             sp_++;
             pc_ = opcode_ & 0x0FFFu;
@@ -74,7 +74,7 @@ void Chip8::cycle() {
                 pc_ += 2;
             }
             break;
-        case 0x4000u: // 4XNN: Skips the next instruction if VX doesn't equal NN.
+        case 0x4000u: // 4XNN: Skips the next instruction if VX doesn't equal NN
             if (registers_[(opcode_ & 0x0F00u) >> 8u] != (opcode_ & 0x00FFu))
             {
                 pc_ += 4;
@@ -84,7 +84,7 @@ void Chip8::cycle() {
                 pc_ += 2;
             }
             break;
-        case 0x5000u: // 5XY0: Skips the next instruction if VX equals VY.
+        case 0x5000u: // 5XY0: Skips the next instruction if VX equals VY
             if (registers_[(opcode_ & 0x0F00u) >> 8u] == registers_[(opcode_ & 0x00F0u) >> 4u])
             {
                 pc_ += 4;
@@ -94,18 +94,18 @@ void Chip8::cycle() {
                 pc_ += 2;
             }
             break;
-        case 0x6000u: // 6XNN: Sets VX to NN.
+        case 0x6000u: // 6XNN: Sets VX to NN
             registers_[(opcode_ & 0x0F00u) >> 8u] = opcode_ & 0x00FFu;
             pc_ += 2;
             break;
-        case 0x7000u: // 7XNN: Adds NN to VX. (Carry flag is not changed).
+        case 0x7000u: // 7XNN: Adds NN to VX. (Carry flag is not changed)
             registers_[(opcode_ & 0x0F00u) >> 8u] += (opcode_ & 0x00FFu);
             pc_ += 2;
             break;
         case 0x8000u:
             switch (opcode_ & 0x000Fu)
             {
-                case 0x0000u: // 8XY0: Sets VX to the value of VY.
+                case 0x0000u: // 8XY0: Sets VX to the value of VY
                     registers_[(opcode_ & 0x0F00u) >> 8u] = registers_[(opcode_ & 0x00F0u) >> 4u];
                     pc_ += 2;
                     break;
@@ -121,11 +121,11 @@ void Chip8::cycle() {
                     registers_[(opcode_ & 0x0F00u) >> 8u] ^= registers_[(opcode_ & 0x00F0u) >> 4u];
                     pc_ += 2;
                     break;
-                case 0x0004u: // 8XY4: Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't.
+                case 0x0004u: // 8XY4: Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't
                     // TODO: make this neater
                     if (registers_[(opcode_ & 0x00F0u) >> 4u] > (0xFFu - registers_[(opcode_ & 0x0F00u) >> 8u]))
                     {
-                        registers_[0xF] = 1; // carry
+                        registers_[0xF] = 1; // Carry
                     }
                     else
                     {
@@ -134,10 +134,10 @@ void Chip8::cycle() {
                     registers_[(opcode_ & 0x0F00u) >> 8u] += registers_[(opcode_ & 0x00F0u) >> 4u];
                     pc_ += 2;
                     break;
-                case 0x0005u: // 8XY5: VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
+                case 0x0005u: // 8XY5: VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't
                     if (registers_[(opcode_ & 0x00F0u) >> 4u] > registers_[(opcode_ & 0x0F00u) >> 8u])
                     {
-                        registers_[0xF] = 0; // borrow
+                        registers_[0xF] = 0; // Borrow
                     }
                     else
                     {
@@ -146,15 +146,15 @@ void Chip8::cycle() {
                     registers_[(opcode_ & 0x0F00u) >> 8u] -= registers_[(opcode_ & 0x00F0u) >> 4u];
                     pc_ += 2;
                     break;
-                case 0x0006u: // 8XY6: Stores the least significant bit of VX in VF and then shifts VX to the right by 1.
+                case 0x0006u: // 8XY6: Stores the least significant bit of VX in VF and then shifts VX to the right by 1
                     registers_[0xF] = registers_[(opcode_ & 0x0F00u) >> 8u] & 0x1u;
                     registers_[(opcode_ & 0x0F00u) >> 8u] >>= 1u;
                     pc_ += 2;
                     break;
-                case 0x0007u: // 8XY7: Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
+                case 0x0007u: // 8XY7: Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't
                     if (registers_[(opcode_ & 0x0F00u) >> 8u] > registers_[(opcode_ & 0x00F0u) >> 4u])
                     {
-                        registers_[0xF] = 0; // borrow
+                        registers_[0xF] = 0; // Borrow
                     }
                     else
                     {
@@ -164,7 +164,7 @@ void Chip8::cycle() {
                             registers_[(opcode_ & 0x00F0u) >> 4u] - registers_[(opcode_ & 0x0F00u) >> 8u];
                     pc_ += 2;
                     break;
-                case 0x000Eu: // 8XYE: Stores the most significant bit of VX in VF and then shifts VX to the left by 1.
+                case 0x000Eu: // 8XYE: Stores the most significant bit of VX in VF and then shifts VX to the left by 1
                     registers_[0xF] = registers_[(opcode_ & 0x0F00u) >> 8u] >> 7u;
                     registers_[(opcode_ & 0x0F00u) >> 8u] <<= 1u;
                     pc_ += 2;
@@ -173,7 +173,7 @@ void Chip8::cycle() {
                     std::cout << &"Unknown opcode: 0x"[opcode_];
             }
             break;
-        case 0x9000u: // 9XY0: Skips the next instruction if VX doesn't equal VY.
+        case 0x9000u: // 9XY0: Skips the next instruction if VX doesn't equal VY
             if (registers_[(opcode_ & 0x0F00u) >> 8u] != registers_[(opcode_ & 0x00F0u) >> 4u])
             {
                 pc_ += 4;
@@ -187,11 +187,11 @@ void Chip8::cycle() {
             index_ = opcode_ & 0x0FFFu;
             pc_ += 2;
             break;
-        case 0xB000u: // BNNN: Jumps to the address NNN plus V0.
+        case 0xB000u: // BNNN: Jumps to the address NNN plus V0
             pc_ = (opcode_ & 0x0FFFu) + registers_[0];
             pc_ += 2;
             break;
-        case 0xC000u: // CXNN: Sets VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN.
+        case 0xC000u: // CXNN: Sets VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN
             registers_[(opcode_ & 0x0F00u) >> 8u] = randByte_(randGen_) & (opcode_ & 0x00FFu);
             pc_ += 2;
             break;
@@ -219,7 +219,7 @@ void Chip8::cycle() {
                             // Set VF to 1 (for collision detection)
                             registers_[0xF] = 1;
                         }
-                        // Set value in video by XORing with 1.
+                        // Set value in video by XORing with 1
                         video_[x + column + ((y + row) * VIDEO_WIDTH) % (VIDEO_WIDTH * VIDEO_HEIGHT)] ^= 0xFFFFFFFF;
                     }
                 }
@@ -283,11 +283,11 @@ void Chip8::cycle() {
                     pc_ += 2; // Only increment pc if a key is pressed
                 }
                     break;
-                case 0x0015u: // FX15: Sets the delay timer to VX.
+                case 0x0015u: // FX15: Sets the delay timer to VX
                     delayTimer_ = registers_[(opcode_ & 0x0F00u) >> 8u];
                     pc_ += 2;
                     break;
-                case 0x0018u: // FX18: Sets the sound timer to VX.
+                case 0x0018u: // FX18: Sets the sound timer to VX
                     soundTimer_ = registers_[(opcode_ & 0x0F00u) >> 8u];
                     pc_ += 2;
                     break;
@@ -304,7 +304,7 @@ void Chip8::cycle() {
                     index_ += registers_[(opcode_ & 0x0F00u) >> 8u];
                     pc_ += 2;
                     break;
-                case 0x0029u: // FX29: Sets I to the location of the sprite for the character in VX.
+                case 0x0029u: // FX29: Sets I to the location of the sprite for the character in VX
                     index_ = FONT_SET_START_ADDRESS + registers_[(opcode_ & 0x0F00u) >> 8u] * 0x5u;
                     pc_ += 2;
                     break;
@@ -314,7 +314,7 @@ void Chip8::cycle() {
                     memory_[index_ + 2] = (registers_[(opcode_ & 0x0F00u) >> 8u] % 100) % 10;
                     pc_ += 2;
                     break;
-                case 0x0055u: // FX55: Stores V0 to VX (including VX) in memory starting at address I. The offset from I is increased by 1 for each value written, but I itself is left unmodified.
+                case 0x0055u: // FX55: Stores V0 to VX (including VX) in memory starting at address I. The offset from I is increased by 1 for each value written, but I itself is left unmodified
                     for (int i = 0; i <= ((opcode_ & 0x0F00u) >> 8u); i++)
                     {
                         memory_[index_ + i] = registers_[i];
@@ -327,22 +327,22 @@ void Chip8::cycle() {
                     if (altOp)
                     {
                         // Increment index like on CHIP-48. The majority of ROMs don't rely on this, however since some
-                        // do I've given the option to enable it. It should be disabled for SCHIP games. TODO: add SCHIP
+                        // do I've given the option to enable it. It should be disabled for SCHIP games.
                         index_ += ((opcode_ & 0x0F00u) >> 8u) + 1;
                     }
                     pc_ += 2;
                     break;
-                case 0x0065u: // FX65: Fills V0 to VX (including VX) with values from memory starting at address I.
+                case 0x0065u: // FX65: Fills V0 to VX (including VX) with values from memory starting at address I
                     for (int i = 0; i <= ((opcode_ & 0x0F00u) >> 8u); i++)
                     {
                         registers_[i] = memory_[index_ + i];
                     }
 
-                    // VY ignored. Same reasoning for this as above for FX55.
+                    // VY ignored. Same reasoning for this as above for FX55
 
                     if (altOp)
                     {
-                        // VY ignored. Same reasoning for this as above for FX55.
+                        // VY ignored. Same reasoning for this as above for FX55
                         index_ += ((opcode_ & 0x0F00u) >> 8u) + 1;
                     }
                     pc_ += 2;

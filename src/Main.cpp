@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "Configurator.h"
 #include "Audio.h"
+
 #include <chrono>
 
 int main(int argc, char **argv) {

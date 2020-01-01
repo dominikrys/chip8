@@ -1,7 +1,8 @@
+#include "Configurator.h"
+
 #include <algorithm>
 #include <iostream>
 #include <charconv>
-#include "Configurator.h"
 
 Configurator::Configurator(int &argc, char **argv) {
     for (int i = 1; i < argc; i++)
@@ -23,10 +24,8 @@ void Configurator::printUsage() {
               std::to_string(defaultConfig.cycleDelay_) + "\n" \
               "   --mute                  Disable sound. Default: " << defaultConfig.mute_ << "\n" \
               "   --altop                 Increment the index after executing the 8XY6 and 8XYE opcodes, as on the" \
-              "                           original CHIP-8 and CHIP-48. This may help certain games, however should be " \
-              "                           left disabled for SCHIP games Default: "
+              "                           original CHIP-8 and CHIP-48. This may help certain games. Default: "
               << defaultConfig.altOp_ << "\n";
-    // TODO: add SCHIP or update this comment
 }
 
 std::string Configurator::getArgValue(const std::string &option) {

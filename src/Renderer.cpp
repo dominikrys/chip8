@@ -1,5 +1,6 @@
-#include <stdexcept>
 #include "Renderer.h"
+
+#include <stdexcept>
 
 Renderer::Renderer(const char *title, int videoWidth, int videoHeight, int videoScale) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)

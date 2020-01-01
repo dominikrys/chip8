@@ -1,4 +1,5 @@
 #include "KeyboardHandler.h"
+
 #include <SDL2/SDL_events.h>
 
 KeyboardHandler::KeyboardHandler(uint8_t *keys) : keys_{keys} {
