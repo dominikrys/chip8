@@ -19,7 +19,7 @@ void Configurator::printUsage() {
               "Optional:                                                                                           \n" \
               "   --scale <scale factor>  Set scale factor of the window. Default: " +
               std::to_string(defaultConfig.videoScale_) + "\n" \
-              "   --delay <delay>         Set delay between cycles in milliseconds. Default: " +
+              "   --delay <delay>         Set delay between cycles in milliseconds. Floats accepted. Default: " +
               std::to_string(defaultConfig.cycleDelay_) + "\n" \
               "   --mute                  Disable sound. Default: " << defaultConfig.mute_ << "\n" \
               "   --altop                 Increment the index after executing the 8XY6 and 8XYE opcodes, as on the" \
@@ -47,22 +47,35 @@ bool Configurator::argExists(const std::string &option) {
 }
 
 bool Configurator::configure(Config &config) {
-    config.romPath_ = getArgValue("--rom");
-    if (config.romPath_.empty())
+    if (config.romPath_ = getArgValue("--rom"); config.romPath_.empty())
     {
         return false;
     }
 
-    std::string videoScaleStr = getArgValue("--scale");
-    if (!videoScaleStr.empty())
+    if (std::string videoScaleStr = getArgValue("--scale"); !videoScaleStr.empty())
     {
-        std::from_chars(videoScaleStr.data(), videoScaleStr.data() + videoScaleStr.size(), config.videoScale_);
+        auto result = std::from_chars(videoScaleStr.data(), videoScaleStr.data() + videoScaleStr.size(),
+                                      config.videoScale_);
+
+        if (!(bool) result.ec && result.ptr == videoScaleStr.data() + videoScaleStr.size())
+        {
+            std::cout << "Couldn't convert given scale value to int, using the default instead: " +
+                         std::to_string(config.videoScale_);
+        }
     }
 
-    std::string cycleDelayStr = getArgValue("--delay");
-    if (!cycleDelayStr.empty())
+    if (std::string cycleDelayStr = getArgValue("--delay"); !cycleDelayStr.empty())
     {
-        std::from_chars(cycleDelayStr.data(), cycleDelayStr.data() + cycleDelayStr.size(), config.cycleDelay_);
+        // NOTE: can't use from_chars as above due to MinGW not yet supporting it for floats.
+        try
+        {
+            config.cycleDelay_ = std::stod(cycleDelayStr, nullptr);
+        }
+        catch (const std::exception &e)
+        {
+            std::cout << "Couldn't convert given cycle delay value to double, using the default instead: " +
+                         std::to_string(config.cycleDelay_);
+        }
     }
 
     if (argExists("--altop"))

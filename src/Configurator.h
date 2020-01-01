@@ -4,10 +4,10 @@
 #include <vector>
 
 struct Config {
-    Config() : videoScale_{15}, cycleDelay_{1}, mute_{false}, altOp_{false} {}
+    Config() : videoScale_{15}, cycleDelay_{0.5}, mute_{false}, altOp_{false} {}
 
     int videoScale_;
-    int cycleDelay_;
+    double cycleDelay_;
     bool mute_;
     bool altOp_;
     std::string romPath_;

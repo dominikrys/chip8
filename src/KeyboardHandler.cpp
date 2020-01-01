@@ -21,8 +21,6 @@ bool KeyboardHandler::handle() {
     bool quit = false;
     SDL_Event event;
 
-    // TODO: This supports only one key press at a time - unsure what the correct behaviour should be. If simultaneous
-    //  key presses are supported then this should be changed into ifs. Add mode for this?
     while (SDL_PollEvent(&event))
     {
         switch (event.type)
