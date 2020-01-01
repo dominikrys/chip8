@@ -65,9 +65,9 @@ bool Configurator::configure(Config &config) {
         std::from_chars(cycleDelayStr.data(), cycleDelayStr.data() + cycleDelayStr.size(), config.cycleDelay_);
     }
 
-    if (argExists("--quirk"))
+    if (argExists("--altop"))
     {
-        // TODO: Implement this
+        config.altOp_ = true;
     }
 
     if (argExists("--mute"))

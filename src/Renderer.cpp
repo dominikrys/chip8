@@ -1,7 +1,11 @@
+#include <stdexcept>
 #include "Renderer.h"
 
 Renderer::Renderer(const char *title, int videoWidth, int videoHeight, int videoScale) {
-    SDL_Init(SDL_INIT_VIDEO); // todo: check error
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        throw std::runtime_error("Failed to initialize SDL video: " + std::string(SDL_GetError()));
+    }
 
     window_ = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               videoWidth * videoScale, videoHeight * videoScale, SDL_WINDOW_SHOWN);

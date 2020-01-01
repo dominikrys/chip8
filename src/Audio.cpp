@@ -16,7 +16,10 @@ Audio::Audio(bool mute)
         return;
     }
 
-    SDL_Init(SDL_INIT_AUDIO); // TODO: check error
+    if (SDL_Init(SDL_INIT_AUDIO) < 0)
+    {
+        throw std::runtime_error("Failed to initialize SDL audio: " + std::string(SDL_GetError()));
+    }
 
     SDL_AudioSpec desiredSpec;
     SDL_AudioSpec obtainedSpec;
@@ -30,7 +33,11 @@ Audio::Audio(bool mute)
     desiredSpec.userdata = this;
 
     audioDevice_ = SDL_OpenAudioDevice(nullptr, 0, &desiredSpec, &obtainedSpec,
-                                       SDL_AUDIO_ALLOW_FORMAT_CHANGE); // TODO:  check error
+                                       SDL_AUDIO_ALLOW_FORMAT_CHANGE);
+    if (!audioDevice_)
+    {
+        throw std::runtime_error("Failed to open SDL audio device: " + std::string(SDL_GetError()));
+    }
 }
 
 Audio::~Audio() {

@@ -372,7 +372,6 @@ void Chip8::cycle() {
 }
 
 void Chip8::loadRom(const std::string &filepath) {
-    // TODO: add more error checking. Result type.
     std::ifstream ifs(filepath, std::ios::binary);
     if (!ifs)
     {
@@ -385,15 +384,14 @@ void Chip8::loadRom(const std::string &filepath) {
     auto size = std::size_t(end - ifs.tellg());
     if (size == 0)
     {
-        throw std::runtime_error("No game loaded");
+        throw std::runtime_error("Specified ROM has a size of 0.");
     }
     else if (size > MEMORY_SIZE - ROM_START_ADDRESS)
     {
-        throw std::runtime_error("Error: ROM too big for memory");
+        throw std::runtime_error("ROM too big for memory");
     }
 
     std::vector<char> buffer((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-
     for (int i = 0; i < size; i++)
     {
         memory_[i + ROM_START_ADDRESS] = buffer[i];
