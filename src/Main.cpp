@@ -48,8 +48,7 @@ int main(int argc, char **argv) {
 
                 chip8.disableDrawFlag();
             }
-
-            if (chip8.soundFlag())
+            else if (chip8.soundFlag())
             {
                 audio.play();
 

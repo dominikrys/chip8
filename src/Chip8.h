@@ -72,9 +72,9 @@ private:
             };
 
     bool drawFlag_{};
-    bool soundFlag__{};
+    bool soundFlag_{};
 
-    bool altOp{};
+    bool altOp_{};
 
     std::default_random_engine randGen_;
     std::uniform_int_distribution<uint8_t> randByte_;

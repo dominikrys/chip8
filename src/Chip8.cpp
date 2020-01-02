@@ -12,15 +12,15 @@ const unsigned int SPRITE_WIDTH = 8;
 const unsigned int ROM_START_ADDRESS = 0x200;
 const unsigned int FONT_SET_START_ADDRESS = 0x050;
 
-Chip8::Chip8(bool altOp) : pc_{0x200u}, opcode_{0}, index_{0}, sp_{0}, drawFlag_{true}, soundFlag__{false},
-                           delayTimer_{0}, soundTimer_{0}, altOp{altOp},
+Chip8::Chip8(bool altOp) : pc_{0x200u}, opcode_{0}, index_{0}, sp_{0}, drawFlag_{true}, soundFlag_{false},
+                           delayTimer_{0}, soundTimer_{0}, altOp_{altOp},
                            randGen_(std::chrono::system_clock::now().time_since_epoch().count()) {
-    clearScreen();
-
     std::fill_n(stack_, STACK_SIZE, 0);
     std::fill_n(registers_, REGISTER_COUNT, 0);
     std::fill_n(memory_, MEMORY_SIZE, 0);
     std::fill_n(keys_, KEY_COUNT, 0);
+
+    clearScreen();
 
     // Load font set
     for (int i = 0; i < FONT_SET_SIZE; i++)
@@ -365,21 +365,20 @@ void Chip8::cycle() {
     {
         if (soundTimer_ == 1)
         {
-            soundFlag__ = true;
+            soundFlag_ = true;
         }
         soundTimer_--;
     }
 }
 
 void Chip8::loadRom(const std::string &filepath) {
-    std::ifstream ifs(filepath, std::ios::binary);
+    std::ifstream ifs(filepath, std::ios::binary | std::ios::ate);
     if (!ifs)
     {
         throw std::runtime_error("Can't open file: " + filepath + ". " + std::strerror(errno));
     }
 
-    ifs.seekg(0, std::ios::end);
-    auto end = ifs.tellg();
+    auto end = ifs.tellg(); // ifs is at the end since std::ios::ate specified
     ifs.seekg(0, std::ios::beg);
     auto size = std::size_t(end - ifs.tellg());
     if (size == 0)
@@ -421,9 +420,9 @@ uint8_t *Chip8::keys() {
 }
 
 bool Chip8::soundFlag() {
-    return soundFlag__;
+    return soundFlag_;
 }
 
 void Chip8::disableSoundFlag() {
-    soundFlag__ = false;
+    soundFlag_ = false;
 }
