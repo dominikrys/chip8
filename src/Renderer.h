@@ -10,7 +10,7 @@ public:
 
     ~Renderer();
 
-    void update(const void *pixels, int pitch);
+    void update(const void *pixels, int pitch) const;
 
 private:
     SDL_Window *window_;

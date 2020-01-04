@@ -22,13 +22,13 @@ public:
 
     uint8_t *keys();
 
-    uint32_t *video();
+    [[nodiscard]] const uint32_t *video() const;
 
-    bool drawFlag();
+    [[nodiscard]] bool drawFlag() const;
 
     void disableDrawFlag();
 
-    bool soundFlag();
+    [[nodiscard]] bool soundFlag() const;
 
     void disableSoundFlag();
 
@@ -135,7 +135,7 @@ private:
     bool drawFlag_;
     bool soundFlag_;
 
-    bool altOp_{};
+    const bool altOp_{};
 
     std::default_random_engine randGen_;
     std::uniform_int_distribution<uint8_t> randByte_;

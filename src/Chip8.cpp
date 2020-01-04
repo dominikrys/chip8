@@ -538,7 +538,7 @@ void Chip8::loadRom(const std::string &filepath) {
     ifs.close();
 }
 
-bool Chip8::drawFlag() {
+bool Chip8::drawFlag() const {
     return drawFlag_;
 }
 
@@ -550,7 +550,7 @@ void Chip8::clearScreen() {
     std::fill_n(video_, VIDEO_WIDTH * VIDEO_HEIGHT, 0);
 }
 
-uint32_t *Chip8::video() {
+const uint32_t *Chip8::video() const {
     return video_;
 }
 
@@ -558,7 +558,7 @@ uint8_t *Chip8::keys() {
     return keys_;
 }
 
-bool Chip8::soundFlag() {
+bool Chip8::soundFlag() const {
     return soundFlag_;
 }
 

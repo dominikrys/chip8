@@ -4,7 +4,7 @@
 #include <vector>
 
 struct Config {
-    Config() : videoScale_{15}, cycleDelay_{0.5}, mute_{false}, altOp_{false} {}
+    Config() : videoScale_{15}, cycleDelay_{0.5}, mute_{false}, altOp_{false}, romPath_{} {}
 
     int videoScale_;
     double cycleDelay_;
@@ -19,12 +19,12 @@ public:
 
     static void printUsage();
 
-    bool configure(Config &config);
+    bool configure(Config &config) const;
 
 private:
     std::vector<std::string> tokens_;
 
-    std::string getArgValue(const std::string &option);
+    [[nodiscard]] std::string getArgValue(const std::string &option) const;
 
-    bool argExists(const std::string &option);
+    [[nodiscard]] bool argExists(const std::string &option) const;
 };

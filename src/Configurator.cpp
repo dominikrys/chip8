@@ -28,7 +28,7 @@ void Configurator::printUsage() {
               << defaultConfig.altOp_ << "\n";
 }
 
-std::string Configurator::getArgValue(const std::string &option) {
+std::string Configurator::getArgValue(const std::string &option) const {
     std::vector<std::string>::const_iterator itr{std::find(tokens_.begin(), tokens_.end(), option)};
 
     if (itr != tokens_.end() && ++itr != tokens_.end())
@@ -39,11 +39,11 @@ std::string Configurator::getArgValue(const std::string &option) {
     return "";
 }
 
-bool Configurator::argExists(const std::string &option) {
+bool Configurator::argExists(const std::string &option) const {
     return std::find(tokens_.begin(), tokens_.end(), option) != tokens_.end();
 }
 
-bool Configurator::configure(Config &config) {
+bool Configurator::configure(Config &config) const {
     if (config.romPath_ = getArgValue("--rom"); config.romPath_.empty())
     {
         return false;
