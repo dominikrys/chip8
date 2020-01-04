@@ -34,6 +34,84 @@ public:
 private:
     void clearScreen();
 
+    void decodeFuncTable0();
+
+    void decodeFuncTable8();
+
+    void decodeFuncTableE();
+
+    void decodeFuncTableF();
+
+    void opcodeNULL();
+
+    void opcode00E0();
+
+    void opcode00EE();
+
+    void opcode1NNN();
+
+    void opcode2NNN();
+
+    void opcode3XKK();
+
+    void opcode4XKK();
+
+    void opcode5XY0();
+
+    void opcode6XKK();
+
+    void opcode7XKK();
+
+    void opcode8XY0();
+
+    void opcode8XY1();
+
+    void opcode8XY2();
+
+    void opcode8XY3();
+
+    void opcode8XY4();
+
+    void opcode8XY5();
+
+    void opcode8XY6();
+
+    void opcode8XY7();
+
+    void opcode8XYE();
+
+    void opcode9XY0();
+
+    void opcodeANNN();
+
+    void opcodeBNNN();
+
+    void opcodeCXKK();
+
+    void opcodeDXYN();
+
+    void opcodeEX9E();
+
+    void opcodeEXA1();
+
+    void opcodeFX07();
+
+    void opcodeFX0A();
+
+    void opcodeFX15();
+
+    void opcodeFX18();
+
+    void opcodeFX1E();
+
+    void opcodeFX29();
+
+    void opcodeFX33();
+
+    void opcodeFX55();
+
+    void opcodeFX65();
+
     uint8_t memory_[MEMORY_SIZE]{};
     uint8_t registers_[REGISTER_COUNT]{};
 
@@ -78,4 +156,12 @@ private:
 
     std::default_random_engine randGen_;
     std::uniform_int_distribution<uint8_t> randByte_;
+
+    typedef void (Chip8::*chip8Func)();
+
+    chip8Func funcTable_[0xF + 1]{&Chip8::opcodeNULL};
+    chip8Func funcTable0_[0xE + 1]{&Chip8::opcodeNULL};
+    chip8Func funcTable8_[0xE + 1]{&Chip8::opcodeNULL};
+    chip8Func funcTableE_[0xE + 1]{&Chip8::opcodeNULL};
+    chip8Func funcTableF_[0x65 + 1]{&Chip8::opcodeNULL};
 };
