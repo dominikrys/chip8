@@ -22,7 +22,7 @@ public:
     bool configure(Config &config);
 
 private:
-    std::vector<std::string> tokens_{};
+    std::vector<std::string> tokens_;
 
     std::string getArgValue(const std::string &option);
 

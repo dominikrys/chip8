@@ -9,7 +9,7 @@ Renderer::Renderer(const char *title, int videoWidth, int videoHeight, int video
     }
 
     window_ = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                              videoWidth * videoScale, videoHeight * videoScale, SDL_WINDOW_SHOWN);
+                               videoWidth * videoScale, videoHeight * videoScale, SDL_WINDOW_SHOWN);
 
     renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED);
 

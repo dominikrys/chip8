@@ -12,9 +12,22 @@ const unsigned int SPRITE_WIDTH = 8;
 const unsigned int ROM_START_ADDRESS = 0x200;
 const unsigned int FONT_SET_START_ADDRESS = 0x050;
 
-Chip8::Chip8(bool altOp) : pc_{0x200u}, opcode_{0}, index_{0}, sp_{0}, drawFlag_{true}, soundFlag_{false},
-                           delayTimer_{0}, soundTimer_{0}, altOp_{altOp},
-                           randGen_(std::chrono::system_clock::now().time_since_epoch().count()) {
+Chip8::Chip8(bool altOp)
+        : memory_{},
+          registers_{},
+          opcode_{0},
+          index_{0},
+          pc_{0x200u},
+          video_{},
+          delayTimer_{0},
+          soundTimer_{0},
+          stack_{},
+          sp_{0},
+          keys_{},
+          drawFlag_{true},
+          soundFlag_{false},
+          altOp_{altOp},
+          randGen_(std::chrono::system_clock::now().time_since_epoch().count()) {
     std::fill_n(stack_, STACK_SIZE, 0);
     std::fill_n(registers_, REGISTER_COUNT, 0);
     std::fill_n(memory_, MEMORY_SIZE, 0);
@@ -23,6 +36,25 @@ Chip8::Chip8(bool altOp) : pc_{0x200u}, opcode_{0}, index_{0}, sp_{0}, drawFlag_
     clearScreen();
 
     // Load font set
+    fontSet_ = {
+            0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+            0x20, 0x60, 0x20, 0x20, 0x70, // 1
+            0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+            0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+            0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+            0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+            0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+            0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+            0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+            0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+            0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+            0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+            0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+            0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+            0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+            0xF0, 0x80, 0xF0, 0x80, 0x80  // F
+    };
+
     for (int i = 0; i < FONT_SET_SIZE; i++)
     {
         memory_[i + FONT_SET_START_ADDRESS] = fontSet_[i];

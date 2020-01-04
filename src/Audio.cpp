@@ -6,13 +6,13 @@
 #include <thread>
 
 Audio::Audio(bool mute)
-        : muted_{mute},
+        : mute_{mute},
           sineFreq_{500},
           sampleFreq_{44100},
           samplesPerSine_{sampleFreq_ / sineFreq_},
           samplePos_{0} {
 
-    if (muted_)
+    if (mute_)
     {
         return;
     }
@@ -42,7 +42,7 @@ Audio::Audio(bool mute)
 }
 
 Audio::~Audio() {
-    if (!muted_)
+    if (!mute_)
     {
         SDL_CloseAudioDevice(audioDevice_);
         SDL_CloseAudio();
@@ -50,7 +50,7 @@ Audio::~Audio() {
 }
 
 void Audio::play() {
-    if (muted_)
+    if (mute_)
     {
         std::cout << "BEEP\n";
         return;

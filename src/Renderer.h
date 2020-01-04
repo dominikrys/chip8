@@ -13,7 +13,7 @@ public:
     void update(const void *pixels, int pitch);
 
 private:
-    SDL_Window *window_{};
-    SDL_Renderer *renderer_{};
-    SDL_Texture *texture_{};
+    SDL_Window *window_;
+    SDL_Renderer *renderer_;
+    SDL_Texture *texture_;
 };

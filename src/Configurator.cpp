@@ -29,9 +29,7 @@ void Configurator::printUsage() {
 }
 
 std::string Configurator::getArgValue(const std::string &option) {
-    std::vector<std::string>::const_iterator itr;
-
-    itr = std::find(tokens_.begin(), tokens_.end(), option);
+    std::vector<std::string>::const_iterator itr{std::find(tokens_.begin(), tokens_.end(), option)};
 
     if (itr != tokens_.end() && ++itr != tokens_.end())
     {
