@@ -8,6 +8,7 @@ KeyboardHandler::KeyboardHandler(uint8_t *keys) : keys_{keys} {
 
 bool KeyboardHandler::handle() {
     /*
+    Chip-8
     Keypad       Keyboard
     +-+-+-+-+    +-+-+-+-+
     |1|2|3|C|    |1|2|3|4|
@@ -19,6 +20,7 @@ bool KeyboardHandler::handle() {
     |A|0|B|F|    |Z|X|C|V|
     +-+-+-+-+    +-+-+-+-+
      */
+
     bool quit = false;
     SDL_Event event;
 

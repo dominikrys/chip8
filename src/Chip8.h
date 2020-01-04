@@ -43,7 +43,7 @@ private:
 
     void decodeFuncTableF();
 
-    void opcodeNULL();
+    void opcodeUnknown();
 
     void opcode00E0();
 
@@ -115,18 +115,17 @@ private:
 
     uint8_t memory_[MEMORY_SIZE];
     uint8_t registers_[REGISTER_COUNT];
-
     uint16_t opcode_;
     uint16_t index_;
     uint16_t pc_;
+
+    uint16_t stack_[STACK_SIZE];
+    uint16_t sp_;
 
     uint32_t video_[VIDEO_WIDTH * VIDEO_HEIGHT]; // uint32_t used to work with SDL well
 
     uint8_t delayTimer_;
     uint8_t soundTimer_;
-
-    uint16_t stack_[STACK_SIZE];
-    uint16_t sp_;
 
     uint8_t keys_[KEY_COUNT];
 
@@ -135,16 +134,17 @@ private:
     bool drawFlag_;
     bool soundFlag_;
 
-    const bool altOp_{};
+    const bool altOp_{}; // bool for specifying the behaviour of FX55 and FX65 opcodes
 
     std::default_random_engine randGen_;
     std::uniform_int_distribution<uint8_t> randByte_;
 
+    // Set up function pointer tables, initialising them with a default function
     using chip8Func = void (Chip8::*)();
 
-    chip8Func funcTable_[0xF + 1]{&Chip8::opcodeNULL};
-    chip8Func funcTable0_[0xE + 1]{&Chip8::opcodeNULL};
-    chip8Func funcTable8_[0xE + 1]{&Chip8::opcodeNULL};
-    chip8Func funcTableE_[0xE + 1]{&Chip8::opcodeNULL};
-    chip8Func funcTableF_[0x65 + 1]{&Chip8::opcodeNULL};
+    chip8Func funcTable_[0xF + 1]{&Chip8::opcodeUnknown};
+    chip8Func funcTable0_[0xE + 1]{&Chip8::opcodeUnknown};
+    chip8Func funcTable8_[0xE + 1]{&Chip8::opcodeUnknown};
+    chip8Func funcTableE_[0xE + 1]{&Chip8::opcodeUnknown};
+    chip8Func funcTableF_[0x65 + 1]{&Chip8::opcodeUnknown};
 };

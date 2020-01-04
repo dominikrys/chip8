@@ -82,6 +82,7 @@ void Audio::play() {
 void Audio::audioCallback(void *data, Uint8 *buffer, int length) {
     auto *audio = reinterpret_cast<Audio *>(data);
 
+    // Generate a simple sound wave
     for (int i = 0; i < length; i++)
     {
         buffer[i] = (std::sin(audio->samplePos_ / audio->samplesPerSine_ * M_PI * 2) + 1) * 127.5;

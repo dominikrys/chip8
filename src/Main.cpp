@@ -9,7 +9,6 @@
 int main(int argc, char **argv) {
     Config config{};
     Configurator configurator{argc, argv};
-
     if (!configurator.configure(config))
     {
         Configurator::printUsage();
@@ -31,6 +30,7 @@ int main(int argc, char **argv) {
     {
         quit = keyboardHandler.handle();
 
+        // Check if enough time has passed since the previous emulation cycle to execute a new one
         auto currentTime = std::chrono::high_resolution_clock::now();
         auto timeSinceLastCycle = std::chrono::duration_cast<std::chrono::milliseconds>(
                 currentTime - lastCycleTime).count();

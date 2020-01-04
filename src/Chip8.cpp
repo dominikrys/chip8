@@ -152,11 +152,11 @@ void Chip8::decodeFuncTableF() {
     ((*this).*(funcTableF_[(opcode_ & 0x00FFu)]))();
 }
 
-void Chip8::opcodeNULL() {
+void Chip8::opcodeUnknown() {
     std::cout << &"Unknown opcode: 0x"[opcode_];
 }
 
-// NOTE: opcode 0NNN excluded as we're not emulating an RCA 1802 chip
+// NOTE: opcode 0NNN is excluded as we're not emulating an RCA 1802 chip
 
 // 0x00E0: Clears the screen
 void Chip8::opcode00E0() {
