@@ -287,8 +287,19 @@ void Chip8::opcode8XY5() {
 
 // 8XY6: Stores the least significant bit of VX in VF and then shifts VX to the right by 1
 void Chip8::opcode8XY6() {
+
     registers_[0xF] = registers_[(opcode_ & 0x0F00u) >> 8u] & 0x1u;
-    registers_[(opcode_ & 0x0F00u) >> 8u] >>= 1u;
+    if (mode_ == Mode::CHIP8)
+    {
+        // On CHIP8, shift VY and store the result in VX.
+        // See: https://www.reddit.com/r/programming/comments/3ca4ry/writing_a_chip8_interpreteremulator_in_c14_10/csuepjm/
+        registers_[(opcode_ & 0x0F00u) >> 8u] = registers_[(opcode_ & 0x00F0u) >> 1u];
+    }
+    else
+    {
+        registers_[(opcode_ & 0x0F00u) >> 8u] >>= 1u;
+    }
+
     pc_ += 2;
 }
 
@@ -310,7 +321,16 @@ void Chip8::opcode8XY7() {
 // 8XYE: Stores the most significant bit of VX in VF and then shifts VX to the left by 1
 void Chip8::opcode8XYE() {
     registers_[0xF] = registers_[(opcode_ & 0x0F00u) >> 8u] >> 7u;
-    registers_[(opcode_ & 0x0F00u) >> 8u] <<= 1u;
+    if (mode_ == Mode::CHIP8)
+    {
+        // On CHIP8, shift VY and store the result in VX.
+        // See: https://www.reddit.com/r/programming/comments/3ca4ry/writing_a_chip8_interpreteremulator_in_c14_10/csuepjm/
+        registers_[(opcode_ & 0x0F00u) >> 8u] = registers_[(opcode_ & 0x00F0u) << 1u];
+    }
+    else
+    {
+        registers_[(opcode_ & 0x0F00u) >> 8u] <<= 1u;
+    }
     pc_ += 2;
 }
 
@@ -479,9 +499,12 @@ void Chip8::opcodeFX55() {
         memory_[index_ + i] = registers_[i];
     }
 
-    // NOTE: Since on the SCHIP the index doesn't get increased after this operation (as it would on the CHIP-8 and
-    // CHIP-48, many ROMs rely on it not to get increased and hence I won't change it either.
-    //index_ += ((opcode_ & 0x0F00u) >> 8u) + 1;
+    if (mode_ == Mode::CHIP8 || mode_ == Mode::CHIP48)
+    {
+        // Index is not incremented on the CHIP8. See: https://en.wikipedia.org/wiki/CHIP-8#cite_note-increment-10
+        // And: https://www.reddit.com/r/programming/comments/3ca4ry/writing_a_chip8_interpreteremulator_in_c14_10/csuepjm/
+        index_ += ((opcode_ & 0x0F00u) >> 8u) + 1;
+    }
 
     pc_ += 2;
 }
@@ -493,9 +516,12 @@ void Chip8::opcodeFX65() {
         registers_[i] = memory_[index_ + i];
     }
 
-    // NOTE: Since on the SCHIP the index doesn't get increased after this operation (as it would on the CHIP-8 and
-    // CHIP-48, many ROMs rely on it not to get increased and hence I won't change it either.
-    //index_ += ((opcode_ & 0x0F00u) >> 8u) + 1;
+    if (mode_ == Mode::CHIP8 || mode_ == Mode::CHIP48)
+    {
+        // Index is not incremented on the CHIP8. See: https://en.wikipedia.org/wiki/CHIP-8#cite_note-increment-10
+        // And: https://www.reddit.com/r/programming/comments/3ca4ry/writing_a_chip8_interpreteremulator_in_c14_10/csuepjm/
+        index_ += ((opcode_ & 0x0F00u) >> 8u) + 1;
+    }
 
     pc_ += 2;
 }

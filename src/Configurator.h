@@ -20,7 +20,7 @@ public:
 
     void printUsage();
 
-    bool configure(Config &config) const;
+    bool configure(Config &config);
 
 private:
     [[nodiscard]] std::string getArgValue(const std::string &option) const;
@@ -29,7 +29,7 @@ private:
 
     std::string modeToStr(Mode mode);
 
-    Mode strToMode(const std::string &str, Mode defaultMode) const;
+    Mode strToMode(const std::string &str, Mode defaultMode);
 
     std::vector<std::string> tokens_;
 

@@ -10,9 +10,9 @@ Configurator::Configurator(int &argc, char **argv) {
         tokens_.emplace_back(argv[i]);
     }
 
-    modeMap_ = {{Mode::CHIP8,  "CHIP-8"},
-                {Mode::CHIP48, "CHIP-48"},
-                {Mode::SCHIP,  "SCHIP"},
+    modeMap_ = {{Mode::CHIP8,  "8"},
+                {Mode::CHIP48, "48"},
+                {Mode::SCHIP,  "S"},
     };
 }
 
@@ -28,7 +28,7 @@ void Configurator::printUsage() {
               "   --delay <delay>         Set delay between cycles in milliseconds. Floats accepted. Default: " +
               std::to_string(defaultConfig.cycleDelay_) + "\n" \
               "   --mute                  Disable sound. Default: " << defaultConfig.mute_ << "\n" \
-              "   --mode ( 8 | 48 | S )   Choose the way opcodes 8XY6, 8XYE, FX55 and FX65 are executed.           \n" \
+              "   --mode ( 8 | 48 | S )   Choose the way opcodes 8XY6, 8XYE, FX55 and FX65 are executed.         \n\n" \
               "                           8: execute like on the original CHIP-8. Most games won't work properly.  \n" \
               "                           but this can help very old games.                                      \n\n" \
               "                           48: execute like on the CHIP-48. Most games will work properly.        \n\n" \
@@ -37,7 +37,7 @@ void Configurator::printUsage() {
               "                           Default: " + modeToStr(defaultConfig.mode_) + "\n";
 }
 
-bool Configurator::configure(Config &config) const {
+bool Configurator::configure(Config &config) {
     if (config.romPath_ = getArgValue("--rom"); config.romPath_.empty())
     {
         return false;
@@ -109,7 +109,7 @@ std::string Configurator::modeToStr(Mode mode) {
     }
 }
 
-Mode Configurator::strToMode(const std::string &str, Mode defaultMode) const {
+Mode Configurator::strToMode(const std::string &str, Mode defaultMode) {
     for (const auto &it : modeMap_)
     {
         if (it.second == str)
@@ -118,5 +118,6 @@ Mode Configurator::strToMode(const std::string &str, Mode defaultMode) const {
         }
     }
 
+    std::cout << "Specified mode not found, using default instead: " + modeToStr(defaultMode);
     return defaultMode;
 }
