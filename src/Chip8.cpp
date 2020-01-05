@@ -14,6 +14,7 @@ const unsigned int FONT_SET_START_ADDRESS = 0x050;
 
 Chip8::Chip8(Mode mode)
         : memory_{},
+          stack_{},
           registers_{},
           opcode_{0},
           index_{0},
@@ -21,7 +22,6 @@ Chip8::Chip8(Mode mode)
           video_{},
           delayTimer_{0},
           soundTimer_{0},
-          stack_{},
           sp_{0},
           keys_{},
           drawFlag_{true},

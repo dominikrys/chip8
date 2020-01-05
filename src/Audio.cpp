@@ -1,8 +1,8 @@
 #include "Audio.h"
 
+#include <chrono>
 #include <cmath>
 #include <iostream>
-#include <chrono>
 #include <thread>
 
 Audio::Audio(bool mute)

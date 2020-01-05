@@ -2,6 +2,7 @@
 
 #include "Mode.h"
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 struct Config {

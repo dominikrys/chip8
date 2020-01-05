@@ -1,8 +1,8 @@
 #include "Configurator.h"
 
 #include <algorithm>
-#include <iostream>
 #include <charconv>
+#include <iostream>
 
 Configurator::Configurator(int &argc, char **argv) {
     for (int i = 1; i < argc; i++)

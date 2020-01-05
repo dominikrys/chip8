@@ -3,7 +3,6 @@
 #include "Configurator.h"
 #include "KeyboardHandler.h"
 #include "Renderer.h"
-#include "Mode.h"
 
 #include <chrono>
 

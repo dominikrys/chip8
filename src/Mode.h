@@ -1,8 +1,5 @@
 #pragma once
 
-#include <string>
-#include <unordered_map>
-
-enum class Mode : char {
-    CHIP8, CHIP48, SCHIP, INVALID
+enum class Mode {
+    CHIP8, CHIP48, SCHIP
 };
