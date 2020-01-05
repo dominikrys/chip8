@@ -15,15 +15,15 @@ const unsigned int CHARACTER_SPRITE_WIDTH = 0x5;
 
 Chip8::Chip8(Mode mode)
         : memory_{},
-          stack_{},
           registers_{},
           opcode_{0},
           index_{0},
           pc_{0x200u},
+          stack_{},
+          sp_{0},
           video_{},
           delayTimer_{0},
           soundTimer_{0},
-          sp_{0},
           keys_{},
           drawFlag_{true},
           soundFlag_{false},
@@ -59,7 +59,7 @@ Chip8::Chip8(Mode mode)
     };
 
     // Load font set into memory
-    for (int i = 0; i < FONT_SET_SIZE; i++)
+    for (unsigned int i = 0; i < FONT_SET_SIZE; i++)
     {
         memory_[i + FONT_SET_START_ADDRESS] = fontSet_[i];
     }
@@ -510,7 +510,7 @@ void Chip8::opcodeFX0A() {
 
     bool keyPress = false;
 
-    for (int i = 0; i < KEY_COUNT; i++)
+    for (unsigned int i = 0; i < KEY_COUNT; i++)
     {
         if (keys_[i])
         {
@@ -585,7 +585,7 @@ void Chip8::opcodeFX33() {
 void Chip8::opcodeFX55() {
     auto x = (opcode_ & 0x0F00u) >> 8u;
 
-    for (int i = 0; i <= x; i++)
+    for (unsigned int i = 0; i <= x; i++)
     {
         memory_[index_ + i] = registers_[i];
 
@@ -604,7 +604,7 @@ void Chip8::opcodeFX55() {
 
 // FX65: Fills V0 to VX (including VX) with values from memory starting at address I.
 void Chip8::opcodeFX65() {
-    for (int i = 0; i <= ((opcode_ & 0x0F00u) >> 8u); i++)
+    for (unsigned int i = 0; i <= ((opcode_ & 0x0F00u) >> 8u); i++)
     {
         registers_[i] = memory_[index_ + i];
 
@@ -641,7 +641,7 @@ void Chip8::loadRom(const std::string &filepath) {
     }
 
     std::vector<char> buffer((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-    for (int i = 0; i < size; i++)
+    for (long long unsigned int i = 0; i < size; i++)
     {
         memory_[i + ROM_START_ADDRESS] = buffer[i];
     }
