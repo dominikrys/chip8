@@ -373,8 +373,7 @@ void Chip8::opcode8XYE() {
 
     if (mode_ == Mode::CHIP8)
     {
-        // On CHIP8, shift VY and store the result in VX.
-        // See: https://www.reddit.com/r/programming/comments/3ca4ry/writing_a_chip8_interpreteremulator_in_c14_10/csuepjm/
+        // Check comment above for 8XY6 for an explanation why VY is shifted
         auto y = (opcode_ & 0x00F0u) >> 4u;
         registers_[x] = registers_[y] << 1u;
     }
@@ -591,7 +590,8 @@ void Chip8::opcodeFX55() {
 
         if (mode_ == Mode::CHIP8 || mode_ == Mode::CHIP48)
         {
-            // On CHIP-8 and CHIP-48, the index is incremented by the number of bytes loaded or stored.
+            // On CHIP-8 and CHIP-48, the index is incremented by the number of bytes loaded or stored. Most ROMs
+            // however don't assume this behaviour, so by default this is ignored (like on the SCHIP).
             // See: https://en.wikipedia.org/wiki/CHIP-8#cite_note-increment-10
             // And: https://www.reddit.com/r/programming/comments/3ca4ry/writing_a_chip8_interpreteremulator_in_c14_10/csuepjm/
             // And: https://github.com/Chromatophore/HP48-Superchip/blob/master/investigations/quirk_i.md
@@ -610,10 +610,7 @@ void Chip8::opcodeFX65() {
 
         if (mode_ == Mode::CHIP8 || mode_ == Mode::CHIP48)
         {
-            // On CHIP-8 and CHIP-48, the index is incremented by the number of bytes loaded or stored.
-            // See: https://en.wikipedia.org/wiki/CHIP-8#cite_note-increment-10
-            // And: https://www.reddit.com/r/programming/comments/3ca4ry/writing_a_chip8_interpreteremulator_in_c14_10/csuepjm/
-            // And: https://github.com/Chromatophore/HP48-Superchip/blob/master/investigations/quirk_i.md
+            // Check comment above for FX55 for an explanation why this is incremented.
             index_ += memory_[index_ + i];
         }
     }
