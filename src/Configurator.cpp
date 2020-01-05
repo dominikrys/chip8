@@ -9,6 +9,11 @@ Configurator::Configurator(int &argc, char **argv) {
     {
         tokens_.emplace_back(argv[i]);
     }
+
+    modeMap_ = {{Mode::CHIP8,  "CHIP-8"},
+                {Mode::CHIP48, "CHIP-48"},
+                {Mode::SCHIP,  "SCHIP"},
+    };
 }
 
 void Configurator::printUsage() {
@@ -23,24 +28,13 @@ void Configurator::printUsage() {
               "   --delay <delay>         Set delay between cycles in milliseconds. Floats accepted. Default: " +
               std::to_string(defaultConfig.cycleDelay_) + "\n" \
               "   --mute                  Disable sound. Default: " << defaultConfig.mute_ << "\n" \
-              "   --altop                 Increment the index after executing the 8XY6 and 8XYE opcodes, as on the" \
-              "                           original CHIP-8 and CHIP-48. This may help certain games. Default: "
-              << defaultConfig.altOp_ << "\n";
-}
-
-std::string Configurator::getArgValue(const std::string &option) const {
-    std::vector<std::string>::const_iterator itr{std::find(tokens_.begin(), tokens_.end(), option)};
-
-    if (itr != tokens_.end() && ++itr != tokens_.end())
-    {
-        return *itr;
-    }
-
-    return "";
-}
-
-bool Configurator::argExists(const std::string &option) const {
-    return std::find(tokens_.begin(), tokens_.end(), option) != tokens_.end();
+              "   --mode ( 8 | 48 | S )   Choose the way opcodes 8XY6, 8XYE, FX55 and FX65 are executed.           \n" \
+              "                           8: execute like on the original CHIP-8. Most games won't work properly.  \n" \
+              "                           but this can help very old games.                                      \n\n" \
+              "                           48: execute like on the CHIP-48. Most games will work properly.        \n\n" \
+              "                           S: execute like on the SCHIP (without SCHIP opcode support). The majority\n" \
+              "                           of games assume that the FX55 and FX65 will work like on the SCHIP.      \n" \
+              "                           Default: " + modeToStr(defaultConfig.mode_) + "\n";
 }
 
 bool Configurator::configure(Config &config) const {
@@ -75,15 +69,54 @@ bool Configurator::configure(Config &config) const {
         }
     }
 
-    if (argExists("--altop"))
-    {
-        config.altOp_ = true;
-    }
-
     if (argExists("--mute"))
     {
         config.mute_ = true;
     }
 
+    if (std::string modeStr = getArgValue("--mode"); !modeStr.empty())
+    {
+        config.mode_ = strToMode(modeStr, config.mode_);
+    }
+
     return true;
+}
+
+std::string Configurator::getArgValue(const std::string &option) const {
+    std::vector<std::string>::const_iterator it{std::find(tokens_.begin(), tokens_.end(), option)};
+
+    if (it != tokens_.end() && ++it != tokens_.end())
+    {
+        return *it;
+    }
+
+    return "";
+}
+
+bool Configurator::argExists(const std::string &option) const {
+    return std::find(tokens_.begin(), tokens_.end(), option) != tokens_.end();
+}
+
+std::string Configurator::modeToStr(Mode mode) {
+    if (modeMap_.find(mode) != modeMap_.end())
+    {
+        return modeMap_[mode];
+    }
+    else
+    {
+        // This will only occur if the modeMap is not updated after a new mode is added
+        return "Unknown";
+    }
+}
+
+Mode Configurator::strToMode(const std::string &str, Mode defaultMode) const {
+    for (const auto &it : modeMap_)
+    {
+        if (it.second == str)
+        {
+            return it.first;
+        }
+    }
+
+    return defaultMode;
 }

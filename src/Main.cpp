@@ -1,8 +1,9 @@
-#include "KeyboardHandler.h"
-#include "Chip8.h"
-#include "Renderer.h"
-#include "Configurator.h"
 #include "Audio.h"
+#include "Chip8.h"
+#include "Configurator.h"
+#include "KeyboardHandler.h"
+#include "Renderer.h"
+#include "Mode.h"
 
 #include <chrono>
 
@@ -11,11 +12,11 @@ int main(int argc, char **argv) {
     Configurator configurator{argc, argv};
     if (!configurator.configure(config))
     {
-        Configurator::printUsage();
+        configurator.printUsage();
         std::exit(EXIT_FAILURE);
     }
 
-    Chip8 chip8{config.altOp_};
+    Chip8 chip8{config.mode_};
     chip8.loadRom(config.romPath_);
 
     KeyboardHandler keyboardHandler(chip8.keys());

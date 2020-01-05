@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Mode.h"
+
 #include <string>
 #include <random>
 #include <array>
@@ -14,7 +16,7 @@ const unsigned int FONT_SET_SIZE = 80;
 
 class Chip8 {
 public:
-    explicit Chip8(bool altOp);
+    explicit Chip8(Mode mode);
 
     void cycle();
 
@@ -134,7 +136,7 @@ private:
     bool drawFlag_;
     bool soundFlag_;
 
-    const bool altOp_{}; // bool for specifying the behaviour of FX55 and FX65 opcodes
+    const Mode mode_; // Specify whether to execute instructions like on the CHIP-8, CHIP-48 or SCHIP
 
     std::default_random_engine randGen_;
     std::uniform_int_distribution<uint8_t> randByte_;

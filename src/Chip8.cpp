@@ -12,7 +12,7 @@ const unsigned int SPRITE_WIDTH = 8;
 const unsigned int ROM_START_ADDRESS = 0x200;
 const unsigned int FONT_SET_START_ADDRESS = 0x050;
 
-Chip8::Chip8(bool altOp)
+Chip8::Chip8(Mode mode)
         : memory_{},
           registers_{},
           opcode_{0},
@@ -26,16 +26,18 @@ Chip8::Chip8(bool altOp)
           keys_{},
           drawFlag_{true},
           soundFlag_{false},
-          altOp_{altOp},
+          mode_{mode},
           randGen_(std::chrono::system_clock::now().time_since_epoch().count()) {
     std::fill_n(stack_, STACK_SIZE, 0);
     std::fill_n(registers_, REGISTER_COUNT, 0);
     std::fill_n(memory_, MEMORY_SIZE, 0);
     std::fill_n(keys_, KEY_COUNT, 0);
 
+    randByte_ = std::uniform_int_distribution<uint8_t>(std::numeric_limits<uint8_t>::min(),
+                                                       std::numeric_limits<uint8_t>::max());
+
     clearScreen();
 
-    // Load font set
     fontSet_ = {
             0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
             0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -55,13 +57,11 @@ Chip8::Chip8(bool altOp)
             0xF0, 0x80, 0xF0, 0x80, 0x80  // F
     };
 
+    // Load font set into memory
     for (int i = 0; i < FONT_SET_SIZE; i++)
     {
         memory_[i + FONT_SET_START_ADDRESS] = fontSet_[i];
     }
-
-    randByte_ = std::uniform_int_distribution<uint8_t>(std::numeric_limits<uint8_t>::min(),
-                                                       std::numeric_limits<uint8_t>::max());
 
     // Set up function pointer table
     funcTable_[0x0] = &Chip8::decodeFuncTable0;
@@ -472,41 +472,31 @@ void Chip8::opcodeFX33() {
     pc_ += 2;
 }
 
-// FX55: Stores V0 to VX (including VX) in memory starting at address I. The offset from I is increased by 1 for
-// each value written, but I itself is left unmodified
+// FX55: Stores V0 to VX (including VX) in memory starting at address I.
 void Chip8::opcodeFX55() {
     for (int i = 0; i <= ((opcode_ & 0x0F00u) >> 8u); i++)
     {
         memory_[index_ + i] = registers_[i];
     }
 
-    // In CHIP-8 the value of VY should be shifted and stored in VX, however since the S-CHIP and
-    // CHIP-48 implementations don't do this, I will omit it and won't include a flag to set it. Most
-    // ROMs rely on this opcode to function like on the CHIP-48.
+    // NOTE: Since on the SCHIP the index doesn't get increased after this operation (as it would on the CHIP-8 and
+    // CHIP-48, many ROMs rely on it not to get increased and hence I won't change it either.
+    //index_ += ((opcode_ & 0x0F00u) >> 8u) + 1;
 
-    if (altOp_)
-    {
-        // Increment index like on CHIP-48. The majority of ROMs don't rely on this, however since some
-        // do I've given the option to enable it. It should be disabled for SCHIP games.
-        index_ += ((opcode_ & 0x0F00u) >> 8u) + 1;
-    }
     pc_ += 2;
 }
 
-// FX65: Fills V0 to VX (including VX) with values from memory starting at address I
+// FX65: Fills V0 to VX (including VX) with values from memory starting at address I.
 void Chip8::opcodeFX65() {
     for (int i = 0; i <= ((opcode_ & 0x0F00u) >> 8u); i++)
     {
         registers_[i] = memory_[index_ + i];
     }
 
-    // VY ignored. Same reasoning for this as above for FX55
+    // NOTE: Since on the SCHIP the index doesn't get increased after this operation (as it would on the CHIP-8 and
+    // CHIP-48, many ROMs rely on it not to get increased and hence I won't change it either.
+    //index_ += ((opcode_ & 0x0F00u) >> 8u) + 1;
 
-    if (altOp_)
-    {
-        // VY ignored. Same reasoning for this as above for FX55
-        index_ += ((opcode_ & 0x0F00u) >> 8u) + 1;
-    }
     pc_ += 2;
 }
 
