@@ -55,15 +55,15 @@ private:
 
     void opcode2NNN();
 
-    void opcode3XKK();
+    void opcode3XNN();
 
-    void opcode4XKK();
+    void opcode4XNN();
 
     void opcode5XY0();
 
-    void opcode6XKK();
+    void opcode6XNN();
 
-    void opcode7XKK();
+    void opcode7XNN();
 
     void opcode8XY0();
 
@@ -89,7 +89,7 @@ private:
 
     void opcodeBNNN();
 
-    void opcodeCXKK();
+    void opcodeCXNN();
 
     void opcodeDXYN();
 
