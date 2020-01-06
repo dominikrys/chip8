@@ -131,14 +131,14 @@ private:
 
     uint8_t keys_[KEY_COUNT];
 
-    std::array<uint8_t, FONT_SET_SIZE> fontSet_;
+    const std::array<uint8_t, FONT_SET_SIZE> fontSet_;
 
     bool drawFlag_;
     bool soundFlag_;
 
     const Mode mode_; // Specify whether to execute instructions like on the CHIP-8, CHIP-48 or SCHIP
 
-    std::default_random_engine randGen_;
+    std::default_random_engine randEngine_;
     std::uniform_int_distribution<uint8_t> randByte_;
 
     // Set up function pointer tables, initialising them with a default function
