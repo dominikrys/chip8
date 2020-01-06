@@ -6,7 +6,7 @@ class KeyboardHandler {
 public:
     explicit KeyboardHandler(uint8_t *keys);
 
-    bool handle();
+    [[nodiscard]] bool handle();
 
 private:
     uint8_t *keys_;

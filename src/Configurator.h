@@ -21,7 +21,7 @@ public:
 
     void printUsage();
 
-    bool configure(Config &config);
+    [[nodiscard]] bool configure(Config &config);
 
 private:
     [[nodiscard]] std::string getArgValue(const std::string &option) const;
