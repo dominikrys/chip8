@@ -8,7 +8,7 @@ CHIP-8 is an interpreted programming language, developed by Joseph Weisbecker. I
 
 It has risen in popularity when the CHIP-48 interpreter was made for HP-48 graphic calculators, and hence many games are written for the CHIP-48. These rely on slightly different opcode behaviours compared to the CHIP-8 due to some of the original opcodes being undocumented, which is why this emulator includes different emulation modes to ensure compatibility.
 
-## Screenshots from the emulator
+## Screenshots of the emulator in action
 
 ![Pong](/docs/img/pong.png)                      |![Blinky](/docs/img/blinky.png)
 :-----------------------------------------------:|:----------------------------------------:
@@ -26,7 +26,7 @@ Dependencies:
 
 TODO: add notes on how to build
 
-A compiled release is provided in the [releases section](https://github.com/dominikrys/chip-8-emulator/releases).
+A compiled Windows release is provided in the [releases section](https://github.com/dominikrys/chip-8-emulator/releases).
 
 ## Usage
 
