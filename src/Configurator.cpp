@@ -7,7 +7,7 @@
 
 Configurator::Configurator(int &argc, char **argv) {
     programName_ = std::filesystem::path(argv[0]).filename().string();
-
+    
     for (int i = 1; i < argc; i++)
     {
         tokens_.emplace_back(argv[i]);
@@ -25,7 +25,6 @@ void Configurator::printUsage() {
     std::cerr << std::boolalpha <<
               "Usage: " + programName_ + " --rom <path> [options]                                                \n\n" \
               "A CHIP-8 emulator.                                                                                  \n" \
-              "                                                                                                    \n" \
               "Options:                                                                                            \n" \
               "   --scale <scale factor>  Set the scale factor of the window. The CHIP-8 screen is 64*32 pixels.   \n" \
               "                           Default: " + std::to_string(defaultConfig.videoScale_) + "\n" \

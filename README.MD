@@ -26,6 +26,8 @@ Dependencies:
 
 TODO: add notes on how to build
 
+A compiled release is provided in the [releases section](https://github.com/dominikrys/chip-8-emulator/releases).
+
 ## Usage
 
 In terminal/command line run: `chip_8.exe --rom <path> [options]`
