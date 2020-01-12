@@ -1,6 +1,6 @@
 # CHIP-8 Emulator
 
-This is a CHIP-8 emulator is written in C++17 and uses SDL2 for sound, graphics and input. It's been written with compatibility in mind due to the various CHIP-8 implementations available.
+This is a CHIP-8 emulator is written in C++17 and uses SDL2 for sound, graphics and input. It's been made with compatibility in mind due to the various CHIP-8 implementations available.
 
 ## CHIP-8 Intro
 
@@ -8,19 +8,19 @@ CHIP-8 is an interpreted programming language, developed by Joseph Weisbecker. I
 
 It has risen in popularity when the CHIP-48 interpreter was made for HP-48 graphic calculators, and hence many games are written for the CHIP-48. These rely on slightly different opcode behaviours compared to the CHIP-8 due to some of the original opcodes being undocumented, which is why this emulator includes different emulation modes to ensure compatibility.
 
-## Screenshots
+## Screenshots from the emulator
 
-![Pong](/docs/img/pong.png)  |  ![Blinky](/docs/img/blinky.png)
-:----------------------------------:|:----------------------------------------:
-![Trip8 Demo](/docs/img/trip8_demo.png)  |  ![Space Invaders](/docs/img/space_invaders.png)
+![Pong](/docs/img/pong.png)                      |![Blinky](/docs/img/blinky.png)
+:-----------------------------------------------:|:----------------------------------------:
+![Space Invaders](/docs/img/space_invaders.png)  |![Trip8 Demo](/docs/img/trip8_demo.png)
 
 ## Building
 
 Dependencies: 
 
-- **A modern C++17 compiler**. I've used **GCC 9.2**. On Windows this can be dome through MinGW-w64 8.0 (an up to date one can be obtained through MSYS2).
+- **A modern C++17 compiler**. I've used **GCC 9.2**. On Windows I'd recommend MinGW-w64 8.0 (an up to date one can be obtained through MSYS2).
 
-- **SDL2** - set SDL2_DIR in the CMakeLists.txt file to the directory where the development libraries are located on your system.
+- **SDL2** - set SDL2_DIR in the CMakeLists.txt file to the directory where the SDL2 development libraries are located on your system.
 
 - **CMake**
 
