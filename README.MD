@@ -1,6 +1,6 @@
 # CHIP-8 Emulator
 
-This CHIP-8 emulator is written in C++17 and uses SDL for sound, graphics and input. It's been written with compatibility in mind due to the various CHIP-8 implementations available.
+This is a CHIP-8 emulator is written in C++17 and uses SDL2 for sound, graphics and input. It's been written with compatibility in mind due to the various CHIP-8 implementations available.
 
 ## CHIP-8 Intro
 
