@@ -29,7 +29,7 @@ void Configurator::printUsage() {
               "Options:                                                                                            \n" \
               "   --scale <scale factor>  Set the scale factor of the window. The CHIP-8 screen is 64*32 pixels.   \n" \
               "                           Default: " + std::to_string(defaultConfig.videoScale_) + "\n" \
-              "   --delay <delay>         Set the delay between cycles in milliseconds.                            \n" \
+              "   --delay <delay>         Set the delay between cycles in milliseconds Floats accepted.            \n" \
               "                           Default: " + std::to_string(defaultConfig.cycleDelay_) + "\n" \
               "   --mute                  Mute the emulator.                                                       \n" \
               "                           Default: " << defaultConfig.mute_ << "\n" \

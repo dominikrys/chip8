@@ -29,12 +29,14 @@ int main(int argc, char **argv) {
     {
         quit = keyboardHandler.handle();
 
-        // Check if enough time has passed since the previous emulation cycle to execute a new one
+        // Check if enough time has passed since the previous emulation cycle to execute a new one. Nanoseconds used for
+        // higher precision. The delay command line arg is in ms for ease of use.
         auto currentTime = std::chrono::high_resolution_clock::now();
-        auto timeSinceLastCycle = std::chrono::duration_cast<std::chrono::milliseconds>(
+        auto timeSinceLastCycle = std::chrono::duration_cast<std::chrono::nanoseconds>(
                 currentTime - lastCycleTime).count();
 
-        if (timeSinceLastCycle >= config.cycleDelay_)
+        auto cycleDelayNs = config.cycleDelay_ * 1000000;
+        if (timeSinceLastCycle >= cycleDelayNs)
         {
             lastCycleTime = currentTime;
 
