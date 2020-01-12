@@ -24,8 +24,6 @@ Dependencies:
 
 - **CMake**
 
-If the emulator is not outputting any audio, set the `SDL_AUDIODRIVER` environment variable to an appropriate variable mentioned [here](https://wiki.libsdl.org/FAQUsingSDL).
-
 TODO: add notes on how to build
 
 A compiled Windows release is provided in the [releases section](https://github.com/dominikrys/chip-8-emulator/releases).
@@ -35,6 +33,8 @@ A compiled Windows release is provided in the [releases section](https://github.
 In terminal/command line run: `chip_8.exe --rom <path> [options]`
 
 For more help run `chip_8.exe --help`
+
+If the emulator is not outputting any audio, set the `SDL_AUDIODRIVER` environment variable to an appropriate value mentioned [here](https://wiki.libsdl.org/FAQUsingSDL).
 
 The cycle delay and operation modes may need to be changed between ROMs to ensure they work as intended. I've included 3 different operation modes due different ROMs relying on different opcode behaviours, depending on the time they were written. Explanations can be found in the links section. They are as follows:
 
