@@ -24,6 +24,8 @@ Dependencies:
 
 - **CMake**
 
+If the emulator is not outputting any audio, set the `SDL_AUDIODRIVER` environment variable to an appropriate variable mentioned [here](https://wiki.libsdl.org/FAQUsingSDL).
+
 TODO: add notes on how to build
 
 A compiled Windows release is provided in the [releases section](https://github.com/dominikrys/chip-8-emulator/releases).

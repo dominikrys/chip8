@@ -21,7 +21,6 @@ add_executable(${PROJECT_NAME}
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Werror -Wall -Wextra -Wshadow -pedantic" #[[-Weffc++ -lstdc++fs]])
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
-set(ENV{SDL_AUDIODRIVER} "winmm")
 # SDL
 set(SDL2_DIR C:/SDL2-2.0.10/x86_64-w64-mingw32)
 set(SDL2_LIB_DIR ${SDL2_DIR}/lib)
@@ -31,3 +30,5 @@ target_link_libraries(${PROJECT_NAME}
         ${SDL2_LIB_DIR}/libSDL2main.a
         #[[-mwindows]])
 add_definitions(-DSDL_MAIN_HANDLED)
+
+set(ENV{SDL_AUDIODRIVER} "winmm")
