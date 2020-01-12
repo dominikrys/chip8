@@ -2,14 +2,18 @@
 
 #include <algorithm>
 #include <charconv>
+#include <filesystem>
 #include <iostream>
 
 Configurator::Configurator(int &argc, char **argv) {
+    programName_ = std::filesystem::path(argv[0]).filename().string();
+
     for (int i = 1; i < argc; i++)
     {
         tokens_.emplace_back(argv[i]);
     }
 
+    // Set up map for mapping mode enums to strings
     modeMap_ = {{Mode::CHIP8,  "8"},
                 {Mode::CHIP48, "48"},
                 {Mode::SCHIP,  "S"},
@@ -18,28 +22,37 @@ Configurator::Configurator(int &argc, char **argv) {
 
 void Configurator::printUsage() {
     Config defaultConfig{};
-    std::cout << std::boolalpha <<
-              "Usage:                                                                                              \n" \
-              "   --rom <path>            Load ROM from specified path.                                            \n" \
+    std::cerr << std::boolalpha <<
+              "Usage: " + programName_ + " --rom <path> [options]                                                \n\n" \
+              "A CHIP-8 emulator.                                                                                  \n" \
               "                                                                                                    \n" \
-              "Optional:                                                                                           \n" \
-              "   --scale <scale factor>  Set scale factor of the window. Default: " +
-              std::to_string(defaultConfig.videoScale_) + "\n" \
-              "   --delay <delay>         Set delay between cycles in milliseconds. Floats accepted. Default: " +
-              std::to_string(defaultConfig.cycleDelay_) + "\n" \
-              "   --mute                  Disable sound. Default: " << defaultConfig.mute_ << "\n" \
-              "   --mode ( 8 | 48 | S )   Choose the way opcodes 8XY6, 8XYE, FX55 and FX65 are executed.         \n\n" \
+              "Options:                                                                                            \n" \
+              "   --scale <scale factor>  Set the scale factor of the window. The CHIP-8 screen is 64*32 pixels.   \n" \
+              "                           Default: " + std::to_string(defaultConfig.videoScale_) + "\n" \
+              "   --delay <delay>         Set the delay between cycles in milliseconds.                            \n" \
+              "                           Default: " + std::to_string(defaultConfig.cycleDelay_) + "\n" \
+              "   --mute                  Mute the emulator.                                                       \n" \
+              "                           Default: " << defaultConfig.mute_ << "\n" \
+              "   --mode ( 8 | 48 | S )   Choose the way opcodes 8XY6, 8XYE, FX55 and FX65 are executed.           \n" \
               "                           8: execute like on the original CHIP-8. Most games won't work properly.  \n" \
-              "                           but this can help very old games.                                      \n\n" \
-              "                           48: execute like on the CHIP-48. Most games will work properly.        \n\n" \
+              "                           but this can help very old games.                                        \n" \
+              "                           48: execute like on the CHIP-48. Most games will work properly.          \n" \
               "                           S: execute like on the SCHIP (without SCHIP opcode support). The majority\n" \
               "                           of games assume that the FX55 and FX65 will work like on the SCHIP.      \n" \
-              "                           Default: " + modeToStr(defaultConfig.mode_) + "\n";
+              "                           Default: " + modeToStr(defaultConfig.mode_) + "\n" \
+              "   -h, --help              Display this help dialogue.\n";
 }
 
 bool Configurator::configure(Config &config) {
+    if (argExists("--help") || argExists("-h"))
+    {
+        printUsage();
+        return false;
+    }
+
     if (config.romPath_ = getArgValue("--rom"); config.romPath_.empty())
     {
+        printUsage();
         return false;
     }
 
@@ -50,7 +63,7 @@ bool Configurator::configure(Config &config) {
 
         if (!(bool) result.ec && result.ptr == videoScaleStr.data() + videoScaleStr.size())
         {
-            std::cout << "Couldn't convert given scale value to int, using the default instead: " +
+            std::cerr << "Couldn't convert given scale value to int, using the default instead: " +
                          std::to_string(config.videoScale_);
         }
     }
@@ -64,7 +77,7 @@ bool Configurator::configure(Config &config) {
         }
         catch (const std::exception &e)
         {
-            std::cout << "Couldn't convert given cycle delay value to double, using the default instead: " +
+            std::cerr << "Couldn't convert given cycle delay value to double, using the default instead: " +
                          std::to_string(config.cycleDelay_);
         }
     }
@@ -118,6 +131,6 @@ Mode Configurator::strToMode(const std::string &str, Mode defaultMode) {
         }
     }
 
-    std::cout << "Specified mode not found, using default instead: " + modeToStr(defaultMode);
+    std::cerr << "Specified mode not found, using default instead: " + modeToStr(defaultMode);
     return defaultMode;
 }

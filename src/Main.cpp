@@ -11,7 +11,6 @@ int main(int argc, char **argv) {
     Configurator configurator{argc, argv};
     if (!configurator.configure(config))
     {
-        configurator.printUsage();
         std::exit(EXIT_FAILURE);
     }
 

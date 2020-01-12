@@ -32,7 +32,7 @@ private:
 
     Mode strToMode(const std::string &str, Mode defaultMode);
 
+    std::string programName_;
     std::vector<std::string> tokens_;
-
     std::unordered_map<Mode, std::string> modeMap_;
 };
