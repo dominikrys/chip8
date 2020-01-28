@@ -7,7 +7,7 @@
 
 Configurator::Configurator(int &argc, char **argv) {
     programName_ = std::filesystem::path(argv[0]).filename().string();
-    
+
     for (int i = 1; i < argc; i++)
     {
         tokens_.emplace_back(argv[i]);
@@ -28,8 +28,8 @@ void Configurator::printUsage() {
               "Options:                                                                                            \n" \
               "   --scale <scale factor>  Set the scale factor of the window. The CHIP-8 screen is 64*32 pixels.   \n" \
               "                           Default: " + std::to_string(defaultConfig.videoScale_) + "\n" \
-              "   --delay <delay>         Set the delay between cycles in milliseconds Floats accepted.            \n" \
-              "                           Default: " + std::to_string(defaultConfig.cycleDelay_) + "\n" \
+              "   --cpufreq <frequency>   Set the CPU frequency of the emulator.                                   \n" \
+              "                           Default: " + std::to_string(defaultConfig.cpuFrequency_) + "\n" \
               "   --mute                  Mute the emulator.                                                       \n" \
               "                           Default: " << defaultConfig.mute_ << "\n" \
               "   --mode ( 8 | 48 | S )   Choose the way opcodes 8XY6, 8XYE, FX55 and FX65 are executed.           \n" \
@@ -60,24 +60,22 @@ bool Configurator::configure(Config &config) {
         auto result = std::from_chars(videoScaleStr.data(), videoScaleStr.data() + videoScaleStr.size(),
                                       config.videoScale_);
 
-        if (!(bool) result.ec && result.ptr == videoScaleStr.data() + videoScaleStr.size())
+        if ((bool) result.ec)
         {
             std::cerr << "Couldn't convert given scale value to int, using the default instead: " +
                          std::to_string(config.videoScale_);
         }
     }
 
-    if (std::string cycleDelayStr = getArgValue("--delay"); !cycleDelayStr.empty())
+    if (std::string cpuFreqStr = getArgValue("--cpufreq"); !cpuFreqStr.empty())
     {
-        // NOTE: can't use from_chars as above due to MinGW not yet supporting it for floats.
-        try
+        auto result = std::from_chars(cpuFreqStr.data(), cpuFreqStr.data() + cpuFreqStr.size(),
+                                      config.cpuFrequency_);
+
+        if ((bool) result.ec)
         {
-            config.cycleDelay_ = std::stod(cycleDelayStr, nullptr);
-        }
-        catch (const std::exception &e)
-        {
-            std::cerr << "Couldn't convert given cycle delay value to double, using the default instead: " +
-                         std::to_string(config.cycleDelay_);
+            std::cerr << "Couldn't convert given CPU frequency value to int, using the default instead: " +
+                         std::to_string(config.cpuFrequency_);
         }
     }
 

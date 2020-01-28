@@ -18,15 +18,13 @@ It has risen in popularity when the CHIP-48 interpreter was made for HP-48 graph
 
 Dependencies: 
 
-- **A modern C++17 compiler**. I've used **GCC 9.2**. On Windows I'd recommend MinGW-w64 8.0 (an up to date one can be easily obtained through MSYS2).
+- **C++17 compiler**. I've used **GCC 9.2**. On Windows I'd recommend MinGW-w64 8.0 (an up to date one can be easily obtained through MSYS2).
 
 - **SDL2** - set SDL2_DIR in the CMakeLists.txt file to the directory where the SDL2 development libraries are located on your system.
 
-- **CMake**
+- **CMake 3.15**
 
 TODO: add notes on how to build
-
-A compiled Windows release is provided in the [releases section](https://github.com/dominikrys/chip-8-emulator/releases).
 
 ## Usage
 
@@ -36,7 +34,7 @@ For more help, including displaying the available options, run: `chip_8.exe --he
 
 If audio is not working, set the `SDL_AUDIODRIVER` environment variable to an appropriate value mentioned [here](https://wiki.libsdl.org/FAQUsingSDL).
 
-The cycle delay and operation modes may need to be changed between ROMs to ensure they work as intended. I've included 3 different operation modes due different ROMs relying on different opcode behaviours, depending on the time period and the interpreter they were written for. Explanations can be found in the links section. They are as follows:
+The CPU speed and operation modes may need to be changed between ROMs to ensure they work as intended. I've included 3 different operation modes due different ROMs relying on different opcode behaviours, depending on the time period and the interpreter they were written for. Explanations can be found in the links section. They are as follows:
 
 - **CHIP8**: FX55 and FX65 opcodes increment the instruction counter. 8XY6 and 8XYE registers shift the value in VY and store the result in VX.
 
@@ -48,7 +46,7 @@ The cycle delay and operation modes may need to be changed between ROMs to ensur
 
 - [Revival Studios CHIP-8 Program Pack](https://github.com/dmatlack/chip8/tree/master/roms)
 
-- [CHIP-8 game archive](https://johnearnest.github.io/chip8Archive/)
+- [CHIP-8 games under CC0 license](https://johnearnest.github.io/chip8Archive/)
 
 - [BestCoder's test ROM](https://github.com/daniel5151/AC8E/blob/master/roms/bc_test.ch8)
 

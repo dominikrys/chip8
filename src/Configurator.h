@@ -6,11 +6,11 @@
 #include <vector>
 
 struct Config {
-    Config() : romPath_{}, videoScale_{15}, cycleDelay_{0.5}, mute_{false}, mode_{Mode::SCHIP} {}
+    Config() : romPath_{}, videoScale_{15}, cpuFrequency_{1000}, mute_{false}, mode_{Mode::SCHIP} {}
 
     std::string romPath_;
     int videoScale_;
-    double cycleDelay_;
+    int cpuFrequency_;
     bool mute_;
     Mode mode_;
 };

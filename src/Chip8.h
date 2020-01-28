@@ -2,9 +2,10 @@
 
 #include "Mode.h"
 
+#include <array>
+#include <chrono>
 #include <string>
 #include <random>
-#include <array>
 
 const unsigned int KEY_COUNT = 16;
 const unsigned int MEMORY_SIZE = 4096;
@@ -140,6 +141,8 @@ private:
 
     std::default_random_engine randEngine_;
     std::uniform_int_distribution<uint8_t> randByte_;
+
+    std::chrono::high_resolution_clock::time_point lastTimerUpdate;
 
     // Set up function pointer tables, initialising them with a default function
     using chip8Func = void (Chip8::*)();

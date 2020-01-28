@@ -5,6 +5,9 @@
 #include "Renderer.h"
 
 #include <chrono>
+#include <iostream>
+
+using high_resolution_clock = std::chrono::high_resolution_clock;
 
 int main(int argc, char **argv) {
     Config config{};
@@ -21,7 +24,10 @@ int main(int argc, char **argv) {
     Renderer renderer{"CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, config.videoScale_};
     Audio audio{config.mute_};
 
-    auto lastCycleTime = std::chrono::high_resolution_clock::now();
+    // Set the delay between cycles in nanoseconds. Can't use std::chrono for this as this is not known at compile time.
+    const auto cycleDelay = (1.0 / config.cpuFrequency_) * 1000000000;
+
+    auto lastCycleTime = high_resolution_clock::now();
 
     bool quit = false;
 
@@ -29,16 +35,11 @@ int main(int argc, char **argv) {
     {
         quit = keyboardHandler.handle();
 
-        // Check if enough time has passed since the previous emulation cycle to execute a new one. Nanoseconds used for
-        // higher precision. The delay command line arg is in ms for ease of use.
-        auto currentTime = std::chrono::high_resolution_clock::now();
-        auto timeSinceLastCycle = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                currentTime - lastCycleTime).count();
-
-        auto cycleDelayNs = config.cycleDelay_ * 1000000;
-        if (timeSinceLastCycle >= cycleDelayNs)
+        // Check if enough time has passed since the previous emulation cycle to execute a new one.
+        const auto deltaTime = high_resolution_clock::now() - lastCycleTime;
+        if (std::chrono::duration_cast<std::chrono::nanoseconds>(deltaTime).count() > cycleDelay)
         {
-            lastCycleTime = currentTime;
+            lastCycleTime = high_resolution_clock::now();
 
             chip8.cycle();
 
