@@ -60,7 +60,7 @@ bool Configurator::configure(Config &config) {
         auto result = std::from_chars(videoScaleStr.data(), videoScaleStr.data() + videoScaleStr.size(),
                                       config.videoScale_);
 
-        if ((bool) result.ec)
+        if (static_cast<bool>(result.ec))
         {
             std::cerr << "Couldn't convert given scale value to int, using the default instead: " +
                          std::to_string(config.videoScale_);
@@ -72,7 +72,7 @@ bool Configurator::configure(Config &config) {
         auto result = std::from_chars(cpuFreqStr.data(), cpuFreqStr.data() + cpuFreqStr.size(),
                                       config.cpuFrequency_);
 
-        if ((bool) result.ec)
+        if (static_cast<bool>(result.ec))
         {
             std::cerr << "Couldn't convert given CPU frequency value to int, using the default instead: " +
                          std::to_string(config.cpuFrequency_);

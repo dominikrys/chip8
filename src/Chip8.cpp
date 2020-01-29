@@ -7,7 +7,8 @@
 #include <iostream>
 #include <limits>
 
-using high_resolution_clock = std::chrono::high_resolution_clock;
+namespace chrono = std::chrono;
+using high_resolution_clock = chrono::high_resolution_clock;
 
 const unsigned int SPRITE_WIDTH = 8;
 const unsigned int ROM_START_ADDRESS = 0x200;
@@ -16,7 +17,7 @@ const unsigned int CHARACTER_SPRITE_WIDTH = 0x5;
 
 // Timers should run at 60 hertz
 // See: https://github.com/AfBu/haxe-CHIP-8-emulator/wiki/(Super)CHIP-8-Secrets#speed-of-emulation
-constexpr std::chrono::nanoseconds TIMER_DELAY{(long long)((1.0 / 60.0) * 1000000000)};
+constexpr chrono::nanoseconds TIMER_DELAY{static_cast<long long>((1.0 / 60.0) * 1000000000)};
 
 Chip8::Chip8(Mode mode)
         : memory_{},
@@ -51,7 +52,7 @@ Chip8::Chip8(Mode mode)
           drawFlag_{true},
           soundFlag_{false},
           mode_{mode},
-          randEngine_(std::chrono::system_clock::now().time_since_epoch().count()),
+          randEngine_(chrono::system_clock::now().time_since_epoch().count()),
           randByte_{std::uniform_int_distribution<uint8_t>(std::numeric_limits<uint8_t>::min(),
                                                            std::numeric_limits<uint8_t>::max())},
           lastTimerUpdate{high_resolution_clock::now()} {
