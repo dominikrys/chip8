@@ -22,7 +22,7 @@ add_executable(${PROJECT_NAME}
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Werror -Wall -Wextra -Wshadow -pedantic" #[[-Weffc++ -lstdc++fs]])
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
-# Set up SDL and platform specific settings
+# Set up SDL and platform specific options
 if (WIN32)
     add_definitions(-DSDL_MAIN_HANDLED)
 
@@ -46,7 +46,7 @@ else ()
     set(CMAKE_C_COMPILER "gcc-9")
     set(CMAKE_CXX_COMPILER "g++-9")
 
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 endif ()
 
 include_directories(${SDL2_INCLUDE_DIRS})
