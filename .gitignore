@@ -2,3 +2,6 @@
 /.idea/
 /cmake-build-release/
 /bin/roms/
+/external/
+/cmake-build-wsl-debug/
+/cmake-build-wsl-release/

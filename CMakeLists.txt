@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.12)
+
 project(chip_8)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -21,14 +22,32 @@ add_executable(${PROJECT_NAME}
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Werror -Wall -Wextra -Wshadow -pedantic" #[[-Weffc++ -lstdc++fs]])
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
-# SDL
-set(SDL2_DIR C:/SDL2-2.0.10/x86_64-w64-mingw32)
-set(SDL2_LIB_DIR ${SDL2_DIR}/lib)
-include_directories(${SDL2_DIR}/include)
-target_link_libraries(${PROJECT_NAME}
-        ${SDL2_LIB_DIR}/libSDL2.dll.a
-        ${SDL2_LIB_DIR}/libSDL2main.a
-        #[[-mwindows]])
-add_definitions(-DSDL_MAIN_HANDLED)
+# Set up SDL and platform specific settings
+if (WIN32)
+    add_definitions(-DSDL_MAIN_HANDLED)
 
-set(ENV{SDL_AUDIODRIVER} "winmm")
+    # Support 32 and 64 bit builds
+    if (${CMAKE_SIZEOF_VOID_P} MATCHES 8)
+        set(ARCH "i686-w64-mingw32")
+    else ()
+        set(ARCH "x86_64-w64-mingw32")
+    endif ()
+
+    set(SDL2_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/external/SDL2-2.0.10/${ARCH}/include/")
+    set(SDL2_LIBPATH "${CMAKE_CURRENT_LIST_DIR}/external/SDL2-2.0.10/${ARCH}/lib/")
+
+    find_library(SDL2_LIB SDL2 PATH ${SDL2_LIBPATH})
+    find_library(SDL2_MAIN_LIB SDL2main PATH ${SDL2_LIBPATH})
+    set(SDL2_LIBRARIES ${SDL2_LIB} ${SDL2_MAIN_LIB})
+else ()
+    include(FindPkgConfig)
+    pkg_search_module(SDL2 REQUIRED sdl2 >= 2.0.0)
+
+    set(CMAKE_C_COMPILER "gcc-9")
+    set(CMAKE_CXX_COMPILER "g++-9")
+
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+endif ()
+
+include_directories(${SDL2_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})

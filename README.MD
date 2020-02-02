@@ -18,13 +18,17 @@ It has risen in popularity when the CHIP-48 interpreter was made for HP-48 graph
 
 Dependencies: 
 
-- **C++17 compiler**. I've used **GCC 9.2**. On Windows I'd recommend MinGW-w64 8.0 (an up to date one can be easily obtained through MSYS2).
+- **C++17 compiler**.
+  - ***Windows:*** get MinGW-w64 8.0 through MSYS2 (GCC 9.2).
+  - ***Linux:*** GCC 9 (can be obtained from the `ubuntu-toolchain-r/test` PPA repo).
 
-- **SDL2** - set SDL2_DIR in the CMakeLists.txt file to the directory where the SDL2 development libraries are located on your system.
+- **SDL2**
+  - ***Windows:*** download the [SDL2-2.0.10 development libraries](https://www.libsdl.org/download-2.0.php) and place them under "external" in the root directory of this project.
+  - ***Linux:*** get SDL2 by running `sudo apt install cmake libsdl2-dev g++`
 
-- **CMake 3.15**
-
-TODO: add notes on how to build
+- **CMake 3.12**
+  - ***Windows:*** can be downloaded from [here](https://cmake.org/download/).
+  - ***Linux:*** can be obtained from the [Kitware apt repo](https://apt.kitware.com/).
 
 ## Usage
 
