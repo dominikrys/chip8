@@ -18,8 +18,8 @@ add_executable(${PROJECT_NAME}
         src/Audio.h
         src/Mode.h)
 
-# Set linker and compiler options
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Werror -Wall -Wextra -Wshadow -pedantic" #[[-Weffc++ -lstdc++fs]])
+# Set linker and compiler options. Other useful ones: -Weffc++ -lstdc++fs
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Werror -Wall -Wextra -Wshadow -pedantic")
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
 # Set up SDL and platform specific options
