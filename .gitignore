@@ -3,5 +3,5 @@
 /cmake-build-release/
 /bin/roms/
 /external/
-/cmake-build-wsl-debug/
-/cmake-build-wsl-release/
+/cmake-build-linux-debug/
+/cmake-build-linux-release/
