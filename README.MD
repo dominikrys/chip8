@@ -16,19 +16,26 @@ It has risen in popularity when the CHIP-48 interpreter was made for HP-48 graph
 
 ## Building
 
-Dependencies: 
+**Dependencies:** 
 
 - **C++17 compiler**.
-  - ***Windows:*** MinGW-w64 8.0 (GCC 9.2). Can be obtained through MSYS2.
-  - ***Linux:*** GCC 9 (can be obtained from the `ubuntu-toolchain-r/test` PPA repo).
+  - **Windows:** MinGW-w64 8.0 (GCC 9.2). Can be obtained through MSYS2.
+  - **Linux:** GCC 9 (can be obtained from the `ubuntu-toolchain-r/test` PPA repo).
 
 - **SDL2**
-  - ***Windows:*** download the [SDL2-2.0.10 development libraries](https://www.libsdl.org/download-2.0.php) and place them under a new "external" folder in the root directory of this project.
-  - ***Linux:*** get SDL2 by running `sudo apt install cmake libsdl2-dev g++`
+  - **Windows:** download the [SDL2-2.0.10 development libraries](https://www.libsdl.org/download-2.0.php) and place them under a new "external" folder in the root directory of this project.
+  - **Linux:** get SDL2 by running `sudo apt install cmake libsdl2-dev g++`
 
 - **CMake 3.12**
-  - ***Windows:*** can be downloaded from [here](https://cmake.org/download/).
-  - ***Linux:*** can be obtained from the [Kitware apt repo](https://apt.kitware.com/).
+  - **Windows:** can be downloaded from [here](https://cmake.org/download/).
+  - **Linux:** can be obtained from the [Kitware apt repo](https://apt.kitware.com/).
+
+**Compiling**
+
+Navigate to a directory to which you want the outputs to go, and run:
+
+ - **Windows:** `cmake.exe -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - MinGW Makefiles" <location of this project>`
+ - **Linux:** `cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - Unix Makefiles" <location of this project>`
 
 ## Usage
 
