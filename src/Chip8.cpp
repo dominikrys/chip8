@@ -20,17 +20,13 @@ const unsigned int CHARACTER_SPRITE_WIDTH = 0x5;
 constexpr chrono::nanoseconds TIMER_DELAY{static_cast<long long>((1.0 / 60.0) * 1000000000)};
 
 Chip8::Chip8(Mode mode)
-        : memory_{},
-          registers_{},
-          opcode_{0},
+        : opcode_{0},
           index_{0},
           pc_{0x200u},
           stack_{},
           sp_{0},
-          video_{},
           delayTimer_{0},
           soundTimer_{0},
-          keys_{},
           fontSet_{
                   0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
                   0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -56,10 +52,10 @@ Chip8::Chip8(Mode mode)
           randByte_{std::uniform_int_distribution<uint8_t>(std::numeric_limits<uint8_t>::min(),
                                                            std::numeric_limits<uint8_t>::max())},
           lastTimerUpdate{high_resolution_clock::now()} {
-    std::fill_n(stack_, STACK_SIZE, 0);
-    std::fill_n(registers_, REGISTER_COUNT, 0);
-    std::fill_n(memory_, MEMORY_SIZE, 0);
-    std::fill_n(keys_, KEY_COUNT, 0);
+    stack_.fill(0);
+    registers_.fill(0);
+    memory_.fill(0);
+    keys_.fill(0);
 
     clearScreen();
 
@@ -663,15 +659,15 @@ void Chip8::disableDrawFlag() {
 }
 
 void Chip8::clearScreen() {
-    std::fill_n(video_, VIDEO_WIDTH * VIDEO_HEIGHT, 0);
+    video_.fill(0);
 }
 
 const uint32_t *Chip8::video() const {
-    return video_;
+    return video_.data();
 }
 
 uint8_t *Chip8::keys() {
-    return keys_;
+    return keys_.data();
 }
 
 bool Chip8::soundFlag() const {

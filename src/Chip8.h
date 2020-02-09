@@ -116,21 +116,21 @@ private:
 
     void opcodeFX65();
 
-    uint8_t memory_[MEMORY_SIZE];
-    uint8_t registers_[REGISTER_COUNT];
+    std::array<uint8_t, MEMORY_SIZE> memory_;
+    std::array<uint8_t, REGISTER_COUNT> registers_;
     uint16_t opcode_;
     uint16_t index_;
     uint16_t pc_;
 
-    uint16_t stack_[STACK_SIZE];
+    std::array<uint16_t, STACK_SIZE> stack_;
     uint16_t sp_;
 
-    uint32_t video_[VIDEO_WIDTH * VIDEO_HEIGHT]; // uint32_t used to work well with SDL
+    std::array<uint32_t, VIDEO_WIDTH * VIDEO_HEIGHT> video_; // uint32_t used to work well with SDL
 
     uint8_t delayTimer_;
     uint8_t soundTimer_;
 
-    uint8_t keys_[KEY_COUNT];
+    std::array<uint8_t, KEY_COUNT> keys_;
 
     const std::array<uint8_t, FONT_SET_SIZE> fontSet_;
 
