@@ -2,13 +2,13 @@
 
 #include <stdexcept>
 
-Renderer::Renderer(const char *title, int videoWidth, int videoHeight, int videoScale) {
+Renderer::Renderer(const std::string &title, const int videoWidth, const int videoHeight, const int videoScale) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         throw std::runtime_error("Failed to initialize SDL video: " + std::string(SDL_GetError()));
     }
 
-    window_ = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+    window_ = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                videoWidth * videoScale, videoHeight * videoScale, SDL_WINDOW_SHOWN);
 
     renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED);

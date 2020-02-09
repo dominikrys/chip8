@@ -6,7 +6,7 @@
 
 class Renderer {
 public:
-    Renderer(const char *title, int videoWidth, int videoHeight, int videoScale);
+    Renderer(const std::string &title, int videoWidth, int videoHeight, int videoScale);
 
     ~Renderer();
 

@@ -1,6 +1,6 @@
 #pragma once
 
 enum class Mode {
-    // NOTE: SCHIP opcodes aren't implemented, this is so that FX55 and FX65 opcodes work like on the SCHIP.
+    // NOTE: SCHIP opcodes aren't actually implemented. Check the README for an explanation.
     CHIP8, CHIP48, SCHIP
 };

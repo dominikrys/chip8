@@ -125,7 +125,7 @@ private:
     uint16_t stack_[STACK_SIZE];
     uint16_t sp_;
 
-    uint32_t video_[VIDEO_WIDTH * VIDEO_HEIGHT]; // uint32_t used to work with SDL well
+    uint32_t video_[VIDEO_WIDTH * VIDEO_HEIGHT]; // uint32_t used to work well with SDL
 
     uint8_t delayTimer_;
     uint8_t soundTimer_;

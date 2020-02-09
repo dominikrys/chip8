@@ -167,8 +167,6 @@ void Chip8::opcodeUnknown() {
     std::cerr << &"Unknown opcode: 0x"[opcode_];
 }
 
-// NOTE: opcode 0NNN is excluded as we're not emulating an RCA 1802 chip
-
 // 0x00E0: Clears the screen
 void Chip8::opcode00E0() {
     clearScreen();
