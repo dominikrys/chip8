@@ -1,13 +1,16 @@
 #pragma once
 
+#include "Common.h"
+
+#include <array>
 #include <cstdint>
 
 class KeyboardHandler {
 public:
-    explicit KeyboardHandler(uint8_t *keys);
+    explicit KeyboardHandler(std::array<uint8_t, KEY_COUNT>& keys);
 
     [[nodiscard]] bool handle();
 
 private:
-    uint8_t *keys_;
+    std::array<uint8_t, KEY_COUNT> &keys_;
 };

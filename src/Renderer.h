@@ -2,6 +2,9 @@
 
 #include "SDL2/SDL.h"
 
+#include "Common.h"
+
+#include <array>
 #include <string>
 
 class Renderer {
@@ -10,7 +13,7 @@ public:
 
     ~Renderer();
 
-    void update(const void *pixels, int pitch) const;
+    void update(const std::array<uint32_t, VIDEO_WIDTH * VIDEO_HEIGHT> &pixels, int pitch) const;
 
 private:
     SDL_Window *window_;

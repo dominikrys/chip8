@@ -1,18 +1,15 @@
 #pragma once
 
-#include "Mode.h"
+#include "Common.h"
 
 #include <array>
 #include <chrono>
 #include <string>
 #include <random>
 
-const unsigned int KEY_COUNT = 16;
 const unsigned int MEMORY_SIZE = 4096;
 const unsigned int REGISTER_COUNT = 16;
 const unsigned int STACK_SIZE = 16;
-const unsigned int VIDEO_WIDTH = 64;
-const unsigned int VIDEO_HEIGHT = 32;
 const unsigned int FONT_SET_SIZE = 80;
 
 class Chip8 {
@@ -23,9 +20,9 @@ public:
 
     void loadRom(const std::string &filepath);
 
-    uint8_t *keys();
+    std::array<uint8_t, KEY_COUNT>& keys();
 
-    [[nodiscard]] const uint32_t *video() const;
+    [[nodiscard]] const std::array<uint32_t, VIDEO_WIDTH * VIDEO_HEIGHT> &video() const;
 
     [[nodiscard]] bool drawFlag() const;
 

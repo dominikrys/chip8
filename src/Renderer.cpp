@@ -24,8 +24,8 @@ Renderer::~Renderer() {
     SDL_Quit();
 }
 
-void Renderer::update(const void *pixels, int pitch) const {
-    SDL_UpdateTexture(texture_, nullptr, pixels, pitch);
+void Renderer::update(const std::array<uint32_t, VIDEO_WIDTH * VIDEO_HEIGHT> &video, int pitch) const {
+    SDL_UpdateTexture(texture_, nullptr, video.data(), pitch);
     SDL_RenderClear(renderer_);
     SDL_RenderCopy(renderer_, texture_, nullptr, nullptr);
     SDL_RenderPresent(renderer_);

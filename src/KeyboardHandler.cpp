@@ -2,7 +2,8 @@
 
 #include <SDL2/SDL_events.h>
 
-KeyboardHandler::KeyboardHandler(uint8_t *keys) : keys_{keys} {}
+KeyboardHandler::KeyboardHandler(std::array<uint8_t, KEY_COUNT> &keys) : keys_{keys} {
+}
 
 bool KeyboardHandler::handle() {
     /*

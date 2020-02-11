@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Mode.h"
+#include "Common.h"
+
 #include <string>
 #include <unordered_map>
 #include <vector>

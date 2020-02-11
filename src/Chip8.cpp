@@ -23,7 +23,6 @@ Chip8::Chip8(Mode mode)
         : opcode_{0},
           index_{0},
           pc_{0x200u},
-          stack_{},
           sp_{0},
           delayTimer_{0},
           soundTimer_{0},
@@ -662,12 +661,12 @@ void Chip8::clearScreen() {
     video_.fill(0);
 }
 
-const uint32_t *Chip8::video() const {
-    return video_.data();
+const std::array<uint32_t, VIDEO_WIDTH * VIDEO_HEIGHT> &Chip8::video() const {
+    return video_;
 }
 
-uint8_t *Chip8::keys() {
-    return keys_.data();
+std::array<uint8_t, KEY_COUNT> &Chip8::keys() {
+    return keys_;
 }
 
 bool Chip8::soundFlag() const {
