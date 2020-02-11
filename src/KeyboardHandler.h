@@ -7,7 +7,7 @@
 
 class KeyboardHandler {
 public:
-    explicit KeyboardHandler(std::array<uint8_t, KEY_COUNT>& keys);
+    explicit KeyboardHandler(std::array<uint8_t, KEY_COUNT> &keys);
 
     [[nodiscard]] bool handle();
 

@@ -20,7 +20,7 @@ public:
 
     void loadRom(const std::string &filepath);
 
-    std::array<uint8_t, KEY_COUNT>& keys();
+    std::array<uint8_t, KEY_COUNT> &keys();
 
     [[nodiscard]] const std::array<uint32_t, VIDEO_WIDTH * VIDEO_HEIGHT> &video() const;
 
