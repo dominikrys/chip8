@@ -19,12 +19,12 @@ It has risen in popularity when the CHIP-48 interpreter was made for HP-48 graph
 **Dependencies:** 
 
 - **C++17 compiler**.
-  - **Windows:** MinGW-w64 8.0 (GCC 9.2). Can be obtained through MSYS2.
-  - **Linux:** GCC 9 (can be obtained from the `ubuntu-toolchain-r/test` PPA repo).
+  - **Windows:** MinGW-w64 8.0 (GCC 9.2). Can be obtained through MSYS2 by installing the `mingw-w64-x86_64-gcc` pacman package after updating MSYS2 with `pacman -Syu`.
+  - **Linux:** GCC 9. Can be obtained from the `ubuntu-toolchain-r/test` PPA repo.
 
 - **SDL2**
   - **Windows:** download the [SDL2-2.0.10 development libraries](https://www.libsdl.org/download-2.0.php) and place them under a new "external" folder in the root directory of this project.
-  - **Linux:** get SDL2 by running `sudo apt install cmake libsdl2-dev g++`
+  - **Linux:** get SDL2 by running `sudo apt install cmake libsdl2-dev g++`.
 
 - **CMake 3.12**
   - **Windows:** can be downloaded from [here](https://cmake.org/download/).
@@ -36,6 +36,11 @@ Navigate to a directory to which you want the outputs to go, and run:
 
  - **Windows:** `cmake.exe -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - MinGW Makefiles" <location of this project>`
  - **Linux:** `cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - Unix Makefiles" <location of this project>`
+ 
+**Running**
+
+- **Windows:** add download the [SDL2 runtime binaries](https://www.libsdl.org/download-2.0.php) and put SDL2.dll into the folder with your compiled binary.
+- **Linux:** Launch as any other program with the correct arguments.
 
 ## Usage
 
