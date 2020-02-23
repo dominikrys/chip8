@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(chip_8)
+project(chip-8-emulator)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -28,9 +28,11 @@ if (WIN32)
 
     # Support 32 and 64 bit builds
     if (${CMAKE_SIZEOF_VOID_P} MATCHES 8)
-        set(ARCH "i686-w64-mingw32")
-    else ()
+        # 64-bit
         set(ARCH "x86_64-w64-mingw32")
+    else ()
+        # 32-bit
+        set(ARCH "i686-w64-mingw32")
     endif ()
 
     set(SDL2_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/external/SDL2-2.0.10/${ARCH}/include/")
