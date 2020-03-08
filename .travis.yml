@@ -1,7 +1,6 @@
 language: cpp
 compiler: gcc
 
-os: linux
 addons:
   apt:
     sources:
@@ -11,21 +10,23 @@ addons:
       - cmake
       - libsdl2-dev
 
-#before_install:
-#  - sudo apt update
+matrix:
+  include:
+    # Debug build
+    - os: linux
+      env: CONFIG=Debug
 
-#install:
-#  - sudo apt install g++-9
-#  - sudo apt install cmake
-#  - sudo apt install libsdl2-dev
+    # Release build
+    - os: linux
+      env: CONFIG=Release
 
 before_script:
-  - mkdir build
+  - mkdir build-${CONFIG}
   - cd build
 
 script:
   - export CC=gcc-9
   - export CXX=g++-9
   - cmake --version
-  - cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - Unix Makefiles" ..
+  - cmake -DCMAKE_BUILD_TYPE=${CONFIG} -G "CodeBlocks - Unix Makefiles" ..
 
