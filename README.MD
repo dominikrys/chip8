@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/dominikrys/chip-8-emulator.svg?branch=master)](https://travis-ci.com/dominikrys/chip-8-emulator)
 
-This is a CHIP-8 emulator is written in C++17 and uses SDL2 for sound, graphics and input. It's been written with compatibility in mind due to the various CHIP-8 interpreters available.
+A CHIP-8 emulator written in C++17 which uses SDL2 for sound, graphics and input. It's been written with compatibility in mind due to the various CHIP-8 interpreters available.
 
 ## CHIP-8 Intro
 
@@ -49,7 +49,7 @@ Navigate to a directory to which you want the outputs to go, and run:
  
 **Running**
 
-- **Linux:** Launch as any other program with the correct arguments.
+- **Linux:** Make sure SDL2 is installed. Launch as any other program with the correct arguments.
 - **Windows:** add download the [SDL2 runtime binaries](https://www.libsdl.org/download-2.0.php) and put SDL2.dll into the folder with your compiled binary.
 
 ## Usage
