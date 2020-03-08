@@ -35,7 +35,7 @@ before_deploy:
   - zip chip-8-emulator.zip chip-8-emulator
 
 deploy:
-  body: "Linux release"
+  body: Linux release build
   provider: releases
   api_key:
     secure: CwJlvVvSTL1x+RnBbrJZSdQW89/EhUfAvYSOjIJ41sHuQWyXn2iy+JYc9L9hvUUIk2jxCjYkTR+jzMXhG81C8Gv4EQhTk5CdyvDPmrMfHG5ZeBZ5Z/9GadoHWPs9bkUM4uKV0nwbIUtEGraRx0MoD8a7yiijmEoZ5NLim4+mX6YjTcaLDPhG0n208fX4qO0urLdlv2VpfU1SNf0UtI6NVx/AgeiLNXrHnxd3bWdlCLUEIG6H99fWAReAOk4Jh7Q0T6snx4K2YVntrtlnjvwmUS1924Z2xBeBpgjGi4ZyUZMXHy/gIqdU7XG80eKuftvOF7IncAwhvH4uM3kJdTkndJA5AY0chXmt2qviNvgSV3wFpTFYL1HLLfUlvQYiPXJeaedwQi1KuYRlCnL+HWn+HCXKANnzZKewvThfKo5VBTZiHNNRQA8IZXXLvWZQZWjpep7dvlvEtAHYxGORHXoPv7Q5dzYnhAQc3hQVhNvKsv4lEp9EQzo+Hxn2KiKz8WHbZntibQCMj/6GYxSFkTY1vGAnlH254YDFmnvUY2HSWpa9Ymg+VrG/eLXOXx1rHQ7Sa7yGB2lr0lG+2dfjhdnOZXu0FYxSCDVH21vl4n+W2MsV4LeOrjmaqcup6HQ7jbnT2anndmWnI89q0DfGOBy05BYKv0xP2/J4XPR+4wp82/0=
