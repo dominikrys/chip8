@@ -12,14 +12,16 @@ addons:
 
 matrix:
   include:
-    - os: linux
+    - name: "Linux Debug build"
+      os: linux
       env: CONFIG=Debug
-    - os: linux
+    - name: "Linux Release build"
+      os: linux
       env: CONFIG=Release
 
 before_script:
-  - mkdir build-${CONFIG}
-  - cd build-${CONFIG}
+  - mkdir cmake-build-${CONFIG}
+  - cd cmake-build-${CONFIG}
 
 script:
   - export CC=gcc-9
@@ -27,17 +29,17 @@ script:
   - cmake --version
   - cmake -DCMAKE_BUILD_TYPE=${CONFIG} -G "CodeBlocks - Unix Makefiles" ..
   - cmake --build .
-  - ls
 
-before_deploy:
-
-
+#before_deploy:
+#  - cd ..
+#  - mkdir deploy
+#  - cp ../cmake-build-${CONFIG}
 
 deploy:
   provider: releases
   api_key:
-    secure: I37PSYoLpMu0TI1YRvK70BtiaFedU1iSomC28CMBWDoo79UaloJpyinboIwcq5zH8X3OWwdOWG6hjlmFfHDaQt/HT2a3rThKGD/YVZJwSIOZqbbxp/ewBxduwopn8U3jwqR/e97MNAlI2cduyPMQ4CRA+SKpBl8WYJE0zc0WJoU5JnCJxD6ssfFWS9uFQkFgEQ+BU8KU5TK8/IoVmrYeZZBSlvQ5dLQoTf3Y1yxG+mNGNNgWQ1bC57PwKUliH84wWsdVYjKfvNaogTlU2rvE4rD6g8RKH/Is1obOUY8W1hRP8Qd9mwOluJVASnzAx1IfFRlp9K5EC0PvRY03nupirwg5jZStQ0bqgL/BBhGmbjADcAxnkE4ExcJAWtjkEjr2xTz93zQFBOjdo6KUfYry1cI09CxReg2Qym4XVGuueAR/KhBGNx4Ox7YiTB1FJBW3BxFHsj5HeugMkMei4ISsNyJICS/QBrVsbZKnNngojS0SUnaLx/Vh7wIG6p94n6QTVJ3r3etAehLWcLyxVCNYwLA24AE2qj1y8M3fGYvuftoT0Kww3Le9nqPnODn0QPiIeqQ9FqqjsXJcUD23LY8Zy9ciOCXqyVUPKsrogPewczDpXAmGQ6wmvwnM1xhIOvlLQWEC0OcFx97vs6XzEKt5gMDvAHA3J+VM65f9Ej1pP8s=
+    secure: CwJlvVvSTL1x+RnBbrJZSdQW89/EhUfAvYSOjIJ41sHuQWyXn2iy+JYc9L9hvUUIk2jxCjYkTR+jzMXhG81C8Gv4EQhTk5CdyvDPmrMfHG5ZeBZ5Z/9GadoHWPs9bkUM4uKV0nwbIUtEGraRx0MoD8a7yiijmEoZ5NLim4+mX6YjTcaLDPhG0n208fX4qO0urLdlv2VpfU1SNf0UtI6NVx/AgeiLNXrHnxd3bWdlCLUEIG6H99fWAReAOk4Jh7Q0T6snx4K2YVntrtlnjvwmUS1924Z2xBeBpgjGi4ZyUZMXHy/gIqdU7XG80eKuftvOF7IncAwhvH4uM3kJdTkndJA5AY0chXmt2qviNvgSV3wFpTFYL1HLLfUlvQYiPXJeaedwQi1KuYRlCnL+HWn+HCXKANnzZKewvThfKo5VBTZiHNNRQA8IZXXLvWZQZWjpep7dvlvEtAHYxGORHXoPv7Q5dzYnhAQc3hQVhNvKsv4lEp9EQzo+Hxn2KiKz8WHbZntibQCMj/6GYxSFkTY1vGAnlH254YDFmnvUY2HSWpa9Ymg+VrG/eLXOXx1rHQ7Sa7yGB2lr0lG+2dfjhdnOZXu0FYxSCDVH21vl4n+W2MsV4LeOrjmaqcup6HQ7jbnT2anndmWnI89q0DfGOBy05BYKv0xP2/J4XPR+4wp82/0=
   file: chip-8-emulator
-  skip_cleanup: true
   on:
     repo: dominikrys/chip-8-emulator
+    all_branches: true
