@@ -27,6 +27,11 @@ script:
   - cmake --version
   - cmake -DCMAKE_BUILD_TYPE=${CONFIG} -G "CodeBlocks - Unix Makefiles" ..
   - cmake --build .
+  - ls
+
+before_deploy:
+
+
 
 deploy:
   provider: releases
