@@ -2,6 +2,8 @@
 
 This is a CHIP-8 emulator is written in C++17 and uses SDL2 for sound, graphics and input. It's been made with compatibility in mind due to the various CHIP-8 interpreters available.
 
+[![Build Status](https://travis-ci.com/dominikrys/chip-8-emulator.svg?branch=master)](https://travis-ci.com/dominikrys/chip-8-emulator)
+
 ## CHIP-8 Intro
 
 CHIP-8 is an interpreted programming language, developed by Joseph Weisbecker. It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers in the mid-1970s.
