@@ -19,28 +19,28 @@ It has risen in popularity when the CHIP-48 interpreter was made for HP-48 graph
 **Dependencies:** 
 
 - **C++17 compiler**.
+  - **Linux:** GCC 9. Can by installing the `g++-9` from the `ubuntu-toolchain-r/test` PPA repo.
   - **Windows:** MinGW-w64 8.0 (GCC 9.2). Can be obtained through MSYS2 by installing the `mingw-w64-x86_64-gcc` pacman package after updating MSYS2 with `pacman -Syu`.
-  - **Linux:** GCC 9. Can be obtained from the `ubuntu-toolchain-r/test` PPA repo.
 
 - **SDL2**
+  - **Linux:** get SDL2 by running `sudo apt install libsdl2-dev`.
   - **Windows:** download the [SDL2-2.0.10 development libraries](https://www.libsdl.org/download-2.0.php) and place them under a new "external" folder in the root directory of this project.
-  - **Linux:** get SDL2 by running `sudo apt install cmake libsdl2-dev g++`.
 
-- **CMake 3.12**
+- **CMake 3.10**
+  - **Linux:** can be obtained from the `ubuntu-toolchain-r/test` PPA repo or from the [Kitware apt repo](https://apt.kitware.com/).
   - **Windows:** can be downloaded from [here](https://cmake.org/download/).
-  - **Linux:** can be obtained from the [Kitware apt repo](https://apt.kitware.com/).
 
 **Compiling**
 
 Navigate to a directory to which you want the outputs to go, and run:
 
- - **Windows:** `cmake.exe -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - MinGW Makefiles" <location of this project>`
- - **Linux:** `cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - Unix Makefiles" <location of this project>`
+ - **Linux:** `cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" <location of this project>`
+ - **Windows:** `cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" <location of this project>`
  
 **Running**
 
-- **Windows:** add download the [SDL2 runtime binaries](https://www.libsdl.org/download-2.0.php) and put SDL2.dll into the folder with your compiled binary.
 - **Linux:** Launch as any other program with the correct arguments.
+- **Windows:** add download the [SDL2 runtime binaries](https://www.libsdl.org/download-2.0.php) and put SDL2.dll into the folder with your compiled binary.
 
 ## Usage
 
