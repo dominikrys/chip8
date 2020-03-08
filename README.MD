@@ -36,8 +36,16 @@ It has risen in popularity when the CHIP-48 interpreter was made for HP-48 graph
 
 Navigate to a directory to which you want the outputs to go, and run:
 
- - **Linux:** `cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" <location of this project>`
- - **Windows:** `cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" <location of this project>`
+ - **Linux:**
+ 
+    `cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" <location of this project>`
+    
+    `cmake --build .`
+ - **Windows:**
+ 
+    `cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" <location of this project>`
+    
+    `cmake.exe --build .`
  
 **Running**
 

@@ -12,11 +12,8 @@ addons:
 
 matrix:
   include:
-    # Debug build
     - os: linux
       env: CONFIG=Debug
-
-    # Release build
     - os: linux
       env: CONFIG=Release
 
@@ -29,4 +26,13 @@ script:
   - export CXX=g++-9
   - cmake --version
   - cmake -DCMAKE_BUILD_TYPE=${CONFIG} -G "CodeBlocks - Unix Makefiles" ..
+  - cmake --build .
 
+deploy:
+  provider: releases
+  api_key:
+    secure: I37PSYoLpMu0TI1YRvK70BtiaFedU1iSomC28CMBWDoo79UaloJpyinboIwcq5zH8X3OWwdOWG6hjlmFfHDaQt/HT2a3rThKGD/YVZJwSIOZqbbxp/ewBxduwopn8U3jwqR/e97MNAlI2cduyPMQ4CRA+SKpBl8WYJE0zc0WJoU5JnCJxD6ssfFWS9uFQkFgEQ+BU8KU5TK8/IoVmrYeZZBSlvQ5dLQoTf3Y1yxG+mNGNNgWQ1bC57PwKUliH84wWsdVYjKfvNaogTlU2rvE4rD6g8RKH/Is1obOUY8W1hRP8Qd9mwOluJVASnzAx1IfFRlp9K5EC0PvRY03nupirwg5jZStQ0bqgL/BBhGmbjADcAxnkE4ExcJAWtjkEjr2xTz93zQFBOjdo6KUfYry1cI09CxReg2Qym4XVGuueAR/KhBGNx4Ox7YiTB1FJBW3BxFHsj5HeugMkMei4ISsNyJICS/QBrVsbZKnNngojS0SUnaLx/Vh7wIG6p94n6QTVJ3r3etAehLWcLyxVCNYwLA24AE2qj1y8M3fGYvuftoT0Kww3Le9nqPnODn0QPiIeqQ9FqqjsXJcUD23LY8Zy9ciOCXqyVUPKsrogPewczDpXAmGQ6wmvwnM1xhIOvlLQWEC0OcFx97vs6XzEKt5gMDvAHA3J+VM65f9Ej1pP8s=
+  file: chip-8-emulator
+  skip_cleanup: true
+  on:
+    repo: dominikrys/chip-8-emulator
