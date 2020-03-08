@@ -22,7 +22,7 @@ matrix:
 
 before_script:
   - mkdir build-${CONFIG}
-  - cd build
+  - cd build-${CONFIG}
 
 script:
   - export CC=gcc-9
