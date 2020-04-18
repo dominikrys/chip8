@@ -24,8 +24,6 @@ int main(int argc, char **argv) {
         Renderer renderer{"CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, config.videoScale_};
         Audio audio{config.mute_};
 
-        // Set the delay between cycles in nanoseconds. Can't use std::chrono for this as this value is not known at
-        // compile time.
         const double cycleDelay = (1.0 / config.cpuFrequency_) * 1000000000;
         Timer cycleTimer(cycleDelay);
 
