@@ -3,12 +3,9 @@
 #include "Configurator.h"
 #include "KeyboardHandler.h"
 #include "Renderer.h"
+#include "Timer.h"
 
-#include <chrono>
 #include <iostream>
-
-namespace chrono = std::chrono;
-using high_resolution_clock = chrono::high_resolution_clock;
 
 int main(int argc, char **argv) {
     try
@@ -30,8 +27,7 @@ int main(int argc, char **argv) {
         // Set the delay between cycles in nanoseconds. Can't use std::chrono for this as this value is not known at
         // compile time.
         const double cycleDelay = (1.0 / config.cpuFrequency_) * 1000000000;
-
-        auto lastCycleTime = high_resolution_clock::now();
+        Timer cycleTimer(cycleDelay);
 
         bool quit = false;
 
@@ -39,12 +35,8 @@ int main(int argc, char **argv) {
         {
             quit = keyboardHandler.handle();
 
-            // Check if enough time has passed since the previous emulation cycle to execute a new one.
-            const auto deltaTime = high_resolution_clock::now() - lastCycleTime;
-            if (chrono::duration_cast<chrono::nanoseconds>(deltaTime).count() > cycleDelay)
+            if (cycleTimer.intervalElapsed())
             {
-                lastCycleTime = high_resolution_clock::now();
-
                 chip8.cycle();
 
                 if (chip8.drawFlag())

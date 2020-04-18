@@ -140,7 +140,7 @@ private:
     std::default_random_engine randEngine_;
     std::uniform_int_distribution<uint8_t> randByte_;
 
-    std::chrono::high_resolution_clock::time_point lastTimerUpdate;
+    std::chrono::high_resolution_clock::time_point lastTimerUpdate_;
 
     // Set up function pointer tables, initialising them with a default function
     using chip8Func = void (Chip8::*)();

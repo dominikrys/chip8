@@ -50,7 +50,7 @@ Chip8::Chip8(Mode mode)
           randEngine_(chrono::system_clock::now().time_since_epoch().count()),
           randByte_{std::uniform_int_distribution<uint8_t>(std::numeric_limits<uint8_t>::min(),
                                                            std::numeric_limits<uint8_t>::max())},
-          lastTimerUpdate{high_resolution_clock::now()} {
+          lastTimerUpdate_{high_resolution_clock::now()} {
     stack_.fill(0);
     registers_.fill(0);
     memory_.fill(0);
@@ -118,9 +118,9 @@ void Chip8::cycle() {
     ((*this).*(funcTable_[(opcode_ & 0xF000u) >> 12u]))();
 
     // Update timers
-    if (high_resolution_clock::now() - lastTimerUpdate > TIMER_DELAY)
+    if (high_resolution_clock::now() - lastTimerUpdate_ > TIMER_DELAY)
     {
-        lastTimerUpdate = high_resolution_clock::now();
+        lastTimerUpdate_ = high_resolution_clock::now();
 
         if (delayTimer_ > 0)
         {
