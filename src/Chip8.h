@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Common.h"
+#include "Constants.h"
+#include "Mode.h"
 
 #include <array>
 #include <chrono>
