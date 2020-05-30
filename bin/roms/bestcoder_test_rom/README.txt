@@ -1,1 +1,0 @@
-Obtained from: https://www.ngemu.com/threads/chip8-thread.114578/

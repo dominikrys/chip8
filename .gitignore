@@ -13,3 +13,6 @@ cmake-build-*/
 
 # Generated files
 .idea/**/contentModel.xml
+
+# ROMs without clear licenses
+bin/roms/bestcoder_test_rom

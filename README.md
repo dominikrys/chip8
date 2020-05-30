@@ -1,6 +1,6 @@
 # CHIP-8 Emulator
 
-[![Build Status](https://travis-ci.com/dominikrys/chip-8-emulator.svg?branch=master)](https://travis-ci.com/dominikrys/chip-8-emulator)
+[![Build Status](https://travis-ci.com/dominikrys/chip-8-emulator.svg?branch=master)](https://travis-ci.com/dominikrys/chip-8-emulator) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 A CHIP-8 emulator written in C++17 which uses SDL2 for sound, graphics and input. It's been written with compatibility in mind due to the various CHIP-8 interpreters available.
 
