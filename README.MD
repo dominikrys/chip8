@@ -34,18 +34,18 @@ It has risen in popularity when the CHIP-48 interpreter was made for HP-48 graph
 
 **Compiling**
 
-Navigate to a directory to which you want the outputs to go, and run:
+Run the following from the source directory:
 
  - **Linux:**
  
-    `cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" <location of this project>`
+    `cmake . -B <output dir> -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles"`
     
-    `cmake --build .`
+    `cmake --build <output dir>`
  - **Windows:**
  
-    `cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" <location of this project>`
+    `cmake.exe . -B <output dir> -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles"`
     
-    `cmake.exe --build .`
+    `cmake.exe --build <output dir>`
  
 **Running**
 
@@ -54,7 +54,7 @@ Navigate to a directory to which you want the outputs to go, and run:
 
 ## Usage
 
-In terminal/command line run: `chip_8.exe --rom <path> [options]`
+Run: `chip_8.exe --rom <path> [options]`
 
 For more help, including displaying the available options, run: `chip_8.exe --help`
 
@@ -70,11 +70,11 @@ The CPU speed and operation modes may need to be changed between ROMs to ensure 
 
 ## ROMs
 
-- [Revival Studios CHIP-8 Program Pack](https://github.com/dmatlack/chip8/tree/master/roms)
+Some ROMs are provided under /bin/roms with their appropriate sources/licenses.
+
+For more, check:
 
 - [CHIP-8 games under CC0 license](https://johnearnest.github.io/chip8Archive/)
-
-- [BestCoder's test ROM](https://github.com/daniel5151/AC8E/blob/master/roms/bc_test.ch8)
 
 ## Links
 
