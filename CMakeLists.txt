@@ -62,7 +62,7 @@ else ()
             -s ASSERTIONS=1
             -s EXIT_RUNTIME=1
             --preload-file ../bin
-            -s DISABLE_EXCEPTION_CATCHING=2")
+            -s DISABLE_EXCEPTION_CATCHING=0")
 endif ()
 
 include_directories(${SDL2_INCLUDE_DIRS})
