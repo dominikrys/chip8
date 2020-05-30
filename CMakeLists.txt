@@ -18,7 +18,8 @@ add_executable(${PROJECT_NAME}
         src/Audio.h
         src/Constants.h
         src/Timer.h
-        src/Mode.h)
+        src/Mode.h
+        src/Config.h)
 
 # Set linker and compiler options. Other useful ones: -Weffc++ -lstdc++fs
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Werror -Wall -Wextra -Wshadow -pedantic")
