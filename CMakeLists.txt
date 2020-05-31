@@ -54,7 +54,7 @@ elseif (!EMSCRIPTEN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 else ()
     # WebAssembly
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 -s WASM=1 --preload-file ../bin -02")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 -s WASM=1 --preload-file ../bin -O2")
 
     target_link_libraries(${PROJECT_NAME} "-o ${PROJECT_NAME}.html")
 endif ()
