@@ -21,7 +21,6 @@ add_executable(${PROJECT_NAME}
         src/Mode.h
         src/Config.h)
 
-# Other useful options: -Weffc++ -lstdc++fs
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Werror -Wall -Wextra -Wshadow -pedantic")
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
@@ -44,7 +43,7 @@ if (WIN32)
     find_library(SDL2_LIB SDL2 PATH ${SDL2_LIBPATH})
     find_library(SDL2_MAIN_LIB SDL2main PATH ${SDL2_LIBPATH})
     set(SDL2_LIBRARIES ${SDL2_LIB} ${SDL2_MAIN_LIB})
-elseif(!EMSCRIPTEN)
+elseif (!EMSCRIPTEN)
     # Linux
     include(FindPkgConfig)
     pkg_search_module(SDL2 REQUIRED sdl2 >= 2.0.0)
@@ -55,14 +54,9 @@ elseif(!EMSCRIPTEN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 else ()
     # WebAssembly
-    target_link_libraries(${PROJECT_NAME}
-            "-o ${PROJECT_NAME}.html
-            -s WASM=1
-            -s USE_SDL=2
-            -s ASSERTIONS=1
-            -s EXIT_RUNTIME=1
-            --preload-file ../bin
-            -s DISABLE_EXCEPTION_CATCHING=0")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 -s WASM=1 --preload-file ../bin -02")
+
+    target_link_libraries(${PROJECT_NAME} "-o ${PROJECT_NAME}.html")
 endif ()
 
 include_directories(${SDL2_INCLUDE_DIRS})
