@@ -1,8 +1,8 @@
 #pragma once
 
-#include <SDL2/SDL.h>
-
 #include "Constants.h"
+
+#include <SDL2/SDL.h>
 
 #include <array>
 #include <string>
