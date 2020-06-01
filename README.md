@@ -1,14 +1,8 @@
-# CHIP-8 Emulator
+# CHIP-8 Emulator [![Build Status](https://travis-ci.com/dominikrys/chip-8-emulator.svg?branch=master)](https://travis-ci.com/dominikrys/chip-8-emulator) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-[![Build Status](https://travis-ci.com/dominikrys/chip-8-emulator.svg?branch=master)](https://travis-ci.com/dominikrys/chip-8-emulator) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+This is a CHIP-8 emulator written in C++17 which uses SDL2 for sound, graphics and input. It's been written with compatibility and correctness in mind due to the various CHIP-8 interpreter variations available.
 
-A CHIP-8 emulator written in C++17 which uses SDL2 for sound, graphics and input. It's been written with compatibility in mind due to the various CHIP-8 interpreters available.
-
-## CHIP-8 Intro
-
-CHIP-8 is an interpreted programming language, developed by Joseph Weisbecker. It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers in the mid-1970s.
-
-It has risen in popularity when the CHIP-48 interpreter was made for HP-48 graphic calculators, and hence many games are written for the CHIP-48. These rely on slightly different opcode behaviours compared to the CHIP-8 due to some of the original opcodes being undocumented, which is why this emulator includes different emulation modes to ensure compatibility.
+CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in the 1970s. It was made to allow video games to be more easily programmed for 8-bit microcomputers at the time, and runs on a CHIP-8 virtual machine.
 
 ## Screenshots
 
