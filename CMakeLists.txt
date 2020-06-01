@@ -4,8 +4,7 @@ project(chip-8-emulator)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(${PROJECT_NAME}
-        src/Main.cpp
+set(SRCS
         src/Chip8.h
         src/Chip8.cpp
         src/Renderer.cpp
@@ -21,14 +20,18 @@ add_executable(${PROJECT_NAME}
         src/Mode.h
         src/Config.h)
 
+if (WIN32 OR UNIX AND NOT EMSCRIPTEN)
+    set(SRCS ${SRCS} src/Main.cpp)
+else ()
+    set(SRCS ${SRCS} src/MainEmscripten.cpp)
+endif ()
+
+add_executable(${PROJECT_NAME} ${SRCS})
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Werror -Wall -Wextra -Wshadow -pedantic")
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
-# Set up SDL and platform specific options
 if (WIN32)
-    add_definitions(-DSDL_MAIN_HANDLED)
-
-    # Support 32 and 64 bit builds
     if (${CMAKE_SIZEOF_VOID_P} MATCHES 8)
         # 64-bit
         set(ARCH "x86_64-w64-mingw32")
@@ -37,14 +40,15 @@ if (WIN32)
         set(ARCH "i686-w64-mingw32")
     endif ()
 
+    add_definitions(-DSDL_MAIN_HANDLED)
+
     set(SDL2_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/external/SDL2-2.0.10/${ARCH}/include/")
     set(SDL2_LIBPATH "${CMAKE_CURRENT_LIST_DIR}/external/SDL2-2.0.10/${ARCH}/lib/")
 
     find_library(SDL2_LIB SDL2 PATH ${SDL2_LIBPATH})
     find_library(SDL2_MAIN_LIB SDL2main PATH ${SDL2_LIBPATH})
     set(SDL2_LIBRARIES ${SDL2_LIB} ${SDL2_MAIN_LIB})
-elseif (!EMSCRIPTEN)
-    # Linux
+elseif (UNIX AND NOT EMSCRIPTEN)
     include(FindPkgConfig)
     pkg_search_module(SDL2 REQUIRED sdl2 >= 2.0.0)
 
@@ -52,8 +56,7 @@ elseif (!EMSCRIPTEN)
     set(CMAKE_CXX_COMPILER "g++-9")
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-else ()
-    # WebAssembly
+elseif (EMSCRIPTEN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 -s WASM=1 --preload-file ../bin -O2")
 
     target_link_libraries(${PROJECT_NAME} "-o ${PROJECT_NAME}.html")
