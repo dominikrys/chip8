@@ -31,7 +31,6 @@ script:
   - cmake --build .
 
 before_deploy:
-  # Pack executable into zip
   - zip chip-8-emulator-linux.zip chip-8-emulator
 
 deploy:
@@ -45,4 +44,3 @@ deploy:
     branch: master
     condition: $Config=Release
     tags: true
-    #all_branches: true
