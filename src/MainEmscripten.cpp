@@ -44,7 +44,7 @@ void loopFunction() {
 }
 
 int main() {
-    config.romPath_ = "../bin/roms/revival/games/Pong [Paul Vervalin, 1990].ch8";
+    config.romPath_ = "bin/roms/revival/games/Pong [Paul Vervalin, 1990].ch8";
 
     chip8.loadRom(config.romPath_);
 
