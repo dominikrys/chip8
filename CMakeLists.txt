@@ -57,7 +57,7 @@ elseif (UNIX AND NOT EMSCRIPTEN)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 elseif (EMSCRIPTEN)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 -s WASM=1 --preload-file ../bin -O2")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -s USE_SDL=2 -s WASM=1 --preload-file ../bin --shell-file ../web/shell_minimal.html")
 
     target_link_libraries(${PROJECT_NAME} "-o ${PROJECT_NAME}.html")
 endif ()
