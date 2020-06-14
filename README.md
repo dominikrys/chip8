@@ -6,13 +6,13 @@ CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in 
 
 ## Screenshots
 
-![Pong](/docs/img/pong.png)                      |![Blinky](/docs/img/blinky.png)
+![Pong](docs/img/pong.png)                      |![Blinky](docs/img/blinky.png)
 :-----------------------------------------------:|:----------------------------------------:
-![Space Invaders](/docs/img/space_invaders.png)  |![Trip8 Demo](/docs/img/trip8_demo.png)
+![Space Invaders](docs/img/space_invaders.png)  |![Trip8 Demo](docs/img/trip8_demo.png)
 
 ## Building
 
-**Dependencies:** 
+### Dependencies
 
 - **C++17 compiler**.
   - **Linux:** GCC 9. Can by installing the `g++-9` from the `ubuntu-toolchain-r/test` PPA repo.
@@ -26,22 +26,23 @@ CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in 
   - **Linux:** can be obtained from the `ubuntu-toolchain-r/test` PPA repo or from the [Kitware apt repo](https://apt.kitware.com/).
   - **Windows:** can be downloaded from [here](https://cmake.org/download/).
 
-**Compiling**
+### Compiling
 
 Run the following from the source directory:
 
- - **Linux:**
- 
-    `cmake . -B <output dir> -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles"`
-    
-    `cmake --build <output dir>`
- - **Windows:**
- 
-    `cmake.exe . -B <output dir> -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles"`
-    
-    `cmake.exe --build <output dir>`
- 
-**Running**
+- **Linux:**
+
+  `cmake . -B <output dir> -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles"`
+
+  `cmake --build <output dir>`
+
+- **Windows:**
+
+  `cmake.exe . -B <output dir> -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles"`
+
+  `cmake.exe --build <output dir>`
+
+### Running
 
 - **Linux:** Make sure SDL2 is installed. Launch as any other program with the correct arguments.
 - **Windows:** add download the [SDL2 runtime binaries](https://www.libsdl.org/download-2.0.php) and put SDL2.dll into the folder with your compiled binary.
