@@ -44,9 +44,18 @@ void loopFunction() {
 }
 
 int main() {
-    config.romPath_ = "bin/roms/revival/games/Pong [Paul Vervalin, 1990].ch8";
+    try
+    {
+        config.romPath_ = "bin/roms/revival/games/Pong [Paul Vervalin, 1990].ch8";
+        chip8.loadRom(config.romPath_);
 
-    chip8.loadRom(config.romPath_);
+        emscripten_set_main_loop(loopFunction, 0, 1);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what();
+        return EXIT_FAILURE;
+    }
 
-    emscripten_set_main_loop(loopFunction, 0, 1);
+    return EXIT_SUCCESS
 }
