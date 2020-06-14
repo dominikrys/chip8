@@ -42,17 +42,17 @@ void Configurator::printUsage() {
               "   -h, --help              Display this help dialogue.\n";
 }
 
-bool Configurator::configure(Config &config) {
+void Configurator::configure(Config &config) {
     if (argExists("--help") || argExists("-h"))
     {
         printUsage();
-        return false;
+        throw std::runtime_error("Help requested");
     }
 
     if (config.romPath_ = getArgValue("--rom"); config.romPath_.empty())
     {
         printUsage();
-        return false;
+        throw std::runtime_error("No ROM path provided");
     }
 
     if (std::string videoScaleStr = getArgValue("--scale"); !videoScaleStr.empty())
@@ -88,8 +88,6 @@ bool Configurator::configure(Config &config) {
     {
         config.mode_ = strToMode(modeStr, config.mode_);
     }
-
-    return true;
 }
 
 std::string Configurator::getArgValue(const std::string &option) const {

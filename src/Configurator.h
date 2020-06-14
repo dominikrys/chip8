@@ -13,7 +13,7 @@ public:
 
     void printUsage();
 
-    [[nodiscard]] bool configure(Config &config);
+    void configure(Config &config);
 
 private:
     [[nodiscard]] std::string getArgValue(const std::string &option) const;

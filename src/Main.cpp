@@ -13,10 +13,7 @@ int main(int argc, char **argv) {
     {
         Configurator configurator{argc, argv};
         Config config{};
-        if (!configurator.configure(config))
-        {
-            std::exit(EXIT_FAILURE);
-        }
+        configurator.configure(config);
 
         Chip8 chip8{config.mode_};
         chip8.loadRom(config.romPath_);
@@ -60,5 +57,5 @@ int main(int argc, char **argv) {
         std::exit(EXIT_FAILURE);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
