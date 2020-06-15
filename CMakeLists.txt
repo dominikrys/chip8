@@ -66,12 +66,14 @@ elseif (UNIX AND NOT EMSCRIPTEN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 elseif (EMSCRIPTEN)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}\
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
         -O2 \
         -s USE_SDL=2 \
         -s WASM=1 \
-        --preload-file ../bin \
-        --shell-file ../web/shell_minimal.html")
+        -s EXPORTED_FUNCTIONS=\"['_main', '_loadRom']\" \
+        -s EXPORTED_RUNTIME_METHODS=\"['ccall', 'cwrap']\" \
+        --preload-file ${CMAKE_CURRENT_LIST_DIR}/bin \
+        --shell-file ${CMAKE_CURRENT_LIST_DIR}/web/shell_minimal.html")
 
     target_link_libraries(${PROJECT_NAME} "-o ${PROJECT_NAME}.html")
 

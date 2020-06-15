@@ -14,10 +14,21 @@ KeyboardHandler keyboardHandler(chip8.keys());
 Renderer renderer{"CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, config.videoScale_};
 Audio audio{config.mute_};
 
-// 10 cycles per tick seems to more or less correspond to 750Hz on 60FPS display
+// 10 cycles per tick seems approximately correspond to 750Hz on 60FPS display
 const int cyclesPerTick = 10;
 
-void loopFunction() {
+extern "C" {
+void loadRom(char *path) {
+    chip8.resetState();
+    chip8.loadRom(path);
+}
+
+void stop() {
+    chip8.resetState();
+}
+}
+
+void mainLoop() {
     if (keyboardHandler.handle())
     {
         emscripten_cancel_main_loop();
@@ -46,10 +57,10 @@ void loopFunction() {
 int main() {
     try
     {
-        config.romPath_ = "bin/roms/revival/games/Pong [Paul Vervalin, 1990].ch8";
-        chip8.loadRom(config.romPath_);
+        std::string romPath = "bin/roms/revival/games/Pong [Paul Vervalin, 1990].ch8"; // TODO: remove this
+        loadRom(romPath.data());
 
-        emscripten_set_main_loop(loopFunction, 0, 1);
+        emscripten_set_main_loop(mainLoop, 0, 1);
     }
     catch (const std::exception &e)
     {
