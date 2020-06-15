@@ -80,7 +80,7 @@
       var spinnerElement = document.getElementById('spinner');
 
       var Module = {
-        noInitialRun: true,
+        noInitialRun: false,
         preRun: [],
         postRun: [],
         print: (function() {
@@ -151,47 +151,37 @@
         };
       };
 
-      document.addEventListener("DOMContentLoaded", function () {
-        document.querySelector("#rom-dropdown").onchange = function(event)
-        {
-          // TODO: finish this
-          const romName = event.target.value;
-          const romPath = "bin/roms/revival/games/" + romName;
-          console.log(romPath);
-          ccall('main', null, null, null);
-          //ccall('loadRom', 'null', ['array'], [romPath]);
-          //const loadRom = Module.cwrap('loadRom', 'null', ['array']);
-          //loadRom(romPath);
-        }
-      });
-
       let running = false;
 
       Module['onRuntimeInitialized'] = function() {
         console.log("wasm loaded ");
-        //const loadRom = Module.cwrap('loadRom', 'null', ['array']);
-        //loadRom(test);
-        //console.log("wasm loaded233 ");
-        //ccall('main', null, null, null);
 
-        console.log("wasm loaded2 ");
-      }
-
-
-      const startStopButton = document.getElementById("start-stop-button");
-      startStopButton.addEventListener("click", () => {
-        if (running) {
-          running = false;
-          startStopButton.innerHTML = "Start";
-
-          Module.ccall('main', null, null, null);
-        } else {
-          running = true;
-          startStopButton.innerHTML = "Stop";
-
-          Module.ccall('stop', null, null, null);
+        document.querySelector("#rom-dropdown").onchange = function(event)
+        {
+          const romName = event.target.value;
+          const romPath = "bin/roms/revival/games/" + romName;
+          console.log(romPath);
+          //TODO: fix this
+          //ccall('loadRom', 'null', ['array'], [romPath]);
+          //const loadRom = Module.cwrap('loadRom', 'null', ['array']);
+          //loadRom(romPath);
         }
-      });
+
+        const startStopButton = document.getElementById("start-stop-button");
+        startStopButton.addEventListener("click", () => {
+          if (running) {
+            running = false;
+            startStopButton.innerHTML = "Start";
+
+            Module.ccall('stop', null, null, null);
+          } else {
+            running = true;
+            startStopButton.innerHTML = "Stop";
+
+            Module.ccall('main', null, null, null);
+          }
+        });
+      }
     </script>
     {{{ SCRIPT }}}
   </body>

@@ -72,8 +72,10 @@ elseif (EMSCRIPTEN)
         -s WASM=1 \
         -s EXPORTED_FUNCTIONS=\"['_main', '_loadRom']\" \
         -s EXPORTED_RUNTIME_METHODS=\"['ccall', 'cwrap']\" \
-        --preload-file ${CMAKE_CURRENT_LIST_DIR}/bin \
-        --shell-file ${CMAKE_CURRENT_LIST_DIR}/web/shell_minimal.html")
+        -s ALLOW_MEMORY_GROWTH=1 \
+        --no-heap-copy \
+        --preload-file ../bin \
+        --shell-file ../web/shell_minimal.html")
 
     target_link_libraries(${PROJECT_NAME} "-o ${PROJECT_NAME}.html")
 
