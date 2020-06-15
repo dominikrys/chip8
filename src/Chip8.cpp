@@ -12,56 +12,41 @@ const unsigned int ROM_START_ADDRESS = 0x200;
 const unsigned int FONT_SET_START_ADDRESS = 0x050;
 const unsigned int CHARACTER_SPRITE_WIDTH = 0x5;
 
+const std::array<uint8_t, FONT_SET_SIZE> FONT_SET{
+        0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+        0x20, 0x60, 0x20, 0x20, 0x70, // 1
+        0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+        0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+        0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+        0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+        0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+        0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+        0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+        0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+        0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+        0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+        0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+        0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+        0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+        0xF0, 0x80, 0xF0, 0x80, 0x80  // F
+};
+
 // Timers should run at 60 hertz
 // See: https://github.com/AfBu/haxe-CHIP-8-emulator/wiki/(Super)CHIP-8-Secrets#speed-of-emulation
 const double TIMER_DELAY = (1.0 / 60.0) * 1000000000;
 
-Chip8::Chip8(Mode mode)
-        : opcode_{0},
-          index_{0},
-          pc_{0x200u},
-          sp_{0},
-          delayTimer_{0},
-          soundTimer_{0},
-          fontSet_{
-                  0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
-                  0x20, 0x60, 0x20, 0x20, 0x70, // 1
-                  0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
-                  0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
-                  0x90, 0x90, 0xF0, 0x10, 0x10, // 4
-                  0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
-                  0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
-                  0xF0, 0x10, 0x20, 0x40, 0x40, // 7
-                  0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
-                  0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
-                  0xF0, 0x90, 0xF0, 0x90, 0x90, // A
-                  0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
-                  0xF0, 0x80, 0x80, 0x80, 0xF0, // C
-                  0xE0, 0x90, 0x90, 0x90, 0xE0, // D
-                  0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
-                  0xF0, 0x80, 0xF0, 0x80, 0x80  // F
-          },
-          drawFlag_{true},
-          soundFlag_{false},
-          mode_{mode},
-          randEngine_(chrono::system_clock::now().time_since_epoch().count()),
-          randByte_{std::uniform_int_distribution<uint8_t>(std::numeric_limits<uint8_t>::min(),
-                                                           std::numeric_limits<uint8_t>::max())},
-          timer_{TIMER_DELAY} {
-    stack_.fill(0);
-    registers_.fill(0);
-    memory_.fill(0);
-    keys_.fill(0);
+Chip8::Chip8(Mode mode) : mode_{mode},
+                          randEngine_(chrono::system_clock::now().time_since_epoch().count()),
+                          randByte_{std::uniform_int_distribution<uint8_t>(std::numeric_limits<uint8_t>::min(),
+                                                                           std::numeric_limits<uint8_t>::max())},
+                          timer_{TIMER_DELAY} {
+    resetState();
 
-    clearScreen();
-
-    // Load font set into memory
     for (unsigned int i = 0; i < FONT_SET_SIZE; i++)
     {
-        memory_[i + FONT_SET_START_ADDRESS] = fontSet_[i];
+        memory_[i + FONT_SET_START_ADDRESS] = FONT_SET[i];
     }
 
-    // Set up function pointer table
     funcTable_[0x0] = &Chip8::decodeFuncTable0;
     funcTable_[0x1] = &Chip8::opcode1NNN;
     funcTable_[0x2] = &Chip8::opcode2NNN;
@@ -104,7 +89,23 @@ Chip8::Chip8(Mode mode)
     funcTableF_[0x33] = &Chip8::opcodeFX33;
     funcTableF_[0x55] = &Chip8::opcodeFX55;
     funcTableF_[0x65] = &Chip8::opcodeFX65;
+}
 
+void Chip8::resetState() {
+    opcode_ = 0;
+    index_ = 0;
+    pc_ = 0x200u;
+    sp_ = 0;
+    delayTimer_ = 0;
+    soundTimer_ = 0;
+    drawFlag_ = true;
+    soundFlag_ = false;
+    stack_.fill(0);
+    registers_.fill(0);
+    memory_.fill(0);
+    keys_.fill(0);
+
+    clearScreen();
 }
 
 void Chip8::cycle() {
@@ -623,7 +624,7 @@ void Chip8::loadRom(const std::string &filepath) {
         throw std::runtime_error("Can't open file: " + filepath + ". " + std::strerror(errno));
     }
 
-    auto end = ifs.tellg(); // ifs is at the end since std::ios::ate specified
+    auto end = ifs.tellg();
     ifs.seekg(0, std::ios::beg);
     auto size = std::size_t(end - ifs.tellg());
     if (size == 0)

@@ -17,6 +17,8 @@ class Chip8 {
 public:
     explicit Chip8(Mode mode);
 
+    void resetState();
+
     void cycle();
 
     void loadRom(const std::string &filepath);
@@ -130,8 +132,6 @@ private:
 
     std::array<uint8_t, KEY_COUNT> keys_;
 
-    const std::array<uint8_t, FONT_SET_SIZE> fontSet_;
-
     bool drawFlag_;
     bool soundFlag_;
 
@@ -142,9 +142,7 @@ private:
 
     Timer timer_;
 
-    // Set up function pointer tables, initialising them with a default function
     using chip8Func = void (Chip8::*)();
-
     chip8Func funcTable_[0xF + 1]{&Chip8::opcodeUnknown};
     chip8Func funcTable0_[0xE + 1]{&Chip8::opcodeUnknown};
     chip8Func funcTable8_[0xE + 1]{&Chip8::opcodeUnknown};
