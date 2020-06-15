@@ -51,18 +51,24 @@
     <figure style="overflow:visible;" id="spinner"><div class="spinner"></div><center style="margin-top:0.5em"><strong>emscripten</strong></center></figure>
     <div class="emscripten" id="status">Downloading...</div>
     <div class="emscripten">
-      <progress value="0" max="100" id="progress" hidden=1></progress>  
+      <progress value="0" max="100" id="progress" hidden=1></progress>
     </div>
     <div class="emscripten_border">
       <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
     </div>
     <hr/>
     <div class="emscripten">
-      <input type="checkbox" id="resize">Resize canvas
-      <input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer
-      &nbsp;&nbsp;&nbsp;
-      <input type="button" value="Fullscreen" onclick="Module.requestFullscreen(document.getElementById('pointerLock').checked, 
-                                                                                document.getElementById('resize').checked)">
+      <select id="rom-dropdown">
+        <option>SELECT ROM</option>
+        <option value="Blinky [Hans Christian Egeberg, 1991].ch8">BLINKY</option>
+        <option value="Breakout (Brix hack) [David Winter, 1997].ch8">BREAKOUT</option>
+        <option value="Space Invaders [David Winter].ch8">SPACE INVADERS</option>
+        <option value="Kaleidoscope [Joseph Weisbecker, 1978].ch8">KALEIDOSCOPE</option>
+        <option value="Pong (1 player).ch8">PONG</option>
+        <option value="Pong [Paul Vervalin, 1990].ch8">PONG (2-PLAYER)</option>
+        <option value="Tetris [Fran Dachille, 1991].ch8">TETRIS</option>
+      </select>
+      <input type="button" id="start-stop-button" value="Start">
     </div>
     
     <hr/>
@@ -74,6 +80,7 @@
       var spinnerElement = document.getElementById('spinner');
 
       var Module = {
+        noInitialRun: true,
         preRun: [],
         postRun: [],
         print: (function() {
@@ -143,6 +150,48 @@
           if (text) Module.printErr('[post-exception status] ' + text);
         };
       };
+
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector("#rom-dropdown").onchange = function(event)
+        {
+          // TODO: finish this
+          const romName = event.target.value;
+          const romPath = "bin/roms/revival/games/" + romName;
+          console.log(romPath);
+          ccall('main', null, null, null);
+          //ccall('loadRom', 'null', ['array'], [romPath]);
+          //const loadRom = Module.cwrap('loadRom', 'null', ['array']);
+          //loadRom(romPath);
+        }
+      });
+
+      let running = false;
+
+      Module['onRuntimeInitialized'] = function() {
+        console.log("wasm loaded ");
+        //const loadRom = Module.cwrap('loadRom', 'null', ['array']);
+        //loadRom(test);
+        //console.log("wasm loaded233 ");
+        //ccall('main', null, null, null);
+
+        console.log("wasm loaded2 ");
+      }
+
+
+      const startStopButton = document.getElementById("start-stop-button");
+      startStopButton.addEventListener("click", () => {
+        if (running) {
+          running = false;
+          startStopButton.innerHTML = "Start";
+
+          Module.ccall('main', null, null, null);
+        } else {
+          running = true;
+          startStopButton.innerHTML = "Stop";
+
+          Module.ccall('stop', null, null, null);
+        }
+      });
     </script>
     {{{ SCRIPT }}}
   </body>
