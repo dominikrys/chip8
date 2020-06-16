@@ -155,7 +155,7 @@ void Chip8::decodeFuncTableF() {
 }
 
 void Chip8::opcodeUnknown() {
-    std::cerr << &"Unknown opcode: 0x"[opcode_];
+    std::cerr << &"Unknown opcode: 0x"[opcode_] << std::endl;
 }
 
 // 0x00E0: Clears the screen

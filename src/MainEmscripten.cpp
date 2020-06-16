@@ -19,19 +19,27 @@ const int cyclesPerTick = 10;
 
 extern "C" {
 void loadRom(char *path) {
+    std::cout << "Path in C++:"<< std::string(path) << std::endl; // TODO: remove this
+
     chip8.resetState();
     chip8.loadRom(path);
 }
 
 void stop() {
+    std::cout << "Stopping" << std::endl;
+    emscripten_cancel_main_loop();
+
     chip8.resetState();
+
+    auto buffer = chip8.video();
+    renderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
 }
 }
 
 void mainLoop() {
     if (keyboardHandler.handle())
     {
-        emscripten_cancel_main_loop();
+        stop();
     }
 
     for (int i = 0; i < cyclesPerTick; i++)
@@ -57,14 +65,11 @@ void mainLoop() {
 int main() {
     try
     {
-        std::string romPath = "bin/roms/revival/games/Pong [Paul Vervalin, 1990].ch8"; // TODO: remove this
-        loadRom(romPath.data());
-
         emscripten_set_main_loop(mainLoop, 0, 1);
     }
     catch (const std::exception &e)
     {
-        std::cerr << e.what();
+        std::cerr << e.what() << std::endl;
         return EXIT_FAILURE;
     }
 

@@ -65,7 +65,7 @@ The CPU speed and operation modes may need to be changed between ROMs to ensure 
 
 ## ROMs
 
-Some ROMs are provided under /bin/roms with their appropriate sources/licenses.
+Some ROMs are provided under /bin/roms with their appropriate sources/licenses. Some may not work as not all are intended to be ran on the original CHIP-8.
 
 For more, check:
 
