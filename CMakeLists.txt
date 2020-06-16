@@ -85,6 +85,7 @@ elseif (EMSCRIPTEN)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
             -g4 \
             -s ASSERTIONS=2 \
+            -s SAFE_HEAP=1 \
             -s DEMANGLE_SUPPORT=1 \
             -s DISABLE_EXCEPTION_CATCHING=0")
     else ()
@@ -93,7 +94,7 @@ elseif (EMSCRIPTEN)
             -O2")
     endif ()
 
-    target_link_libraries(${PROJECT_NAME} "-o ${PROJECT_NAME}.html")
+    target_link_libraries(${PROJECT_NAME} "-o ${PROJECT_NAME}.html --bind")
 
 endif ()
 

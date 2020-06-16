@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include <emscripten.h>
+#include <emscripten/bind.h>
 
 Config config{};
 Chip8 chip8{config.mode_};
@@ -16,6 +17,13 @@ Audio audio{config.mute_};
 
 // 10 cycles per tick seems approximately correspond to 750Hz on 60FPS display
 const int cyclesPerTick = 10;
+
+std::string getExceptionMessage(intptr_t exceptionPtr) {
+    return std::string(reinterpret_cast<std::exception *>(exceptionPtr)->what());
+}
+EMSCRIPTEN_BINDINGS(Bindings) {
+    emscripten::function("getExceptionMessage", &getExceptionMessage);
+}
 
 extern "C" {
 void loadRom(char *path) {
@@ -65,7 +73,7 @@ void mainLoop() {
 int main() {
     try
     {
-        emscripten_set_main_loop(mainLoop, 0, 1);
+        emscripten_set_main_loop(mainLoop, 0, 0);
     }
     catch (const std::exception &e)
     {
