@@ -42,11 +42,6 @@ Chip8::Chip8(Mode mode) : mode_{mode},
                           timer_{TIMER_DELAY} {
     resetState();
 
-    for (unsigned int i = 0; i < FONT_SET_SIZE; i++)
-    {
-        memory_[i + FONT_SET_START_ADDRESS] = FONT_SET[i];
-    }
-
     funcTable_[0x0] = &Chip8::decodeFuncTable0;
     funcTable_[0x1] = &Chip8::opcode1NNN;
     funcTable_[0x2] = &Chip8::opcode2NNN;
@@ -104,6 +99,11 @@ void Chip8::resetState() {
     registers_.fill(0);
     memory_.fill(0);
     keys_.fill(0);
+
+    for (unsigned int i = 0; i < FONT_SET_SIZE; i++)
+    {
+        memory_[i + FONT_SET_START_ADDRESS] = FONT_SET[i];
+    }
 
     clearScreen();
 }
