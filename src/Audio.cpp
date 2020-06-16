@@ -8,7 +8,7 @@
 Audio::Audio(bool mute)
         : mute_{mute},
           sineFreq_{500},
-          sampleFreq_{44100},
+          sampleFreq_{32000},
           samplesPerSine_{sampleFreq_ / sineFreq_},
           samplePos_{0} {
 
@@ -29,7 +29,7 @@ Audio::Audio(bool mute)
     desiredSpec.freq = sampleFreq_;
     desiredSpec.format = AUDIO_U8;
     desiredSpec.channels = 1;
-    desiredSpec.samples = 2048;
+    desiredSpec.samples = 512;
     desiredSpec.callback = audioCallback;
     desiredSpec.userdata = this;
 
@@ -49,7 +49,7 @@ Audio::~Audio() {
     }
 }
 
-void Audio::play() {
+void Audio::play() const {
     if (mute_)
     {
         std::cout << "BEEP\n";

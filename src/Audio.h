@@ -8,7 +8,7 @@ public:
 
     ~Audio();
 
-    void play();
+    void play() const;
 
 private:
     static void audioCallback(void *data, Uint8 *buffer, int length);
