@@ -71,8 +71,8 @@ elseif (UNIX AND NOT EMSCRIPTEN)
 
 elseif (EMSCRIPTEN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
-        -s USE_SDL=2 \
         -s WASM=1 \
+        -s USE_SDL=2 \
         -s EXPORTED_FUNCTIONS=\"['_main', '_loadRom', '_stop']\" \
         -s EXPORTED_RUNTIME_METHODS=\"['ccall', 'cwrap']\" \
         -s ALLOW_MEMORY_GROWTH=1 \
