@@ -4,6 +4,10 @@ project(chip-8-emulator)
 
 set(CMAKE_CXX_STANDARD 17)
 
+if (CMAKE_BUILD_TYPE)
+    string(TOLOWER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_LOWER)
+endif ()
+
 set(SRCS
         src/Chip8.h
         src/Chip8.cpp
@@ -67,15 +71,27 @@ elseif (UNIX AND NOT EMSCRIPTEN)
 
 elseif (EMSCRIPTEN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
-        -O2 \
         -s USE_SDL=2 \
         -s WASM=1 \
-        -s EXPORTED_FUNCTIONS=\"['_main', '_loadRom']\" \
+        -s EXPORTED_FUNCTIONS=\"['_main', '_loadRom', '_stop']\" \
         -s EXPORTED_RUNTIME_METHODS=\"['ccall', 'cwrap']\" \
         -s ALLOW_MEMORY_GROWTH=1 \
         --no-heap-copy \
         --preload-file ../bin \
         --shell-file ../web/shell_minimal.html")
+
+    if (CMAKE_BUILD_TYPE_LOWER STREQUAL "debug")
+        message("Emscripten Debug")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
+            -g4 \
+            -s ASSERTIONS=2 \
+            -s DEMANGLE_SUPPORT=1 \
+            -s DISABLE_EXCEPTION_CATCHING=0")
+    else ()
+        message("Emscripten Release")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
+            -O2")
+    endif ()
 
     target_link_libraries(${PROJECT_NAME} "-o ${PROJECT_NAME}.html")
 
