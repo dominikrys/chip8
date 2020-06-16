@@ -80,7 +80,7 @@
       var spinnerElement = document.getElementById('spinner');
 
       var Module = {
-        noInitialRun: false,
+        noInitialRun: true,
         preRun: [],
         postRun: [],
         print: (function() {
@@ -162,7 +162,8 @@
           const romPath = "bin/roms/revival/games/" + romName;
           console.log(romPath);
           //TODO: fix this
-          //ccall('loadRom', 'null', ['array'], [romPath]);
+          const romPathArray = new TextEncoder("utf-8").encode(romPath);
+          Module.ccall('loadRom', 'null', ['array'], [romPathArray]);
           //const loadRom = Module.cwrap('loadRom', 'null', ['array']);
           //loadRom(romPath);
         }
@@ -171,12 +172,12 @@
         startStopButton.addEventListener("click", () => {
           if (running) {
             running = false;
-            startStopButton.innerHTML = "Start";
+            //startStopButton.innerHTML = "Start"; // TODO: fix this
 
             Module.ccall('stop', null, null, null);
           } else {
             running = true;
-            startStopButton.innerHTML = "Stop";
+            //startStopButton.innerHTML = "Stop"; // TODO: fix this
 
             Module.ccall('main', null, null, null);
           }
