@@ -94,7 +94,7 @@ elseif (EMSCRIPTEN)
             -O2")
     endif ()
 
-    target_link_libraries(${PROJECT_NAME} "-o ${CMAKE_CURRENT_LIST_DIR}/web/chip-8.html --bind")
+    target_link_libraries(${PROJECT_NAME} "-o ${CMAKE_CURRENT_LIST_DIR}/web/chip-8.html")
 
 endif ()
 

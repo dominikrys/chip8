@@ -4,39 +4,28 @@
 #include "KeyboardHandler.h"
 #include "Renderer.h"
 
-#include <iostream>
-
 #include <emscripten.h>
-#include <emscripten/bind.h>
+
+#include <iostream>
 
 Config kConfig{};
 Chip8 kChip8{kConfig.mode_};
 KeyboardHandler kKeyboardHandler(kChip8.keys());
 Renderer kRenderer{"CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, kConfig.videoScale_};
-
 int kCyclesPerTick = 10;
-
-std::string getExceptionMessage(intptr_t exceptionPtr) {
-    return std::string(reinterpret_cast<std::exception *>(exceptionPtr)->what());
-}
-
-EMSCRIPTEN_BINDINGS(Bindings) {
-    emscripten::function("getExceptionMessage", &getExceptionMessage);
-}
 
 extern "C" {
 void loadRom(char *path, int cyclesPerTick) {
+    kCyclesPerTick = cyclesPerTick;
+
     kChip8.resetState();
     kChip8.loadRom(path);
-
-    kCyclesPerTick = cyclesPerTick;
 }
 
 void stop() {
     emscripten_cancel_main_loop();
 
     kChip8.resetState();
-
     auto buffer = kChip8.video();
     kRenderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
 }
@@ -57,7 +46,6 @@ void mainLoop() {
     {
         auto buffer = kChip8.video();
         kRenderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
-
         kChip8.disableDrawFlag();
     }
 }

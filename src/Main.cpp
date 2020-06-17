@@ -39,13 +39,11 @@ int main(int argc, char **argv) {
                 {
                     auto buffer = chip8.video();
                     renderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
-
                     chip8.disableDrawFlag();
                 }
                 else if (chip8.soundFlag())
                 {
                     audio.play();
-
                     chip8.disableSoundFlag();
                 }
             }
