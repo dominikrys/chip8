@@ -78,7 +78,7 @@ elseif (EMSCRIPTEN)
         -s ALLOW_MEMORY_GROWTH=1 \
         --no-heap-copy \
         --preload-file ../bin \
-        --shell-file ../web/shell_minimal.html")
+        --shell-file ${CMAKE_CURRENT_LIST_DIR}/web/shell.html")
 
     if (CMAKE_BUILD_TYPE_LOWER STREQUAL "debug")
         message("Emscripten Debug")
