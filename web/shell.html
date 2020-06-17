@@ -60,14 +60,18 @@
     <div class="emscripten">
       <select id="rom-dropdown">
         <option>SELECT ROM</option>
-        <option value="Astro Dodge [Revival Studios, 2008].ch8">ASTRO DODGE</option>
-        <option value="Blinky [Hans Christian Egeberg, 1991].ch8">BLINKY (PAC-MAN)</option>
-        <option value="Breakout (Brix hack) [David Winter, 1997].ch8">BREAKOUT</option>
-        <option value="Space Invaders [David Winter].ch8">SPACE INVADERS</option>
-        <option value="Kaleidoscope [Joseph Weisbecker, 1978].ch8">KALEIDOSCOPE</option>
-        <option value="Pong (1 player).ch8">PONG</option>
-        <option value="Pong [Paul Vervalin, 1990].ch8">PONG (2-PLAYER)</option>
-        <option value="Tetris [Fran Dachille, 1991].ch8">TETRIS</option>
+        <option value='{"name": "games/Astro Dodge [Revival Studios, 2008].ch8","ticksPerSec":15}'>ASTRO DODGE</option>
+        <option value='{"name": "games/Blinky [Hans Christian Egeberg, 1991].ch8","ticksPerSec":40}'>BLINKY (PAC-MAN)</option>
+        <option value='{"name": "games/Breakout (Brix hack) [David Winter, 1997].ch8","ticksPerSec":10}'>BREAKOUT</option>
+        <option value='{"name": "games/Connect 4 [David Winter].ch8","ticksPerSec":1}'>CONNECT 4</option>
+        <option value='{"name": "games/Filter.ch8","ticksPerSec":10}'>FILTER</option>
+        <option value='{"name": "games/Space Invaders [David Winter].ch8","ticksPerSec":10}'>SPACE INVADERS</option>
+        <option value='{"name": "demos/Trip8 Demo (2008) [Revival Studios].ch8","ticksPerSec":40}'>TRIP8 (DEMO)</option>
+        <option value='{"name": "games/Kaleidoscope [Joseph Weisbecker, 1978].ch8","ticksPerSec":10}'>KALEIDOSCOPE</option>
+        <option value='{"name": "games/Lunar Lander (Udo Pernisz, 1979).ch8","ticksPerSec":3}'>LUNAR LANDER</option>
+        <option value='{"name": "games/Pong (1 player).ch8","ticksPerSec":10}'>PONG</option>
+        <option value='{"name": "games/Pong [Paul Vervalin, 1990].ch8","ticksPerSec":10}'>PONG (2-PLAYER)</option>
+        <option value='{"name": "games/Tetris [Fran Dachille, 1991].ch8","ticksPerSec":10}'>TETRIS</option>
       </select>
       <input type="button" id="start-stop-button" value="Start">
     </div>
@@ -159,11 +163,20 @@
 
         document.querySelector("#rom-dropdown").onchange = function(event)
         {
-          const romName = event.target.value;
-          const romPath = "bin/roms/revival/games/" + romName + "\0";
+          if(event.target.value === "SELECT ROM")
+          {
+            return;
+          }
+          
+          romOptions = JSON.parse(event.target.value);
+
+          const romName = romOptions["name"];
+          const romPath = "bin/roms/revival/" + romName + "\0";
           const romPathUInt8Array = new TextEncoder().encode(romPath);
- 
-          Module.ccall('loadRom', 'null', ['array'], [romPathUInt8Array]);
+
+          ticksPerSec = romOptions["ticksPerSec"];
+
+          Module.ccall('loadRom', 'null', ['array', 'number'], [romPathUInt8Array, ticksPerSec]);
         }
 
         const startStopButton = document.getElementById("start-stop-button");

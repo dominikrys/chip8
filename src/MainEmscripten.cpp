@@ -9,13 +9,12 @@
 #include <emscripten.h>
 #include <emscripten/bind.h>
 
-Config config{};
-Chip8 chip8{config.mode_};
-KeyboardHandler keyboardHandler(chip8.keys());
-Renderer renderer{"CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, config.videoScale_};
+Config kConfig{};
+Chip8 kChip8{kConfig.mode_};
+KeyboardHandler kKeyboardHandler(kChip8.keys());
+Renderer kRenderer{"CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, kConfig.videoScale_};
 
-// 10 cycles per tick seems approximately correspond to 750Hz on 60FPS display
-const int cyclesPerTick = 10;
+int kCyclesPerTick = 10;
 
 std::string getExceptionMessage(intptr_t exceptionPtr) {
     return std::string(reinterpret_cast<std::exception *>(exceptionPtr)->what());
@@ -26,38 +25,40 @@ EMSCRIPTEN_BINDINGS(Bindings) {
 }
 
 extern "C" {
-void loadRom(char *path) {
-    chip8.resetState();
-    chip8.loadRom(path);
+void loadRom(char *path, int cyclesPerTick) {
+    kChip8.resetState();
+    kChip8.loadRom(path);
+
+    kCyclesPerTick = cyclesPerTick;
 }
 
 void stop() {
     emscripten_cancel_main_loop();
 
-    chip8.resetState();
+    kChip8.resetState();
 
-    auto buffer = chip8.video();
-    renderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
+    auto buffer = kChip8.video();
+    kRenderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
 }
 }
 
 void mainLoop() {
-    if (keyboardHandler.handle())
+    if (kKeyboardHandler.handle())
     {
         stop();
     }
 
-    for (int i = 0; i < cyclesPerTick; i++)
+    for (int i = 0; i < kCyclesPerTick; i++)
     {
-        chip8.cycle();
+        kChip8.cycle();
     }
 
-    if (chip8.drawFlag())
+    if (kChip8.drawFlag())
     {
-        auto buffer = chip8.video();
-        renderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
+        auto buffer = kChip8.video();
+        kRenderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
 
-        chip8.disableDrawFlag();
+        kChip8.disableDrawFlag();
     }
 }
 
