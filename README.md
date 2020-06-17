@@ -1,30 +1,40 @@
 # CHIP-8 Emulator [![Build Status](https://travis-ci.com/dominikrys/chip-8-emulator.svg?branch=master)](https://travis-ci.com/dominikrys/chip-8-emulator) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-This is a CHIP-8 emulator written in C++17 which uses SDL2 for sound, graphics and input. It's been written with compatibility and correctness in mind due to the various CHIP-8 interpreter variations available.
+This is a CHIP-8 emulator written in C++17 which uses SDL2 for sound, graphics and input.
 
-CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in the 1970s. It was made to allow video games to be more easily programmed for 8-bit microcomputers at the time, and runs on a CHIP-8 virtual machine.
+[**Compiled to WebAssembly and hosted on the web**](http://dominikrys.com/chip-8).
 
 ## Screenshots
 
-![Pong](docs/img/pong.png)                      |![Blinky](docs/img/blinky.png)
-:-----------------------------------------------:|:----------------------------------------:
-![Space Invaders](docs/img/space_invaders.png)  |![Trip8 Demo](docs/img/trip8_demo.png)
+|           ![Pong](docs/img/pong.png)           |     ![Blinky](docs/img/blinky.png)     |
+| :--------------------------------------------: | :------------------------------------: |
+| ![Space Invaders](docs/img/space_invaders.png) | ![Trip8 Demo](docs/img/trip8_demo.png) |
+
+## CHIP-8 Description
+
+CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in the 1970s. It was made to allow video games to be more easily programmed for 8-bit microcomputers at the time, and runs on a CHIP-8 virtual machine.
 
 ## Building
 
 ### Dependencies
 
-- **C++17 compiler**.
-  - **Linux:** GCC 9. Can by installing the `g++-9` from the `ubuntu-toolchain-r/test` PPA repo.
-  - **Windows:** MinGW-w64 8.0 (GCC 9.2). Can be obtained through MSYS2 by installing the `mingw-w64-x86_64-gcc` pacman package after updating MSYS2 with `pacman -Syu`.
+- **C++17 compiler**
+
+  - **Linux:** GCC 9. Can be obtained by installing `g++-9` from the `ubuntu-toolchain-r/test` PPA repo.
+  - **Windows:** MinGW-w64 8.0 (GCC 9.2). Can be obtained through MSYS2 by installing the `mingw-w64-x86_64-gcc` pacman package after updating MSYS2 with `pacman -Syu`. To run, download the [SDL2 runtime binaries](https://www.libsdl.org/download-2.0.php) and put SDL2.dll into the folder with your compiled binary
 
 - **SDL2**
+
   - **Linux:** get SDL2 by running `sudo apt install libsdl2-dev`.
   - **Windows:** download the [SDL2-2.0.10 development libraries](https://www.libsdl.org/download-2.0.php) and place them under a new "external" folder in the root directory of this project.
 
 - **CMake 3.10**
+
   - **Linux:** can be obtained from the `ubuntu-toolchain-r/test` PPA repo or from the [Kitware apt repo](https://apt.kitware.com/).
   - **Windows:** can be downloaded from [here](https://cmake.org/download/).
+
+- **Emscripten 1.39.17 _(For Webassembly only)_**
+  - Download [here](https://emscripten.org/docs/getting_started/downloads.html).
 
 ### Compiling
 
@@ -42,34 +52,35 @@ Run the following from the source directory:
 
   `cmake.exe --build <output dir>`
 
-### Running
+- **WebAssembly:**
 
-- **Linux:** Make sure SDL2 is installed. Launch as any other program with the correct arguments.
-- **Windows:** add download the [SDL2 runtime binaries](https://www.libsdl.org/download-2.0.php) and put SDL2.dll into the folder with your compiled binary.
+  - Install Emscripten: `./emsdk install latest`
+  - Activate Emscripten: `./emsdk activate latest`
+  - **(On Windows):** emsdk install mingw32-make using `emsdk install mingw-7.1.0-64bit`
+  - Navigate to a sub-directory to where CMake files will be generated to (e.g. `chip-8-emulator/cmake-build-emscripten`)
+  - **(On Windows):** Run `emcmake cmake -G "CodeBlocks - MinGW Makefiles" .. -DCMAKE_SH="CMAKE_SH-NOTFOUND"`
+  - **(On Linux):** Run `emcmake cmake -G "CodeBlocks - Unix Makefiles" ..`
+  - The files have been output to `chip-8-emulator/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
 
 ## Usage
 
-Run: `chip_8.exe --rom <path> [options]`
+**Linux**: `./chip_8 --rom <path> [options]`
 
-For more help, including displaying the available options, run: `chip_8.exe --help`
+**Windows**: `chip_8.exe --rom <path> [options]`
 
-If audio is not working, set the `SDL_AUDIODRIVER` environment variable to an appropriate value mentioned [here](https://wiki.libsdl.org/FAQUsingSDL).
+- For more help, including displaying the available options, run: `chip_8.exe --help`
 
-The CPU speed and operation modes may need to be changed between ROMs to ensure they work as intended. I've included 3 different operation modes due different ROMs relying on different opcode behaviours, depending on the time period and the interpreter they were written for. Explanations can be found in the links section. They are as follows:
+- Some ROMs are provided in the /bin/roms directory.
 
-- **CHIP8**: FX55 and FX65 opcodes increment the instruction counter. 8XY6 and 8XYE registers shift the value in VY and store the result in VX.
+- If audio is not working, set the `SDL_AUDIODRIVER` environment variable to an appropriate value mentioned [here](https://wiki.libsdl.org/FAQUsingSDL).
 
-- **CHIP-48**: FX55 and FX65 opcodes increment the instruction counter.
+- The CPU speed and operation modes may need to be changed between ROMs to ensure they work as intended. I've included 3 different operation modes due different ROMs relying on different opcode behaviours, depending on the time period and the interpreter they were written for. Explanations can be found in the links section. They are as follows:
 
-- **SCHIP**: FX55 and FX65 opcodes don't increment the instruction counter (like on the SCHIP). This is what most ROMs expect, and is the default mode. The emulator doesn't actually support SCHIP opcodes (yet?).
+  - **CHIP8**: FX55 and FX65 opcodes increment the instruction counter. 8XY6 and 8XYE registers shift the value in VY and store the result in VX.
 
-## ROMs
+  - **CHIP-48**: FX55 and FX65 opcodes increment the instruction counter.
 
-Some ROMs are provided under /bin/roms with their appropriate sources/licenses.
-
-For more, check:
-
-- [CHIP-8 games under CC0 license](https://johnearnest.github.io/chip8Archive/)
+  - **SCHIP**: FX55 and FX65 opcodes don't increment the instruction counter (like on the SCHIP). This is what most ROMs expect, and is the default mode. The emulator doesn't actually support SCHIP opcodes (yet?).
 
 ## Links
 
@@ -81,4 +92,4 @@ For more, check:
 
 - [Explanation on FX55 & FX65 opcodes](https://github.com/Chromatophore/HP48-Superchip/blob/master/investigations/quirk_i.md)
 
-- [Explanation of timer speeds](https://github.com/AfBu/haxe-CHIP-8-emulator/wiki/(Super)CHIP-8-Secrets#speed-of-emulation)
+- [Explanation of timer speeds](<https://github.com/AfBu/haxe-CHIP-8-emulator/wiki/(Super)CHIP-8-Secrets#speed-of-emulation>)
