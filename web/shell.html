@@ -73,7 +73,7 @@
         <option value='{"name": "games/Pong [Paul Vervalin, 1990].ch8","ticksPerSec":10}'>PONG (2-PLAYER)</option>
         <option value='{"name": "games/Tetris [Fran Dachille, 1991].ch8","ticksPerSec":10}'>TETRIS</option>
       </select>
-      <input type="button" id="start-stop-button" value="Start">
+      <button type="button" id="start-stop-button" disabled>Start</button>
     </div>
     
     <hr/>
@@ -145,7 +145,15 @@
         monitorRunDependencies: function(left) {
           this.totalDependencies = Math.max(this.totalDependencies, left);
           Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+        },
+        running: false,
+        selectedRomUInt8Array: [],
+        ticksPerSec: 10,
+        loadCurrentRom: function()
+        {
+          this.ccall('loadRom', 'null', ['array', 'number'], [this.selectedRomUInt8Array, this.ticksPerSec]);
         }
+
       };
       Module.setStatus('Downloading...');
       window.onerror = function() {
@@ -156,10 +164,8 @@
         };
       };
 
-      let running = false;
-
       Module['onRuntimeInitialized'] = function() {
-        console.log("wasm loaded ");
+        let startStopButton = document.getElementById("start-stop-button");
 
         document.querySelector("#rom-dropdown").onchange = function(event)
         {
@@ -168,29 +174,28 @@
             return;
           }
           
-          romOptions = JSON.parse(event.target.value);
+          let romOptions = JSON.parse(event.target.value);
 
           const romName = romOptions["name"];
           const romPath = "bin/roms/revival/" + romName + "\0";
-          const romPathUInt8Array = new TextEncoder().encode(romPath);
+          Module.selectedRomUInt8Array = new TextEncoder().encode(romPath);
 
-          ticksPerSec = romOptions["ticksPerSec"];
+          Module.ticksPerSec = romOptions["ticksPerSec"];
 
-          Module.ccall('loadRom', 'null', ['array', 'number'], [romPathUInt8Array, ticksPerSec]);
+          startStopButton.disabled = false;
+
+          Module.loadCurrentRom();
         }
-
-        const startStopButton = document.getElementById("start-stop-button");
         startStopButton.addEventListener("click", () => {
-          if (running) {
-            running = false;
-            //startStopButton.innerHTML = "Start"; // TODO: fix this
-
+          if (Module.running) {
             Module.ccall('stop', null, null, null);
+            startStopButton.innerHTML = "Start";
+            Module.running = false;
           } else {
-            running = true;
-            //startStopButton.innerHTML = "Stop"; // TODO: fix this
-
+            Module.loadCurrentRom();
             Module.ccall('main', null, null, null);
+            startStopButton.innerHTML = "Stop";
+            Module.running = true;
           }
         });
       }
