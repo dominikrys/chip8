@@ -13,3 +13,8 @@ cmake-build-*/
 
 # Generated files
 .idea/**/contentModel.xml
+
+# Emscripten outputs
+/web/chip-8.data
+/web/chip-8.html
+/web/chip-8.wasm
