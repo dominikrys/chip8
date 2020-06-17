@@ -1,205 +1,52 @@
 <!doctype html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Emscripten-Generated Code</title>
-    <style>
-      .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
-      textarea.emscripten { font-family: monospace; width: 80%; }
-      div.emscripten { text-align: center; }
-      div.emscripten_border { border: 1px solid black; }
-      /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
-      canvas.emscripten { border: 0px none; background-color: black; }
 
-      .spinner {
-        height: 50px;
-        width: 50px;
-        margin: 0px auto;
-        -webkit-animation: rotation .8s linear infinite;
-        -moz-animation: rotation .8s linear infinite;
-        -o-animation: rotation .8s linear infinite;
-        animation: rotation 0.8s linear infinite;
-        border-left: 10px solid rgb(0,150,240);
-        border-right: 10px solid rgb(0,150,240);
-        border-bottom: 10px solid rgb(0,150,240);
-        border-top: 10px solid rgb(100,0,200);
-        border-radius: 100%;
-        background-color: rgb(200,100,250);
-      }
-      @-webkit-keyframes rotation {
-        from {-webkit-transform: rotate(0deg);}
-        to {-webkit-transform: rotate(360deg);}
-      }
-      @-moz-keyframes rotation {
-        from {-moz-transform: rotate(0deg);}
-        to {-moz-transform: rotate(360deg);}
-      }
-      @-o-keyframes rotation {
-        from {-o-transform: rotate(0deg);}
-        to {-o-transform: rotate(360deg);}
-      }
-      @keyframes rotation {
-        from {transform: rotate(0deg);}
-        to {transform: rotate(360deg);}
-      }
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>WebAssembly CHIP-8 Emulator</title>
+  <meta name="author" content="Dominik Rys">
+  <meta name="description" content="CHIP-8 Emulator written in C++ and compiled into WebAssembly">
+  <link rel="stylesheet" href="main.css">
+  <script src="main.js" async></script>
+</head>
 
-    </style>
-  </head>
-  <body>
-    <hr/>
-    <figure style="overflow:visible;" id="spinner"><div class="spinner"></div><center style="margin-top:0.5em"><strong>emscripten</strong></center></figure>
-    <div class="emscripten" id="status">Downloading...</div>
-    <div class="emscripten">
-      <progress value="0" max="100" id="progress" hidden=1></progress>
-    </div>
-    <div class="emscripten_border">
-      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
-    </div>
-    <hr/>
-    <div class="emscripten">
-      <select id="rom-dropdown">
-        <option>SELECT ROM</option>
-        <option value='{"name": "games/Astro Dodge [Revival Studios, 2008].ch8","ticksPerSec":15}'>ASTRO DODGE</option>
-        <option value='{"name": "games/Blinky [Hans Christian Egeberg, 1991].ch8","ticksPerSec":40}'>BLINKY (PAC-MAN)</option>
-        <option value='{"name": "games/Breakout (Brix hack) [David Winter, 1997].ch8","ticksPerSec":10}'>BREAKOUT</option>
-        <option value='{"name": "games/Connect 4 [David Winter].ch8","ticksPerSec":1}'>CONNECT 4</option>
-        <option value='{"name": "games/Filter.ch8","ticksPerSec":10}'>FILTER</option>
-        <option value='{"name": "games/Space Invaders [David Winter].ch8","ticksPerSec":10}'>SPACE INVADERS</option>
-        <option value='{"name": "demos/Trip8 Demo (2008) [Revival Studios].ch8","ticksPerSec":40}'>TRIP8 (DEMO)</option>
-        <option value='{"name": "games/Kaleidoscope [Joseph Weisbecker, 1978].ch8","ticksPerSec":10}'>KALEIDOSCOPE</option>
-        <option value='{"name": "games/Lunar Lander (Udo Pernisz, 1979).ch8","ticksPerSec":3}'>LUNAR LANDER</option>
-        <option value='{"name": "games/Pong (1 player).ch8","ticksPerSec":10}'>PONG</option>
-        <option value='{"name": "games/Pong [Paul Vervalin, 1990].ch8","ticksPerSec":10}'>PONG (2-PLAYER)</option>
-        <option value='{"name": "games/Tetris [Fran Dachille, 1991].ch8","ticksPerSec":10}'>TETRIS</option>
-      </select>
-      <button type="button" id="start-stop-button" disabled>Start</button>
-    </div>
-    
-    <hr/>
-    <textarea class="emscripten" id="output" rows="8"></textarea>
-    <hr>
-    <script type='text/javascript'>
-      var statusElement = document.getElementById('status');
-      var progressElement = document.getElementById('progress');
-      var spinnerElement = document.getElementById('spinner');
+<body>
+  <hr />
+  <figure style="overflow:visible;" id="spinner">
+    <div class="spinner"></div>
+    <div style="margin-top:0.5em; text-align: center;"><strong>CHIP-8 Emulator</strong></div>
+  </figure>
+  <div class="emscripten" id="status">Downloading...</div>
+  <div class="emscripten">
+    <progress value="0" max="100" id="progress" hidden=1></progress>
+  </div>
+  <div class="emscripten_border">
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+  </div>
+  <hr />
+  <div class="emscripten">
+    <select id="rom-dropdown">
+      <option>SELECT ROM</option>
+      <option value='{"name": "games/Astro Dodge [Revival Studios, 2008].ch8","ticksPerSec":15}'>ASTRO DODGE</option>
+      <option value='{"name": "games/Blinky [Hans Christian Egeberg, 1991].ch8","ticksPerSec":40}'>BLINKY (PAC-MAN)
+      </option>
+      <option value='{"name": "games/Breakout (Brix hack) [David Winter, 1997].ch8","ticksPerSec":10}'>BREAKOUT</option>
+      <option value='{"name": "games/Connect 4 [David Winter].ch8","ticksPerSec":1}'>CONNECT 4</option>
+      <option value='{"name": "games/Filter.ch8","ticksPerSec":10}'>FILTER</option>
+      <option value='{"name": "games/Space Invaders [David Winter].ch8","ticksPerSec":10}'>SPACE INVADERS</option>
+      <option value='{"name": "demos/Trip8 Demo (2008) [Revival Studios].ch8","ticksPerSec":40}'>TRIP8 (DEMO)</option>
+      <option value='{"name": "games/Kaleidoscope [Joseph Weisbecker, 1978].ch8","ticksPerSec":10}'>KALEIDOSCOPE
+      </option>
+      <option value='{"name": "games/Lunar Lander (Udo Pernisz, 1979).ch8","ticksPerSec":3}'>LUNAR LANDER</option>
+      <option value='{"name": "games/Pong (1 player).ch8","ticksPerSec":10}'>PONG</option>
+      <option value='{"name": "games/Pong [Paul Vervalin, 1990].ch8","ticksPerSec":10}'>PONG (2-PLAYER)</option>
+      <option value='{"name": "games/Tetris [Fran Dachille, 1991].ch8","ticksPerSec":10}'>TETRIS</option>
+    </select>
+    <button type="button" id="start-stop-button" disabled>Start</button>
+  </div>
+  <hr>
+  {{{ SCRIPT }}}
+</body>
 
-      var Module = {
-        noInitialRun: true,
-        preRun: [],
-        postRun: [],
-        print: (function() {
-          var element = document.getElementById('output');
-          if (element) element.value = ''; // clear browser cache
-          return function(text) {
-            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
-            // These replacements are necessary if you render to raw HTML
-            //text = text.replace(/&/g, "&amp;");
-            //text = text.replace(/</g, "&lt;");
-            //text = text.replace(/>/g, "&gt;");
-            //text = text.replace('\n', '<br>', 'g');
-            console.log(text);
-            if (element) {
-              element.value += text + "\n";
-              element.scrollTop = element.scrollHeight; // focus on bottom
-            }
-          };
-        })(),
-        printErr: function(text) {
-          if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
-          console.error(text);
-        },
-        canvas: (function() {
-          var canvas = document.getElementById('canvas');
-
-          // As a default initial behavior, pop up an alert when webgl context is lost. To make your
-          // application robust, you may want to override this behavior before shipping!
-          // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
-          canvas.addEventListener("webglcontextlost", function(e) { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
-
-          return canvas;
-        })(),
-        setStatus: function(text) {
-          if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
-          if (text === Module.setStatus.last.text) return;
-          var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
-          var now = Date.now();
-          if (m && now - Module.setStatus.last.time < 30) return; // if this is a progress update, skip it if too soon
-          Module.setStatus.last.time = now;
-          Module.setStatus.last.text = text;
-          if (m) {
-            text = m[1];
-            progressElement.value = parseInt(m[2])*100;
-            progressElement.max = parseInt(m[4])*100;
-            progressElement.hidden = false;
-            spinnerElement.hidden = false;
-          } else {
-            progressElement.value = null;
-            progressElement.max = null;
-            progressElement.hidden = true;
-            if (!text) spinnerElement.hidden = true;
-          }
-          statusElement.innerHTML = text;
-        },
-        totalDependencies: 0,
-        monitorRunDependencies: function(left) {
-          this.totalDependencies = Math.max(this.totalDependencies, left);
-          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
-        },
-        running: false,
-        selectedRomUInt8Array: [],
-        ticksPerSec: 10,
-        loadCurrentRom: function()
-        {
-          this.ccall('loadRom', 'null', ['array', 'number'], [this.selectedRomUInt8Array, this.ticksPerSec]);
-        }
-
-      };
-      Module.setStatus('Downloading...');
-      window.onerror = function() {
-        Module.setStatus('Exception thrown, see JavaScript console');
-        spinnerElement.style.display = 'none';
-        Module.setStatus = function(text) {
-          if (text) Module.printErr('[post-exception status] ' + text);
-        };
-      };
-
-      Module['onRuntimeInitialized'] = function() {
-        let startStopButton = document.getElementById("start-stop-button");
-
-        document.querySelector("#rom-dropdown").onchange = function(event)
-        {
-          if(event.target.value === "SELECT ROM")
-          {
-            return;
-          }
-          
-          let romOptions = JSON.parse(event.target.value);
-
-          const romName = romOptions["name"];
-          const romPath = "bin/roms/revival/" + romName + "\0";
-          Module.selectedRomUInt8Array = new TextEncoder().encode(romPath);
-
-          Module.ticksPerSec = romOptions["ticksPerSec"];
-
-          startStopButton.disabled = false;
-
-          Module.loadCurrentRom();
-        }
-        startStopButton.addEventListener("click", () => {
-          if (Module.running) {
-            Module.ccall('stop', null, null, null);
-            startStopButton.innerHTML = "Start";
-            Module.running = false;
-          } else {
-            Module.loadCurrentRom();
-            Module.ccall('main', null, null, null);
-            startStopButton.innerHTML = "Stop";
-            Module.running = true;
-          }
-        });
-      }
-    </script>
-    {{{ SCRIPT }}}
-  </body>
 </html>
