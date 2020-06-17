@@ -1,18 +1,16 @@
 # CHIP-8 Emulator [![Build Status](https://travis-ci.com/dominikrys/chip-8-emulator.svg?branch=master)](https://travis-ci.com/dominikrys/chip-8-emulator) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-This is a CHIP-8 emulator written in C++17 which uses SDL2 for sound, graphics and input.
-
 [**Compiled to WebAssembly and hosted on the web**](http://dominikrys.com/chip-8).
+
+This is a CHIP-8 emulator written in C++17 which uses SDL2 for sound, graphics and input. 
+
+*CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in the 1970s. It was made to allow video games to be more easily programmed for 8-bit microcomputers at the time, and runs on a CHIP-8 virtual machine.*
 
 ## Screenshots
 
 |           ![Pong](docs/img/pong.png)           |     ![Blinky](docs/img/blinky.png)     |
 | :--------------------------------------------: | :------------------------------------: |
 | ![Space Invaders](docs/img/space_invaders.png) | ![Trip8 Demo](docs/img/trip8_demo.png) |
-
-## CHIP-8 Description
-
-CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in the 1970s. It was made to allow video games to be more easily programmed for 8-bit microcomputers at the time, and runs on a CHIP-8 virtual machine.
 
 ## Building
 
