@@ -18,14 +18,14 @@ extern "C" {
 void loadRom(char *path, int cyclesPerTick) {
     kCyclesPerTick = cyclesPerTick;
 
-    kChip8.resetState();
+    kChip8.reset();
     kChip8.loadRom(path);
 }
 
 void stop() {
     emscripten_cancel_main_loop();
 
-    kChip8.resetState();
+    kChip8.reset();
     auto buffer = kChip8.video();
     kRenderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
 }
@@ -51,15 +51,7 @@ void mainLoop() {
 }
 
 int main() {
-    try
-    {
-        emscripten_set_main_loop(mainLoop, 0, 0);
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << std::endl;
-        return EXIT_FAILURE;
-    }
+    emscripten_set_main_loop(mainLoop, 0, 0);
 
     return EXIT_SUCCESS;
 }

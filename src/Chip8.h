@@ -17,7 +17,7 @@ class Chip8 {
 public:
     explicit Chip8(Mode mode);
 
-    void resetState();
+    void reset();
 
     void cycle();
 

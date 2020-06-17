@@ -40,7 +40,7 @@ Chip8::Chip8(Mode mode) : mode_{mode},
                           randByte_{std::uniform_int_distribution<uint8_t>(std::numeric_limits<uint8_t>::min(),
                                                                            std::numeric_limits<uint8_t>::max())},
                           timer_{TIMER_DELAY} {
-    resetState();
+    reset();
 
     for (unsigned int i = 0; i < FONT_SET_SIZE; i++)
     {
@@ -91,7 +91,7 @@ Chip8::Chip8(Mode mode) : mode_{mode},
     funcTableF_[0x65] = &Chip8::opcodeFX65;
 }
 
-void Chip8::resetState() {
+void Chip8::reset() {
     opcode_ = 0;
     index_ = 0;
     pc_ = 0x200u;
