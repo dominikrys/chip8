@@ -11,7 +11,7 @@
 Config kConfig{};
 Chip8 kChip8{kConfig.mode_};
 KeyboardHandler kKeyboardHandler(kChip8.keys());
-Renderer kRenderer{"CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, kConfig.videoScale_};
+Renderer kRenderer{"WebAssembly CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, kConfig.videoScale_};
 int kCyclesPerTick = 10;
 
 extern "C" {
