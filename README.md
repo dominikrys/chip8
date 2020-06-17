@@ -1,8 +1,14 @@
-# CHIP-8 Emulator [![Build Status](https://travis-ci.com/dominikrys/chip-8-emulator.svg?branch=master)](https://travis-ci.com/dominikrys/chip-8-emulator) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+# CHIP-8 Emulator
+[![Build Status](https://travis-ci.com/dominikrys/chip-8-emulator.svg?branch=master)](https://travis-ci.com/dominikrys/chip-8-emulator)
+[![Website](https://img.shields.io/website?down_color=lightgrey&down_message=offline&up_color=brightgreen&up_message=online&url=https%3A%2F%2Fdominikrys.com%2Fchip-8%2F)](https://dominikrys.com/chip-8/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Release](https://img.shields.io/github/release/dominikrys/chip-8-emulator.svg)](https://github.com/dominikrys/chip-8-emulator/releases)
+
+This is a CHIP-8 emulator written in C++17 which uses SDL2 for sound, graphics and input. 
 
 [**Compiled to WebAssembly and hosted on the web**](http://dominikrys.com/chip-8).
 
-This is a CHIP-8 emulator written in C++17 which uses SDL2 for sound, graphics and input. 
+Compiled Linux binaries available under [releases](https://github.com/dominikrys/chip-8-emulator/releases).
 
 *CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in the 1970s. It was made to allow video games to be more easily programmed for 8-bit microcomputers at the time, and runs on a CHIP-8 virtual machine.*
 
