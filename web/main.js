@@ -89,12 +89,12 @@ Module["onRuntimeInitialized"] = function () {
   startStopButton.addEventListener("click", () => {
     if (Module.running) {
       Module.ccall("stop", null, null, null);
-      startStopButton.innerHTML = "Start";
+      startStopButton.innerHTML = "START";
       Module.running = false;
     } else {
       Module.loadCurrentRom();
       Module.ccall("main", null, null, null);
-      startStopButton.innerHTML = "Stop";
+      startStopButton.innerHTML = "STOP";
       Module.running = true;
     }
   });
