@@ -9,7 +9,7 @@ body {
 
 p,
 h1,
-h3 {
+h4 {
   text-align: center;
 }
 
@@ -21,11 +21,6 @@ h1 {
 p {
   font-size: 14px;
   margin-top: 25px;
-}
-
-h3 {
-  text-decoration: underline;
-  margin-top: 30px;
 }
 
 .emscripten {
@@ -62,7 +57,14 @@ canvas.emscripten {
   background-color: rgb(20, 20, 20);
 }
 
-/*Keyboard*/
+/*Controls*/
+h4 {
+  text-decoration: underline;
+  font-weight: normal;
+  margin-top: 30px;
+  margin-bottom: 25px;
+}
+
 #keyboard {
   display: flex;
   justify-content: center;
@@ -70,7 +72,8 @@ canvas.emscripten {
 }
 
 caption {
-  padding-bottom: 15px;
+  padding-bottom: 14px;
+  font-size: 14px;
 }
 
 .tg {
@@ -112,7 +115,7 @@ caption {
 .spinner {
   height: 50px;
   width: 50px;
-  margin: 0px auto;
+  margin: 30px auto 10px auto;
   -webkit-animation: rotation 0.8s linear infinite;
   -moz-animation: rotation 0.8s linear infinite;
   -o-animation: rotation 0.8s linear infinite;
