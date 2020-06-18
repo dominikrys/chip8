@@ -48,6 +48,16 @@ canvas.emscripten {
 }
 
 /*Keyboard*/
+#keyboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+caption {
+  padding: 15px;
+}
+
 .tg {
   border-collapse: collapse;
   border-spacing: 0;
@@ -79,14 +89,18 @@ canvas.emscripten {
   color: #ffffff;
   text-align: left;
   vertical-align: top;
+  text-align: center;
 }
 
 .keyboard-element {
+  margin-left: 10px;
+  margin-right: 10px;
   display: inline-block;
 }
 
 #arrow {
-  font-size: 50px;
+  font-size: 70px;
+  vertical-align: 40px;
 }
 
 /*Emscripten Spinner*/
