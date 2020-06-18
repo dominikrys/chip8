@@ -43,7 +43,7 @@ Module = {
   running: false,
   selectedRomUInt8Array: [],
   ticksPerSec: 10,
-  loadCurrentRom: function () {
+  loadSelectedRom: function () {
     this.ccall(
       "loadRom",
       "null",
@@ -55,8 +55,8 @@ Module = {
 
 Module.setStatus("Downloading...");
 window.onerror = function () {
-  Module.setStatus("Exception thrown, see JavaScript console");
   spinnerElement.style.display = "none";
+  window.location.reload(true);
 };
 
 const startStopButton = document.getElementById("start-stop-button");
@@ -67,16 +67,15 @@ function getRomOptionsFromDropdown(optionText) {
   }
 
   let romOptions = JSON.parse(optionText);
-
   const romName = romOptions["name"];
   const romPath = "bin/roms/revival/" + romName + "\0";
-  Module.selectedRomUInt8Array = new TextEncoder().encode(romPath);
 
+  Module.selectedRomUInt8Array = new TextEncoder().encode(romPath);
   Module.ticksPerSec = romOptions["ticksPerSec"];
 
   startStopButton.disabled = false;
 
-  Module.loadCurrentRom();
+  Module.loadSelectedRom();
 }
 
 Module["onRuntimeInitialized"] = function () {
@@ -92,7 +91,7 @@ Module["onRuntimeInitialized"] = function () {
       startStopButton.innerHTML = "START";
       Module.running = false;
     } else {
-      Module.loadCurrentRom();
+      Module.loadSelectedRom();
       Module.ccall("main", null, null, null);
       startStopButton.innerHTML = "STOP";
       Module.running = true;
