@@ -1,16 +1,17 @@
 # CHIP-8 Emulator
+
 [![Build Status](https://travis-ci.com/dominikrys/chip-8-emulator.svg?branch=master)](https://travis-ci.com/dominikrys/chip-8-emulator)
 [![Website](https://img.shields.io/website?down_color=lightgrey&down_message=offline&up_color=brightgreen&up_message=online&url=https%3A%2F%2Fdominikrys.com%2Fchip-8%2F)](https://dominikrys.com/chip-8/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Release](https://img.shields.io/github/release/dominikrys/chip-8-emulator.svg)](https://github.com/dominikrys/chip-8-emulator/releases)
 
-This is a CHIP-8 emulator written in C++17 which uses SDL2 for sound, graphics and input. 
+This is a CHIP-8 emulator written in C++17 which uses SDL2 for sound, graphics and input.
 
 [**Compiled to WebAssembly and hosted on the web**](http://dominikrys.com/chip-8).
 
 Compiled Linux binaries available under [releases](https://github.com/dominikrys/chip-8-emulator/releases).
 
-*CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in the 1970s. It was made to allow video games to be more easily programmed for 8-bit microcomputers at the time, and runs on a CHIP-8 virtual machine.*
+_CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in the 1970s. It was made to allow video games to be more easily programmed for 8-bit microcomputers at the time, and runs on a CHIP-8 virtual machine._
 
 ## Screenshots
 
@@ -64,6 +65,7 @@ Run the following from the source directory:
   - Navigate to a sub-directory to where CMake files will be generated to (e.g. `chip-8-emulator/cmake-build-emscripten`)
   - **(On Windows):** Run `emcmake cmake -G "CodeBlocks - MinGW Makefiles" .. -DCMAKE_SH="CMAKE_SH-NOTFOUND"`
   - **(On Linux):** Run `emcmake cmake -G "CodeBlocks - Unix Makefiles" ..`
+  - _Optionally in the above step you can specify the build type by adding `-DCMAKE_BUILD_TYPE=Debug|Release`_
   - The files have been output to `chip-8-emulator/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
 
 ## Usage
