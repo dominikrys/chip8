@@ -55,8 +55,11 @@ Module = {
 
 Module.setStatus("Downloading...");
 window.onerror = function () {
+  Module.setStatus("An error occurred, reloading...");
   spinnerElement.style.display = "none";
-  window.location.reload(true);
+  setTimeout(function () {
+    window.location.reload(true);
+  }, 1000);
 };
 
 const startStopButton = document.getElementById("start-stop-button");
