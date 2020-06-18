@@ -8,7 +8,8 @@ body {
 }
 
 h1 {
-  margin-top: 25px;
+  margin-top: 30px;
+  margin-bottom: 10px;
   text-align: center;
 }
 
@@ -44,6 +45,48 @@ div.emscripten {
 canvas.emscripten {
   border: 1px solid rgb(50, 50, 50);
   background-color: rgb(20, 20, 20);
+}
+
+/*Keyboard*/
+.tg {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.tg td {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 14px;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+.tg th {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 14px;
+  font-weight: normal;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+.tg .tg-il3a {
+  border-color: #ffffff;
+  color: #ffffff;
+  text-align: left;
+  vertical-align: top;
+}
+
+.keyboard-element {
+  display: inline-block;
+}
+
+#arrow {
+  font-size: 50px;
 }
 
 /*Emscripten Spinner*/
