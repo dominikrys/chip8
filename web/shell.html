@@ -7,12 +7,13 @@
   <title>WebAssembly CHIP-8 Emulator</title>
   <meta name="author" content="Dominik Rys">
   <meta name="description" content="CHIP-8 Emulator written in C++ and compiled into WebAssembly">
-  <link rel="stylesheet" href="main.css">
+  <link href="main.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="main.js" async></script>
 </head>
 
 <body>
-  <hr />
+  <h1>WASM CHIP-8 Emulator</h1>
   <figure style="overflow:visible;" id="spinner">
     <div class="spinner"></div>
   </figure>
@@ -23,8 +24,7 @@
   <div class="emscripten_border">
     <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
   </div>
-  <hr />
-  <div class="emscripten">
+  <div class="emscripten" id="menu">
     <select id="rom-dropdown">
       <option>SELECT ROM</option>
       <option value='{"name": "games/Astro Dodge [Revival Studios, 2008].ch8","ticksPerSec":15}'>ASTRO DODGE</option>
@@ -44,7 +44,6 @@
     </select>
     <button type="button" id="start-stop-button" disabled>START</button>
   </div>
-  <hr>
   {{{ SCRIPT }}}
 </body>
 

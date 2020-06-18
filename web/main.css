@@ -1,27 +1,50 @@
+* {
+  font-family: "Press Start 2P", "consolas", "Courier New";
+}
+
+body {
+  color: white;
+  background-color: black;
+}
+
+h1 {
+  margin-top: 25px;
+  text-align: center;
+}
+
 .emscripten {
   padding-right: 0;
   margin-left: auto;
   margin-right: auto;
   display: block;
+  font-family: inherit;
 }
 
-textarea.emscripten {
-  font-family: monospace;
-  width: 80%;
+#status {
+  padding: 10px;
+}
+
+#menu {
+  padding-top: 30px;
+}
+
+#menu > select,
+#menu > button {
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 0;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 div.emscripten {
   text-align: center;
 }
 
-div.emscripten_border {
-  border: 1px solid black;
-}
-
 /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
 canvas.emscripten {
-  border: 0px none;
-  background-color: black;
+  border: 1px solid rgb(50, 50, 50);
+  background-color: rgb(20, 20, 20);
 }
 
 .spinner {
