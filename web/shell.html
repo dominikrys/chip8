@@ -27,6 +27,9 @@
 
   <h1>WASM CHIP-8 Emulator</h1>
 
+  <p>A CHIP-8 emulator written in C++ and compiled into WebAssembly.</p>
+  <p>Select a ROM from the dropdown and press 'START' to play!</p>
+
   <figure style="overflow:visible;" id="spinner">
     <div class="spinner"></div>
   </figure>
@@ -58,6 +61,8 @@
     </select>
     <button type="button" id="start-stop-button" disabled>START</button>
   </div>
+
+  <h3>Controls</h3>
 
   <div id="keyboard">
     <table class="tg keyboard-element">
@@ -95,7 +100,7 @@
     <span class="keyboard-element" id="arrow">&#8594;</span>
 
     <table class="tg keyboard-element">
-      <caption>CHIP-8 Controls</caption>
+      <caption>CHIP-8</caption>
       <thead>
         <tr>
           <th class="tg-il3a">1</th>
