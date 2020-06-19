@@ -15,4 +15,4 @@ cmake-build-*/
 .idea/**/contentModel.xml
 
 # Emscripten outputs
-/web/chip-8.*
+/web/chip8.*
