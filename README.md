@@ -66,6 +66,8 @@ Run the following from the source directory:
   - **(On Windows):** Run `emcmake cmake -G "CodeBlocks - MinGW Makefiles" .. -DCMAKE_SH="CMAKE_SH-NOTFOUND"`
   - **(On Linux):** Run `emcmake cmake -G "CodeBlocks - Unix Makefiles" ..`
   - _Optionally in the above step you can specify the build type by adding `-DCMAKE_BUILD_TYPE=Debug|Release`_
+  - **(On Windows):** Run `mingw32-make`
+  - **(On Linux):** Run `make`
   - The files have been output to `chip-8-emulator/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
 
 ## Usage
