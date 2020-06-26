@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Release](https://img.shields.io/github/release/dominikrys/chip-8-emulator.svg)](https://github.com/dominikrys/chip-8-emulator/releases)
 
-This is a CHIP-8 emulator written in C++17 which uses SDL2 for sound, graphics and input.
+A CHIP-8 emulator written in C++17. SDL2 is used for sound, graphics and input. I wrote this to learn about software emulation, setting up CI pipelines and compiling to WebAssembly.
 
 [**Compiled to WebAssembly and hosted on the web**](http://dominikrys.com/chip-8).
 
@@ -38,7 +38,7 @@ _CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in
   - **Linux:** can be obtained from the `ubuntu-toolchain-r/test` PPA repo or from the [Kitware apt repo](https://apt.kitware.com/).
   - **Windows:** can be downloaded from [here](https://cmake.org/download/).
 
-- **Emscripten 1.39.17 _(For Webassembly only)_**
+- **Emscripten 1.39.17 _(required for WebAssembly output only)_**
   - Download [here](https://emscripten.org/docs/getting_started/downloads.html).
 
 ### Compiling
