@@ -1,9 +1,9 @@
 # CHIP-8 Emulator
 
-[![Build Status](https://travis-ci.com/dominikrys/chip-8-emulator.svg?branch=master)](https://travis-ci.com/dominikrys/chip-8-emulator)
-[![Website](https://img.shields.io/website?down_color=lightgrey&down_message=offline&up_color=brightgreen&up_message=online&url=https%3A%2F%2Fdominikrys.com%2Fchip8)](https://dominikrys.com/chip8/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/github/release/dominikrys/chip-8-emulator.svg)](https://github.com/dominikrys/chip-8-emulator/releases)
+[![Build Status](https://img.shields.io/travis/dominikrys/chip-8-emulator/master?style=flat-square)](https://travis-ci.com/dominikrys/chip-8-emulator)
+[![Website](https://img.shields.io/website?down_color=lightgrey&style=flat-square&down_message=offline&up_color=brightgreen&up_message=online&url=https%3A%2F%2Fdominikrys.com%2Fchip8)](https://dominikrys.com/chip8/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Release](https://img.shields.io/github/release/dominikrys/chip-8-emulator.svg?style=flat-square)](https://github.com/dominikrys/chip-8-emulator/releases)
 
 A CHIP-8 emulator written in C++17. SDL2 is used for sound, graphics and input. I wrote this to learn about software emulation, setting up CI pipelines and compiling to WebAssembly.
 
