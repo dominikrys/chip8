@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Release](https://img.shields.io/github/release/dominikrys/chip-8-emulator.svg?style=flat-square)](https://github.com/dominikrys/chip-8-emulator/releases)
 
-A CHIP-8 emulator written in C++17. SDL2 is used for sound, graphics and input. I wrote this to learn about software emulation, setting up CI pipelines and compiling to WebAssembly.
+A CHIP-8 emulator written in C++17. SDL2 is used for sound, graphics and input. The goal of this project was to learn about software emulation, setting up CI pipelines and compiling to WebAssembly.
 
 [**Compiled to WebAssembly and hosted on the web**](http://dominikrys.com/chip-8).
 
