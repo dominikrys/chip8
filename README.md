@@ -59,16 +59,21 @@ Run the following from the source directory:
 
 - **WebAssembly:**
 
-  - Install Emscripten: `./emsdk install latest`
-  - Activate Emscripten: `./emsdk activate latest`
-  - **(On Windows):** emsdk install mingw32-make using `emsdk install mingw-7.1.0-64bit`
-  - Navigate to a sub-directory to where CMake files will be generated to (e.g. `chip-8-emulator/cmake-build-emscripten`)
-  - **(On Windows):** Run `emcmake cmake -G "CodeBlocks - MinGW Makefiles" .. -DCMAKE_SH="CMAKE_SH-NOTFOUND"`
-  - **(On Linux):** Run `emcmake cmake -G "CodeBlocks - Unix Makefiles" ..`
-  - _Optionally in the above step you can specify the build type by adding `-DCMAKE_BUILD_TYPE=Debug|Release`_
-  - **(On Windows):** Run `mingw32-make`
-  - **(On Linux):** Run `make`
-  - The files have been output to `chip-8-emulator/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
+  - **Windows:**
+
+    - Navigate to your `emsdk` directory and install Emscripten using the command line: `emsdk.bat install latest`
+    - Activate Emscripten: `emsdk.bat activate latest`
+    - Install mingw32-make: `emsdk install mingw-7.1.0-64bit`
+    - Navigate to a sub-directory in this repo to where CMake files will be generated to (e.g. `chip-8-emulator/cmake-build-emscripten`)
+    - Run `emcmake cmake -G "CodeBlocks - MinGW Makefiles" .. -DCMAKE_SH="CMAKE_SH-NOTFOUND" && mingw32-make`
+    - The files have been output to `chip-8-emulator/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
+
+  - **Linux:**
+    - Navigate to your `emsdk` directory and install Emscripten using the terminal: `./emsdk install latest`
+    - Activate Emscripten: `./emsdk activate latest`
+    - Navigate to a sub-directory in this repo to where CMake files will be generated to (e.g. `chip-8-emulator/cmake-build-emscripten`)
+    - Run `emcmake cmake -G "CodeBlocks - Unix Makefiles" .. && make`
+    - The files have been output to `chip-8-emulator/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
 
 ## Usage
 
