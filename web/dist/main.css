@@ -1,0 +1,201 @@
+* {
+  font-family: "Press Start 2P", "consolas", "Courier New";
+}
+
+body {
+  color: white;
+  background-color: black;
+}
+
+p,
+h1,
+h4 {
+  text-align: center;
+}
+
+h1 {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+p {
+  font-size: 14px;
+  margin-top: 25px;
+}
+
+.emscripten {
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  font-family: inherit;
+}
+
+#status {
+  padding: 10px;
+}
+
+#menu {
+  padding-top: 30px;
+}
+
+#menu > select,
+#menu > button {
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 0;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+div.emscripten {
+  text-align: center;
+}
+
+canvas.emscripten {
+  border: 1px solid rgb(50, 50, 50);
+  background-color: rgb(20, 20, 20);
+}
+
+/*Controls*/
+h4 {
+  text-decoration: underline;
+  font-weight: normal;
+  margin-top: 30px;
+  margin-bottom: 25px;
+}
+
+#keyboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+caption {
+  padding-bottom: 14px;
+  font-size: 14px;
+}
+
+.tg {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.tg td,
+.tg th {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 14px;
+  overflow: hidden;
+  padding: 15px 10px;
+  word-break: normal;
+}
+
+.tg .tg-il3a {
+  border-color: #ffffff;
+  color: #ffffff;
+  text-align: left;
+  vertical-align: top;
+  text-align: center;
+}
+
+.keyboard-element {
+  margin-left: 10px;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+#arrow {
+  font-size: 70px;
+}
+
+/*Emscripten Spinner*/
+
+.spinner {
+  height: 50px;
+  width: 50px;
+  margin: 30px auto 10px auto;
+  -webkit-animation: rotation 0.8s linear infinite;
+  -moz-animation: rotation 0.8s linear infinite;
+  -o-animation: rotation 0.8s linear infinite;
+  animation: rotation 0.8s linear infinite;
+  border-left: 10px solid rgb(0, 150, 240);
+  border-right: 10px solid rgb(0, 150, 240);
+  border-bottom: 10px solid rgb(0, 150, 240);
+  border-top: 10px solid rgb(100, 0, 200);
+  border-radius: 100%;
+  background-color: rgb(200, 100, 250);
+}
+
+@-webkit-keyframes rotation {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes rotation {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-o-keyframes rotation {
+  from {
+    -o-transform: rotate(0deg);
+  }
+
+  to {
+    -o-transform: rotate(360deg);
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*Github Corner*/
+.github-corner:hover .octo-arm {
+  animation: octocat-wave 560ms ease-in-out;
+}
+
+@keyframes octocat-wave {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+
+  20%,
+  60% {
+    transform: rotate(-25deg);
+  }
+
+  40%,
+  80% {
+    transform: rotate(10deg);
+  }
+}
+
+@media (max-width: 500px) {
+  .github-corner:hover .octo-arm {
+    animation: none;
+  }
+
+  .github-corner .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+  }
+}
