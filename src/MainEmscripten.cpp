@@ -1,57 +1,59 @@
 #include "Audio.h"
 #include "Chip8.h"
 #include "Config.h"
+#include "Configurator.h"
 #include "KeyboardHandler.h"
 #include "Renderer.h"
-
-#include <emscripten.h>
+#include "Timer.h"
 
 #include <iostream>
 
-Config kConfig{};
-Chip8 kChip8{kConfig.mode_};
-KeyboardHandler kKeyboardHandler(kChip8.keys());
-Renderer kRenderer{"WASM CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, 13};
-int kCyclesPerTick = 10;
-
-extern "C" {
-void loadRom(char *path, int cyclesPerTick) {
-    kCyclesPerTick = cyclesPerTick;
-
-    kChip8.reset();
-    kChip8.loadRom(path);
-}
-
-void stop() {
-    emscripten_cancel_main_loop();
-
-    kChip8.reset();
-    auto buffer = kChip8.video();
-    kRenderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
-}
-}
-
-void mainLoop() {
-    if (kKeyboardHandler.handle())
+int main(int argc, char **argv) {
+    try
     {
-        stop();
-    }
+        Configurator configurator{argc, argv};
+        Config config{};
+        configurator.configure(config);
 
-    for (int i = 0; i < kCyclesPerTick; i++)
+        Chip8 chip8{config.mode_};
+        chip8.loadRom(config.romPath_);
+
+        KeyboardHandler keyboardHandler(chip8.keys());
+        Renderer renderer{"CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, config.videoScale_};
+        Audio audio{config.mute_};
+
+        const double cycleDelay = (1.0 / config.cpuFrequency_) * 1000000000;
+        Timer cycleTimer(cycleDelay);
+
+        bool quit = false;
+
+        while (!quit)
+        {
+            quit = keyboardHandler.handle();
+
+            if (cycleTimer.intervalElapsed())
+            {
+                chip8.cycle();
+
+                if (chip8.drawFlag())
+                {
+                    auto buffer = chip8.video();
+                    renderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
+                    chip8.disableDrawFlag();
+                }
+                else if (chip8.soundFlag())
+                {
+                    audio.play();
+                    chip8.disableSoundFlag();
+                }
+            }
+        }
+    }
+    catch (const std::exception &e)
     {
-        kChip8.cycle();
+        std::cerr << e.what();
+        std::exit(EXIT_FAILURE);
     }
-
-    if (kChip8.drawFlag())
-    {
-        auto buffer = kChip8.video();
-        kRenderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
-        kChip8.disableDrawFlag();
-    }
-}
-
-int main() {
-    emscripten_set_main_loop(mainLoop, 0, 0);
 
     return EXIT_SUCCESS;
 }

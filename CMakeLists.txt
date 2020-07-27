@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(chip-8-emulator)
+project(chip8)
 
 set(CMAKE_CXX_STANDARD 17)
 

@@ -1,15 +1,15 @@
 # CHIP-8 Emulator
 
-[![Build Status](https://img.shields.io/travis/dominikrys/chip-8-emulator/master?style=flat-square)](https://travis-ci.com/dominikrys/chip-8-emulator)
+[![Build Status](https://img.shields.io/travis/dominikrys/chip8/master?style=flat-square)](https://travis-ci.com/dominikrys/chip8)
 [![Website](https://img.shields.io/website?down_color=lightgrey&style=flat-square&down_message=offline&up_color=brightgreen&up_message=online&url=https%3A%2F%2Fdominikrys.com%2Fchip8)](https://dominikrys.com/chip8/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Release](https://img.shields.io/github/release/dominikrys/chip-8-emulator.svg?style=flat-square)](https://github.com/dominikrys/chip-8-emulator/releases)
+[![Release](https://img.shields.io/github/release/dominikrys/chip8.svg?style=flat-square)](https://github.com/dominikrys/chip8/releases)
 
 A CHIP-8 emulator written in C++17. SDL2 is used for sound, graphics and input. The goal of this project was to learn about software emulation, setting up CI pipelines and compiling to WebAssembly.
 
 [**Compiled to WebAssembly and hosted on the web**](http://dominikrys.com/chip-8).
 
-Compiled Linux binaries available under [releases](https://github.com/dominikrys/chip-8-emulator/releases).
+Compiled Linux binaries available under [releases](https://github.com/dominikrys/chip8/releases).
 
 _CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in the 1970s. It was made to allow video games to be more easily programmed for 8-bit microcomputers at the time, and runs on a CHIP-8 virtual machine._
 
@@ -64,16 +64,16 @@ Run the following from the source directory:
     - Navigate to your `emsdk` directory and install Emscripten using the command line: `emsdk.bat install latest`
     - Activate Emscripten: `emsdk.bat activate latest`
     - Install mingw32-make: `emsdk install mingw-7.1.0-64bit`
-    - Navigate to a sub-directory in this repo to where CMake files will be generated to (e.g. `chip-8-emulator/cmake-build-emscripten`)
+    - Navigate to a sub-directory in this repo to where CMake files will be generated to (e.g. `chip8/cmake-build-emscripten`)
     - Run `emcmake cmake -G "CodeBlocks - MinGW Makefiles" .. -DCMAKE_SH="CMAKE_SH-NOTFOUND" && mingw32-make`
-    - The files have been output to `chip-8-emulator/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
+    - The files have been output to `chip8/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
 
   - **Linux:**
     - Navigate to your `emsdk` directory and install Emscripten using the terminal: `./emsdk install latest`
     - Activate Emscripten: `./emsdk activate latest`
-    - Navigate to a sub-directory in this repo to where CMake files will be generated to (e.g. `chip-8-emulator/cmake-build-emscripten`)
+    - Navigate to a sub-directory in this repo to where CMake files will be generated to (e.g. `chip8/cmake-build-emscripten`)
     - Run `emcmake cmake -G "CodeBlocks - Unix Makefiles" .. && make`
-    - The files have been output to `chip-8-emulator/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
+    - The files have been output to `chip8/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
 
 ## Usage
 
