@@ -43,37 +43,39 @@ _CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in
 
 ### Compiling
 
+#### Native
 Run the following from the source directory:
 
-- **Linux:**
+##### Windows
 
-  `cmake . -B <output dir> -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles"`
+```console
+cmake.exe . -B <output dir> -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles"`
+cmake.exe --build <output dir>`  
+```
+  
+##### Linux
 
-  `cmake --build <output dir>`
+```bash
+$ cmake . -B <output dir> -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles"
+$ cmake --build <output dir>
+```
 
-- **Windows:**
+#### WebAssembly
 
-  `cmake.exe . -B <output dir> -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles"`
+##### Windows
+- Navigate to your `emsdk` directory and install Emscripten using the command line: `emsdk install latest`
+- Activate Emscripten: `emsdk activate latest`
+- Install mingw32-make: `emsdk install mingw-7.1.0-64bit`
+- Navigate to a sub-directory in this repo to where CMake files will be generated to (e.g. `chip8/cmake-build-emscripten`)
+- Run `emcmake cmake -G "CodeBlocks - MinGW Makefiles" .. -DCMAKE_SH="CMAKE_SH-NOTFOUND" && mingw32-make`
+- The files have been output to `chip8/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
 
-  `cmake.exe --build <output dir>`
-
-- **WebAssembly:**
-
-  - **Windows:**
-
-    - Navigate to your `emsdk` directory and install Emscripten using the command line: `emsdk.bat install latest`
-    - Activate Emscripten: `emsdk.bat activate latest`
-    - Install mingw32-make: `emsdk install mingw-7.1.0-64bit`
-    - Navigate to a sub-directory in this repo to where CMake files will be generated to (e.g. `chip8/cmake-build-emscripten`)
-    - Run `emcmake cmake -G "CodeBlocks - MinGW Makefiles" .. -DCMAKE_SH="CMAKE_SH-NOTFOUND" && mingw32-make`
-    - The files have been output to `chip8/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
-
-  - **Linux:**
-    - Navigate to your `emsdk` directory and install Emscripten using the terminal: `./emsdk install latest`
-    - Activate Emscripten: `./emsdk activate latest`
-    - Navigate to a sub-directory in this repo to where CMake files will be generated to (e.g. `chip8/cmake-build-emscripten`)
-    - Run `emcmake cmake -G "CodeBlocks - Unix Makefiles" .. && make`
-    - The files have been output to `chip8/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
+##### Linux
+- Navigate to your `emsdk` directory and install Emscripten using the terminal: `./emsdk install latest`
+- Activate Emscripten: `./emsdk activate latest`
+- Navigate to a sub-directory in this repo to where CMake files will be generated to (e.g. `chip8/cmake-build-emscripten`)
+- Run `emcmake cmake -G "CodeBlocks - Unix Makefiles" .. && make`
+- The files have been output to `chip8/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
 
 ## Usage
 
