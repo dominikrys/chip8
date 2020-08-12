@@ -7,7 +7,7 @@
 
 A CHIP-8 emulator written in C++17. SDL2 is used for sound, graphics and input. The goal of this project was to learn about software emulation, setting up CI pipelines and compiling to WebAssembly.
 
-[**Compiled to WebAssembly and hosted on the web**](http://dominikrys.com/chip-8).
+[**Compiled to WebAssembly and hosted on the web**](http://dominikrys.com/chip8).
 
 Compiled Linux binaries available under [releases](https://github.com/dominikrys/chip8/releases).
 
