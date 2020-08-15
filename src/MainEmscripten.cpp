@@ -10,11 +10,11 @@ Config config{};
 Chip8 chip8{config.mode_};
 KeyboardHandler keyboardHandler(chip8.keys());
 Renderer renderer{"WASM CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, 13};
-int cyclesPerTick = 10;
+int cyclesPerFrame = 10;
 
 extern "C" {
-void loadRom(char *path, int cyclesPerTick_) {
-    cyclesPerTick = cyclesPerTick_;
+void loadRom(char *path, int cyclesPerFrame_) {
+    cyclesPerFrame = cyclesPerFrame_;
 
     chip8.reset();
     chip8.loadRom(path);
@@ -30,12 +30,9 @@ void stop() {
 }
 
 void mainLoop() {
-    if (keyboardHandler.handle())
-    {
-        stop();
-    }
+    keyboardHandler.handle();
 
-    for (int i = 0; i < cyclesPerTick; i++)
+    for (int i = 0; i < cyclesPerFrame; i++)
     {
         chip8.cycle();
     }
