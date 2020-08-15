@@ -6,47 +6,45 @@
 
 #include <emscripten.h>
 
-#include <iostream>
-
-Config kConfig{};
-Chip8 kChip8{kConfig.mode_};
-KeyboardHandler kKeyboardHandler(kChip8.keys());
-Renderer kRenderer{"WASM CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, 13};
-int kCyclesPerTick = 10;
+Config config{};
+Chip8 chip8{config.mode_};
+KeyboardHandler keyboardHandler(chip8.keys());
+Renderer renderer{"WASM CHIP-8 Emulator", VIDEO_WIDTH, VIDEO_HEIGHT, 13};
+int cyclesPerTick = 10;
 
 extern "C" {
-void loadRom(char *path, int cyclesPerTick) {
-    kCyclesPerTick = cyclesPerTick;
+void loadRom(char *path, int cyclesPerTick_) {
+    cyclesPerTick = cyclesPerTick_;
 
-    kChip8.reset();
-    kChip8.loadRom(path);
+    chip8.reset();
+    chip8.loadRom(path);
 }
 
 void stop() {
     emscripten_cancel_main_loop();
 
-    kChip8.reset();
-    auto buffer = kChip8.video();
-    kRenderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
+    chip8.reset();
+    auto buffer = chip8.video();
+    renderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
 }
 }
 
 void mainLoop() {
-    if (kKeyboardHandler.handle())
+    if (keyboardHandler.handle())
     {
         stop();
     }
 
-    for (int i = 0; i < kCyclesPerTick; i++)
+    for (int i = 0; i < cyclesPerTick; i++)
     {
-        kChip8.cycle();
+        chip8.cycle();
     }
 
-    if (kChip8.drawFlag())
+    if (chip8.drawFlag())
     {
-        auto buffer = kChip8.video();
-        kRenderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
-        kChip8.disableDrawFlag();
+        auto buffer = chip8.video();
+        renderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
+        chip8.disableDrawFlag();
     }
 }
 
