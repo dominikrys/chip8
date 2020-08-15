@@ -42,13 +42,13 @@ Module = {
   },
   running: false,
   selectedRomUInt8Array: [],
-  ticksPerSec: 10,
+  cyclesPerFrame: 10,
   loadSelectedRom: function () {
     this.ccall(
       "loadRom",
       "null",
       ["array", "number"],
-      [this.selectedRomUInt8Array, this.ticksPerSec]
+      [this.selectedRomUInt8Array, this.cyclesPerFrame]
     );
   },
 };
@@ -74,7 +74,7 @@ function getRomOptionsFromDropdown(optionText) {
   const romPath = "bin/roms/revival/" + romName + "\0";
 
   Module.selectedRomUInt8Array = new TextEncoder().encode(romPath);
-  Module.ticksPerSec = romOptions["ticksPerSec"];
+  Module.cyclesPerFrame = romOptions["cyclesPerFrame"];
 
   startStopButton.disabled = false;
 
