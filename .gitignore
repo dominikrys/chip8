@@ -16,3 +16,6 @@ cmake-build-*/
 
 # Emscripten outputs
 /web/chip8.*
+
+# Mac
+.DS_Store

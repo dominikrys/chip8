@@ -40,9 +40,11 @@ set(CMAKE_CXX_FLAGS "\
     -Wshadow \
     -pedantic")
 
-set(CMAKE_EXE_LINKER_FLAGS "\
-    -static-libgcc \
-    -static-libstdc++")
+if (NOT APPLE)
+    set(CMAKE_EXE_LINKER_FLAGS "\
+        -static-libgcc \
+        -static-libstdc++")
+endif()
 
 if (WIN32)
     if (${CMAKE_SIZEOF_VOID_P} MATCHES 8)
@@ -64,8 +66,17 @@ elseif (UNIX AND NOT EMSCRIPTEN)
     include(FindPkgConfig)
     pkg_search_module(SDL2 REQUIRED sdl2 >= 2.0.0)
 
-    set(CMAKE_C_COMPILER "gcc-9")
+    if (APPLE)
+        set(CMAKE_C_COMPILER "gcc")
+        set(CMAKE_CXX_COMPILER "g++")
+
+        set(SDL2_INCLUDE_DIRS "/usr/local/include")
+        set(SDL2_LIBRARIES "/usr/local/lib/libSDL2.dylib")
+
+    else()
+        set(CMAKE_C_COMPILER "gcc-9")
     set(CMAKE_CXX_COMPILER "g++-9")
+    endif()
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
