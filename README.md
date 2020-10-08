@@ -26,60 +26,77 @@ _CHIP-8 is an interpreted programming language developed by Joseph Weisbecker in
 - **C++17 compiler**
 
   - **Linux:** GCC 9. Can be obtained by installing `g++-9` from the `ubuntu-toolchain-r/test` PPA repo.
-  - **Windows:** MinGW-w64 8.0 (GCC 9.2). Can be obtained through MSYS2 by installing the `mingw-w64-x86_64-gcc` pacman package after updating MSYS2 with `pacman -Syu`. To run, download the [SDL2 runtime binaries](https://www.libsdl.org/download-2.0.php) and put SDL2.dll into the folder with your compiled binary
+  - **Windows:** MinGW-w64 8.0 (GCC 9.2). Can be obtained through MSYS2 by installing the `mingw-w64-x86_64-gcc` pacman package after updating MSYS2 with `pacman -Syu`. To run, download the [SDL2 runtime binaries](https://www.libsdl.org/download-2.0.php) and put SDL2.dll into the folder with your compiled binary.
+  - **macOS:** Install XCode command line tools using `xcode-select --install`.
 
 - **SDL2**
 
-  - **Linux:** get SDL2 by running `sudo apt install libsdl2-dev`.
+  - **Linux:** install using `sudo apt install libsdl2-dev`.
   - **Windows:** download the [SDL2-2.0.10 development libraries](https://www.libsdl.org/download-2.0.php) and place them under a new "external" folder in the root directory of this project.
+  - **macOS:** install using `brew install sdl2`.
 
 - **CMake 3.10**
 
   - **Linux:** can be obtained from the `ubuntu-toolchain-r/test` PPA repo or from the [Kitware apt repo](https://apt.kitware.com/).
   - **Windows:** can be downloaded from [here](https://cmake.org/download/).
+  - **macOS:** install using `brew install cmake`
 
 - **Emscripten 1.39.17 _(required for WebAssembly output only)_**
-  - Download [here](https://emscripten.org/docs/getting_started/downloads.html).
+  - Download instructions [here](https://emscripten.org/docs/getting_started/downloads.html).
 
-### Compiling
+### Compiling natively
 
-#### Native
-Run the following from the source directory:
-
-##### Windows
-
-```console
-cmake.exe . -B <output dir> -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles"`
-cmake.exe --build <output dir>`  
-```
-  
-##### Linux
+#### Linux and macOS
 
 ```bash
 $ cmake . -B <output dir> -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles"
 $ cmake --build <output dir>
 ```
 
-#### WebAssembly
+#### Windows
 
-##### Windows
-- Navigate to your `emsdk` directory and install Emscripten using the command line: `emsdk install latest`
-- Activate Emscripten: `emsdk activate latest`
-- Install mingw32-make: `emsdk install mingw-7.1.0-64bit`
-- Navigate to a sub-directory in this repo to where CMake files will be generated to (e.g. `chip8/cmake-build-emscripten`)
-- Run `emcmake cmake -G "CodeBlocks - MinGW Makefiles" .. -DCMAKE_SH="CMAKE_SH-NOTFOUND" && mingw32-make`
-- The files have been output to `chip8/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
+```console
+cmake.exe . -B <output dir> -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles"`
+cmake.exe --build <output dir>`  
+```
 
-##### Linux
-- Navigate to your `emsdk` directory and install Emscripten using the terminal: `./emsdk install latest`
-- Activate Emscripten: `./emsdk activate latest`
-- Navigate to a sub-directory in this repo to where CMake files will be generated to (e.g. `chip8/cmake-build-emscripten`)
-- Run `emcmake cmake -G "CodeBlocks - Unix Makefiles" .. && make`
-- The files have been output to `chip8/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
+### Compiling into WebAssembly
+
+- Navigate to your `emsdk` directory and install Emscripten
+
+  - `./emsdk install latest`
+
+  or on Windows:
+
+  - `emsdk install latest`
+
+- Activate Emscripten
+
+  - `./emsdk activate latest`
+
+  or on Windows:
+
+  - `emsdk activate latest`
+
+- **On Windows:** Install mingw32-make
+
+  - `emsdk install mingw-7.1.0-64bit`
+
+- Navigate to a sub-directory in this repo in which the CMake files will be generated (e.g. `chip8/cmake-build-emscripten`)
+
+- Compile the code into WebAssembly
+
+  - `emcmake cmake -G "CodeBlocks - Unix Makefiles" .. && make`
+
+  or on Windows:
+
+  - `emcmake cmake -G "CodeBlocks - MinGW Makefiles" .. -DCMAKE_SH="CMAKE_SH-NOTFOUND" && mingw32-make`
+
+- The files will be output to the `chip8/web` directory. To run, host the `web` directory using e.g. `python3 -m http.server` and access `http://localhost:8000/` locally.
 
 ## Usage
 
-**Linux**: `./chip_8 --rom <path> [options]`
+**Linux and macOS**: `./chip_8 --rom <path> [options]`
 
 **Windows**: `chip_8.exe --rom <path> [options]`
 
