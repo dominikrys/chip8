@@ -3,8 +3,7 @@
 #include <stdexcept>
 
 Renderer::Renderer(const std::string &title, const int videoWidth, const int videoHeight, const int videoScale) {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         throw std::runtime_error("Failed to initialize SDL video: " + std::string(SDL_GetError()));
     }
 

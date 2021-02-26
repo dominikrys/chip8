@@ -24,27 +24,23 @@ bool KeyboardHandler::handle() {
 
     SDL_Event event;
 
-    while (SDL_PollEvent(&event))
-    {
+    while (SDL_PollEvent(&event)) {
         int keyState = 0;
 
-        switch (event.type)
-        {
+        switch (event.type) {
             case SDL_QUIT:
                 quit = true;
                 break;
             case SDL_KEYDOWN:
                 keyState = 1;
                 break;
-            case SDL_KEYUP:
-            {
+            case SDL_KEYUP: {
                 keyState = 0;
                 break;
             }
         }
 
-        switch (event.key.keysym.sym)
-        {
+        switch (event.key.keysym.sym) {
             case SDLK_ESCAPE:
                 quit = true;
                 break;

@@ -32,13 +32,11 @@ void stop() {
 void mainLoop() {
     keyboardHandler.handle();
 
-    for (int i = 0; i < cyclesPerFrame; i++)
-    {
+    for (int i = 0; i < cyclesPerFrame; i++) {
         chip8.cycle();
     }
 
-    if (chip8.drawFlag())
-    {
+    if (chip8.drawFlag()) {
         auto buffer = chip8.video();
         renderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
         chip8.disableDrawFlag();

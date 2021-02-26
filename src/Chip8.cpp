@@ -42,8 +42,7 @@ Chip8::Chip8(Mode mode) : mode_{mode},
                           timer_{TIMER_DELAY} {
     reset();
 
-    for (unsigned int i = 0; i < FONT_SET_SIZE; i++)
-    {
+    for (unsigned int i = 0; i < FONT_SET_SIZE; i++) {
         memory_[i + FONT_SET_START_ADDRESS] = FONT_SET[i];
     }
 
@@ -94,7 +93,7 @@ Chip8::Chip8(Mode mode) : mode_{mode},
 void Chip8::reset() {
     opcode_ = 0;
     index_ = 0;
-    pc_ = 0x200u;
+    pc_ = 0x200;
     sp_ = 0;
     delayTimer_ = 0;
     soundTimer_ = 0;
@@ -111,24 +110,20 @@ void Chip8::reset() {
 }
 
 void Chip8::cycle() {
-    // Fetch Opcode - each address is one byte, so shift it 8 bits and merge with next opcode to get full one.
-    opcode_ = memory_[pc_] << 8u | memory_[pc_ + 1u];
+    // Fetch Opcode - each address is one byte, so shift it by 8 bits and merge with next opcode to get full one.
+    opcode_ = memory_[pc_] << 8 | memory_[pc_ + 1];
 
     // Decode and execute opcode
-    ((*this).*(funcTable_[(opcode_ & 0xF000u) >> 12u]))();
+    ((*this).*(funcTable_[(opcode_ & 0xF000) >> 12]))();
 
     // Update timers
-    if (timer_.intervalElapsed())
-    {
-        if (delayTimer_ > 0)
-        {
+    if (timer_.intervalElapsed()) {
+        if (delayTimer_ > 0) {
             delayTimer_--;
         }
 
-        if (soundTimer_ > 0)
-        {
-            if (soundTimer_ == 1)
-            {
+        if (soundTimer_ > 0) {
+            if (soundTimer_ == 1) {
                 soundFlag_ = true;
             }
             soundTimer_--;
@@ -177,7 +172,7 @@ void Chip8::opcode00EE() {
 
 // 1NNN: Jumps to address NNN
 void Chip8::opcode1NNN() {
-    auto address = opcode_ & 0x0FFFu;
+    auto address = opcode_ & 0x0FFF;
 
     pc_ = address;
 }
@@ -188,59 +183,50 @@ void Chip8::opcode2NNN() {
     stack_[sp_] = pc_;
     sp_++;
 
-    auto address = opcode_ & 0x0FFFu;
+    auto address = opcode_ & 0x0FFF;
     pc_ = address;
 }
 
 // 3XNN: Skips the next instruction if VX equals NN
 void Chip8::opcode3XNN() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto nn = opcode_ & 0x00FFu;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto nn = opcode_ & 0x00FF;
 
-    if (registers_[x] == nn)
-    {
+    if (registers_[x] == nn) {
         pc_ += 4;
-    }
-    else
-    {
+    } else {
         pc_ += 2;
     }
 }
 
 // 4XNN: Skips the next instruction if VX doesn't equal NN
 void Chip8::opcode4XNN() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto nn = opcode_ & 0x00FFu;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto nn = opcode_ & 0x00FF;
 
-    if (registers_[x] != nn)
-    {
+    if (registers_[x] != nn) {
         pc_ += 4;
-    }
-    else
-    {
+    } else {
         pc_ += 2;
     }
 }
 
 // 5XY0: Skips the next instruction if VX equals VY
 void Chip8::opcode5XY0() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto y = (opcode_ & 0x00F0u) >> 4u;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto y = (opcode_ & 0x00F0) >> 4;
 
-    if (registers_[x] == registers_[y])
-    {
+    if (registers_[x] == registers_[y]) {
         pc_ += 4;
-    }
-    else
-    {
+    } else {
         pc_ += 2;
     }
 }
 
 // 6XNN: Sets VX to NN
 void Chip8::opcode6XNN() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto nn = opcode_ & 0x00FFu;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto nn = opcode_ & 0x00FF;
 
     registers_[x] = nn;
     pc_ += 2;
@@ -248,8 +234,8 @@ void Chip8::opcode6XNN() {
 
 // 7XNN: Adds NN to VX. (Carry flag is not changed)
 void Chip8::opcode7XNN() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto nn = opcode_ & 0x00FFu;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto nn = opcode_ & 0x00FF;
 
     registers_[x] += nn;
     pc_ += 2;
@@ -257,8 +243,8 @@ void Chip8::opcode7XNN() {
 
 // 8XY0: Sets VX to the value of VY
 void Chip8::opcode8XY0() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto y = (opcode_ & 0x00F0u) >> 4u;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto y = (opcode_ & 0x00F0) >> 4;
 
     registers_[x] = registers_[y];
     pc_ += 2;
@@ -266,8 +252,8 @@ void Chip8::opcode8XY0() {
 
 // 8XY1: Sets VX to VX or VY. (Bitwise OR operation)
 void Chip8::opcode8XY1() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto y = (opcode_ & 0x00F0u) >> 4u;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto y = (opcode_ & 0x00F0) >> 4;
 
     registers_[x] |= registers_[y];
     pc_ += 2;
@@ -275,8 +261,8 @@ void Chip8::opcode8XY1() {
 
 // 8XY2: Sets VX to VX and VY. (Bitwise AND operation)
 void Chip8::opcode8XY2() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto y = (opcode_ & 0x00F0u) >> 4u;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto y = (opcode_ & 0x00F0) >> 4;
 
     registers_[x] &= registers_[y];
     pc_ += 2;
@@ -284,24 +270,21 @@ void Chip8::opcode8XY2() {
 
 // 8XY3: Sets VX to VX xor VY
 void Chip8::opcode8XY3() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto y = (opcode_ & 0x00F0u) >> 4u;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto y = (opcode_ & 0x00F0) >> 4;
 
     registers_[x] ^= registers_[y];
     pc_ += 2;
 }
 
-// 8XY4: Adds VY to VX. VF is set to 1 when there's a carry (VY + VX > 0xFFFu), and to 0 when there isn't
+// 8XY4: Adds VY to VX. VF is set to 1 when there's a carry (VY + VX > 0xFFF), and to 0 when there isn't
 void Chip8::opcode8XY4() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto y = (opcode_ & 0x00F0u) >> 4u;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto y = (opcode_ & 0x00F0) >> 4;
 
-    if (registers_[x] + registers_[y] > 0xFFFu)
-    {
+    if (registers_[x] + registers_[y] > 0xFFF) {
         registers_[0xF] = 1; // Carry
-    }
-    else
-    {
+    } else {
         registers_[0xF] = 0;
     }
 
@@ -311,15 +294,12 @@ void Chip8::opcode8XY4() {
 
 // 8XY5: VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't
 void Chip8::opcode8XY5() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto y = (opcode_ & 0x00F0u) >> 4u;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto y = (opcode_ & 0x00F0) >> 4;
 
-    if (registers_[y] > registers_[x])
-    {
+    if (registers_[y] > registers_[x]) {
         registers_[0xF] = 0; // Borrow
-    }
-    else
-    {
+    } else {
         registers_[0xF] = 1;
     }
 
@@ -329,20 +309,17 @@ void Chip8::opcode8XY5() {
 
 // 8XY6: Stores the least significant bit of VX in VF and then shifts VX to the right by 1
 void Chip8::opcode8XY6() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
+    auto x = (opcode_ & 0x0F00) >> 8;
 
-    registers_[0xF] = registers_[x] & 0x1u;
+    registers_[0xF] = registers_[x] & 0x1;
 
-    if (mode_ == Mode::CHIP8)
-    {
+    if (mode_ == Mode::CHIP8) {
         // On CHIP8, shift VY and store the result in VX.
         // See: https://www.reddit.com/r/programming/comments/3ca4ry/writing_a_chip8_interpreteremulator_in_c14_10/csuepjm/
-        auto y = (opcode_ & 0x00F0u) >> 4u;
-        registers_[x] = registers_[y] >> 1u;
-    }
-    else
-    {
-        registers_[x] >>= 1u;
+        auto y = (opcode_ & 0x00F0) >> 4;
+        registers_[x] = registers_[y] >> 1;
+    } else {
+        registers_[x] >>= 1;
     }
 
     pc_ += 2;
@@ -350,15 +327,12 @@ void Chip8::opcode8XY6() {
 
 // 8XY7: Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't
 void Chip8::opcode8XY7() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto y = (opcode_ & 0x00F0u) >> 4u;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto y = (opcode_ & 0x00F0) >> 4;
 
-    if (registers_[x] > registers_[(opcode_ & 0x00F0u) >> 4u])
-    {
+    if (registers_[x] > registers_[(opcode_ & 0x00F0) >> 4]) {
         registers_[0xF] = 0; // Borrow
-    }
-    else
-    {
+    } else {
         registers_[0xF] = 1;
     }
 
@@ -368,19 +342,16 @@ void Chip8::opcode8XY7() {
 
 // 8XYE: Stores the most significant bit of VX in VF and then shifts VX to the left by 1
 void Chip8::opcode8XYE() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
+    auto x = (opcode_ & 0x0F00) >> 8;
 
-    registers_[0xF] = registers_[x] >> 7u;
+    registers_[0xF] = registers_[x] >> 7;
 
-    if (mode_ == Mode::CHIP8)
-    {
+    if (mode_ == Mode::CHIP8) {
         // Check comment above for 8XY6 for an explanation why VY is shifted
-        auto y = (opcode_ & 0x00F0u) >> 4u;
-        registers_[x] = registers_[y] << 1u;
-    }
-    else
-    {
-        registers_[x] <<= 1u;
+        auto y = (opcode_ & 0x00F0) >> 4;
+        registers_[x] = registers_[y] << 1;
+    } else {
+        registers_[x] <<= 1;
     }
 
     pc_ += 2;
@@ -388,22 +359,19 @@ void Chip8::opcode8XYE() {
 
 // 9XY0: Skips the next instruction if VX doesn't equal VY
 void Chip8::opcode9XY0() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto y = (opcode_ & 0x00F0u) >> 4u;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto y = (opcode_ & 0x00F0) >> 4;
 
-    if (registers_[x] != registers_[y])
-    {
+    if (registers_[x] != registers_[y]) {
         pc_ += 4;
-    }
-    else
-    {
+    } else {
         pc_ += 2;
     }
 }
 
 // ANNN: Sets I to the address NNN
 void Chip8::opcodeANNN() {
-    auto address = opcode_ & 0x0FFFu;
+    auto address = opcode_ & 0x0FFF;
 
     index_ = address;
     pc_ += 2;
@@ -411,7 +379,7 @@ void Chip8::opcodeANNN() {
 
 // BNNN: Jumps to the address NNN plus V0
 void Chip8::opcodeBNNN() {
-    auto address = opcode_ & 0x0FFFu;
+    auto address = opcode_ & 0x0FFF;
 
     pc_ = address + registers_[0];
     pc_ += 2;
@@ -419,8 +387,8 @@ void Chip8::opcodeBNNN() {
 
 // CXNN: Sets VX to the result of a bitwise and operation on a random number (Typically: 0 to 255) and NN
 void Chip8::opcodeCXNN() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
-    auto nn = opcode_ & 0x00FFu;
+    auto x = (opcode_ & 0x0F00) >> 8;
+    auto nn = opcode_ & 0x00FF;
 
     registers_[x] = randByte_(randEngine_) & nn;
     pc_ += 2;
@@ -431,29 +399,25 @@ void Chip8::opcodeCXNN() {
 // instruction. As described above, VF is set to 1 if any screen pixels are flipped from set to unset when the sprite
 // is drawn, and to 0 if that doesn’t happen
 void Chip8::opcodeDXYN() {
-    auto vx = registers_[(opcode_ & 0x0F00u) >> 8u];
-    auto vy = registers_[(opcode_ & 0x00F0u) >> 4u];
-    auto height = opcode_ & 0x000Fu;
+    auto vx = registers_[(opcode_ & 0x0F00) >> 8];
+    auto vy = registers_[(opcode_ & 0x00F0) >> 4];
+    auto height = opcode_ & 0x000F;
 
     // Set VF to 0 (for collision detection)
     registers_[0xF] = 0;
 
-    for (unsigned int yLine = 0; yLine < height; yLine++)
-    {
+    for (int yLine = 0; yLine < height; yLine++) {
         auto spritePixel = memory_[index_ + yLine];
 
-        for (unsigned int xLine = 0; xLine < SPRITE_WIDTH; xLine++)
-        {
+        for (unsigned int xLine = 0; xLine < SPRITE_WIDTH; xLine++) {
             // Check if sprite pixel is set to 1 (0x80 >> xline iterates through the byte one bit at a time)
-            if (spritePixel & (0x80u >> xLine))
-            {
+            if (spritePixel & (0x80 >> xLine)) {
                 // Get pointer to pixel in video buffer.
                 // "% (VIDEO_WIDTH * VIDEO_HEIGHT)" is necessary for wrapping the sprite around.
                 auto *pixel = &video_[vx + xLine + ((vy + yLine) * VIDEO_WIDTH) % (VIDEO_WIDTH * VIDEO_HEIGHT)];
 
                 // Check collision
-                if (*pixel == 0xFFFFFFFF)
-                {
+                if (*pixel == 0xFFFFFFFF) {
                     // Set VF to 1 (for collision detection)
                     registers_[0xF] = 1;
                 }
@@ -470,35 +434,29 @@ void Chip8::opcodeDXYN() {
 
 // EX9E: Skips the next instruction if the key stored in VX is pressed
 void Chip8::opcodeEX9E() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
+    auto x = (opcode_ & 0x0F00) >> 8;
 
-    if (keys_[registers_[x]])
-    {
+    if (keys_[registers_[x]]) {
         pc_ += 4;
-    }
-    else
-    {
+    } else {
         pc_ += 2;
     }
 }
 
 // EXA1: Skips the next instruction if the key stored in VX isn't pressed
 void Chip8::opcodeEXA1() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
+    auto x = (opcode_ & 0x0F00) >> 8;
 
-    if (keys_[registers_[x]] == 0)
-    {
+    if (keys_[registers_[x]] == 0) {
         pc_ += 4;
-    }
-    else
-    {
+    } else {
         pc_ += 2;
     }
 }
 
 // FX07: Sets VX to the value of the delay timer
 void Chip8::opcodeFX07() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
+    auto x = (opcode_ & 0x0F00) >> 8;
 
     registers_[x] = delayTimer_;
     pc_ += 2;
@@ -506,21 +464,18 @@ void Chip8::opcodeFX07() {
 
 // FX0A: A key press is awaited, and then stored in VX
 void Chip8::opcodeFX0A() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
+    auto x = (opcode_ & 0x0F00) >> 8;
 
     bool keyPress = false;
 
-    for (unsigned int i = 0; i < KEY_COUNT; i++)
-    {
-        if (keys_[i])
-        {
+    for (unsigned int i = 0; i < KEY_COUNT; i++) {
+        if (keys_[i]) {
             registers_[x] = i;
             keyPress = true;
         }
     }
 
-    if (!keyPress)
-    {
+    if (!keyPress) {
         // Don't increment PC, which will lead the emulator to come back to this instruction.
         return;
     }
@@ -531,7 +486,7 @@ void Chip8::opcodeFX0A() {
 
 // FX15: Sets the delay timer to VX
 void Chip8::opcodeFX15() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
+    auto x = (opcode_ & 0x0F00) >> 8;
 
     delayTimer_ = registers_[x];
     pc_ += 2;
@@ -539,7 +494,7 @@ void Chip8::opcodeFX15() {
 
 // FX18: Sets the sound timer to VX
 void Chip8::opcodeFX18() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
+    auto x = (opcode_ & 0x0F00) >> 8;
 
     soundTimer_ = registers_[x];
     pc_ += 2;
@@ -547,14 +502,11 @@ void Chip8::opcodeFX18() {
 
 // FX1E: Adds VX to I. VF is set to 1 when there is a range overflow (I+VX>0xFFF), and to 0 when there isn't
 void Chip8::opcodeFX1E() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
+    auto x = (opcode_ & 0x0F00) >> 8;
 
-    if (index_ + registers_[x] > 0xFFFu)
-    {
+    if (index_ + registers_[x] > 0xFFF) {
         registers_[0xF] = 1;
-    }
-    else
-    {
+    } else {
         registers_[0xF] = 0;
     }
 
@@ -564,7 +516,7 @@ void Chip8::opcodeFX1E() {
 
 // FX29: Sets I to the location of the sprite for the character in VX
 void Chip8::opcodeFX29() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
+    auto x = (opcode_ & 0x0F00) >> 8;
 
     index_ = FONT_SET_START_ADDRESS + registers_[x] * CHARACTER_SPRITE_WIDTH;
     pc_ += 2;
@@ -572,7 +524,7 @@ void Chip8::opcodeFX29() {
 
 // FX33: Stores the Binary-coded decimal representation of VX at the addresses I, I plus 1, and I plus 2
 void Chip8::opcodeFX33() {
-    auto vx = registers_[(opcode_ & 0x0F00u) >> 8u];
+    auto vx = registers_[(opcode_ & 0x0F00) >> 8];
 
     memory_[index_] = vx / 100; // Hundreds place
     memory_[index_ + 1] = (vx / 10) % 10; // Tens place
@@ -583,14 +535,12 @@ void Chip8::opcodeFX33() {
 
 // FX55: Stores V0 to VX (including VX) in memory starting at address I.
 void Chip8::opcodeFX55() {
-    auto x = (opcode_ & 0x0F00u) >> 8u;
+    auto x = (opcode_ & 0x0F00) >> 8;
 
-    for (unsigned int i = 0; i <= x; i++)
-    {
+    for (int i = 0; i <= x; i++) {
         memory_[index_ + i] = registers_[i];
 
-        if (mode_ == Mode::CHIP8 || mode_ == Mode::CHIP48)
-        {
+        if (mode_ == Mode::CHIP8 || mode_ == Mode::CHIP48) {
             // On CHIP-8 and CHIP-48, the index is incremented by the number of bytes loaded or stored. Most ROMs
             // however don't assume this behaviour, so by default this is ignored (like on the SCHIP).
             // See: https://en.wikipedia.org/wiki/CHIP-8#cite_note-increment-10
@@ -605,12 +555,10 @@ void Chip8::opcodeFX55() {
 
 // FX65: Fills V0 to VX (including VX) with values from memory starting at address I.
 void Chip8::opcodeFX65() {
-    for (unsigned int i = 0; i <= ((opcode_ & 0x0F00u) >> 8u); i++)
-    {
+    for (unsigned int i = 0; i <= ((opcode_ & 0x0F00) >> 8); i++) {
         registers_[i] = memory_[index_ + i];
 
-        if (mode_ == Mode::CHIP8 || mode_ == Mode::CHIP48)
-        {
+        if (mode_ == Mode::CHIP8 || mode_ == Mode::CHIP48) {
             // Check comment above for FX55 for an explanation why this is incremented.
             index_ += memory_[index_ + i];
         }
@@ -621,26 +569,21 @@ void Chip8::opcodeFX65() {
 
 void Chip8::loadRom(const std::string &filepath) {
     std::ifstream ifs(filepath, std::ios::binary | std::ios::ate);
-    if (!ifs)
-    {
+    if (!ifs) {
         throw std::runtime_error("Can't open file: " + filepath + ". " + std::strerror(errno));
     }
 
     auto end = ifs.tellg();
     ifs.seekg(0, std::ios::beg);
     auto size = std::size_t(end - ifs.tellg());
-    if (size == 0)
-    {
+    if (size == 0) {
         throw std::runtime_error("Specified ROM has a size of 0.");
-    }
-    else if (size > MEMORY_SIZE - ROM_START_ADDRESS)
-    {
+    } else if (size > MEMORY_SIZE - ROM_START_ADDRESS) {
         throw std::runtime_error("ROM too big for memory");
     }
 
     std::vector<char> buffer((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-    for (long long unsigned int i = 0; i < size; i++)
-    {
+    for (long long unsigned int i = 0; i < size; i++) {
         memory_[i + ROM_START_ADDRESS] = buffer[i];
     }
 

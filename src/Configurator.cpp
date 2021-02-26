@@ -8,8 +8,7 @@
 Configurator::Configurator(int &argc, char **argv) {
     programName_ = std::filesystem::path(argv[0]).filename().string();
 
-    for (int i = 1; i < argc; i++)
-    {
+    for (int i = 1; i < argc; i++) {
         tokens_.emplace_back(argv[i]);
     }
 
@@ -43,49 +42,41 @@ void Configurator::printUsage() {
 }
 
 void Configurator::configure(Config &config) {
-    if (argExists("--help") || argExists("-h"))
-    {
+    if (argExists("--help") || argExists("-h")) {
         printUsage();
         throw std::runtime_error("Help requested");
     }
 
-    if (config.romPath_ = getArgValue("--rom"); config.romPath_.empty())
-    {
+    if (config.romPath_ = getArgValue("--rom"); config.romPath_.empty()) {
         printUsage();
         throw std::runtime_error("No ROM path provided");
     }
 
-    if (std::string videoScaleStr = getArgValue("--scale"); !videoScaleStr.empty())
-    {
+    if (std::string videoScaleStr = getArgValue("--scale"); !videoScaleStr.empty()) {
         auto result = std::from_chars(videoScaleStr.data(), videoScaleStr.data() + videoScaleStr.size(),
                                       config.videoScale_);
 
-        if (static_cast<bool>(result.ec))
-        {
+        if (static_cast<bool>(result.ec)) {
             std::cerr << "Couldn't convert given scale value to int, using the default instead: " +
                          std::to_string(config.videoScale_);
         }
     }
 
-    if (std::string cpuFreqStr = getArgValue("--cpufreq"); !cpuFreqStr.empty())
-    {
+    if (std::string cpuFreqStr = getArgValue("--cpufreq"); !cpuFreqStr.empty()) {
         auto result = std::from_chars(cpuFreqStr.data(), cpuFreqStr.data() + cpuFreqStr.size(),
                                       config.cpuFrequency_);
 
-        if (static_cast<bool>(result.ec))
-        {
+        if (static_cast<bool>(result.ec)) {
             std::cerr << "Couldn't convert given CPU frequency value to int, using the default instead: " +
                          std::to_string(config.cpuFrequency_);
         }
     }
 
-    if (argExists("--mute"))
-    {
+    if (argExists("--mute")) {
         config.mute_ = true;
     }
 
-    if (std::string modeStr = getArgValue("--mode"); !modeStr.empty())
-    {
+    if (std::string modeStr = getArgValue("--mode"); !modeStr.empty()) {
         config.mode_ = strToMode(modeStr, config.mode_);
     }
 }
@@ -93,8 +84,7 @@ void Configurator::configure(Config &config) {
 std::string Configurator::getArgValue(const std::string &option) const {
     std::vector<std::string>::const_iterator it{std::find(tokens_.begin(), tokens_.end(), option)};
 
-    if (it != tokens_.end() && ++it != tokens_.end())
-    {
+    if (it != tokens_.end() && ++it != tokens_.end()) {
         return *it;
     }
 
@@ -106,22 +96,17 @@ bool Configurator::argExists(const std::string &option) const {
 }
 
 std::string Configurator::modeToStr(Mode mode) {
-    if (modeMap_.find(mode) != modeMap_.end())
-    {
+    if (modeMap_.find(mode) != modeMap_.end()) {
         return modeMap_[mode];
-    }
-    else
-    {
+    } else {
         // This will only occur if the modeMap is not updated after a new mode is added
         return "Unknown";
     }
 }
 
 Mode Configurator::strToMode(const std::string &str, Mode defaultMode) {
-    for (const auto &it : modeMap_)
-    {
-        if (it.second == str)
-        {
+    for (const auto &it : modeMap_) {
+        if (it.second == str) {
             return it.first;
         }
     }

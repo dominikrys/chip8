@@ -12,14 +12,11 @@ public:
     bool intervalElapsed() {
         const auto deltaTime = high_resolution_clock::now() - lastUpdate_;
 
-        if (chrono::duration_cast<chrono::nanoseconds>(deltaTime).count() > intervalNs_)
-        {
+        if (chrono::duration_cast<chrono::nanoseconds>(deltaTime).count() > intervalNs_) {
             lastUpdate_ = high_resolution_clock::now();
 
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }

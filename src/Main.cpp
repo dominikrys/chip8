@@ -9,8 +9,7 @@
 #include <iostream>
 
 int main(int argc, char **argv) {
-    try
-    {
+    try {
         Configurator configurator{argc, argv};
         Config config{};
         configurator.configure(config);
@@ -27,30 +26,24 @@ int main(int argc, char **argv) {
 
         bool quit = false;
 
-        while (!quit)
-        {
+        while (!quit) {
             quit = keyboardHandler.handle();
 
-            if (cycleTimer.intervalElapsed())
-            {
+            if (cycleTimer.intervalElapsed()) {
                 chip8.cycle();
 
-                if (chip8.drawFlag())
-                {
+                if (chip8.drawFlag()) {
                     auto buffer = chip8.video();
                     renderer.update(buffer, sizeof(buffer[0]) * VIDEO_WIDTH);
                     chip8.disableDrawFlag();
-                }
-                else if (chip8.soundFlag())
-                {
+                } else if (chip8.soundFlag()) {
                     audio.play();
                     chip8.disableSoundFlag();
                 }
             }
         }
     }
-    catch (const std::exception &e)
-    {
+    catch (const std::exception &e) {
         std::cerr << e.what();
         std::exit(EXIT_FAILURE);
     }
