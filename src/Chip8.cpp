@@ -132,23 +132,23 @@ void Chip8::cycle() {
 }
 
 void Chip8::decodeFuncTable0() {
-    // Only the last bit is different in 0x0 opcodes
-    ((*this).*(funcTable0_[(opcode_ & 0x000Fu)]))();
+    // Only the lower 4 bits of the low byte are different in 0x0 opcodes
+    ((*this).*(funcTable0_[(opcode_ & 0x000F)]))();
 }
 
 void Chip8::decodeFuncTable8() {
-    // Only the last bit is different in 0x8 opcodes
-    ((*this).*(funcTable8_[(opcode_ & 0x000Fu)]))();
+    // Only the lower 4 bits of the low byte are different in 0x8 opcodes
+    ((*this).*(funcTable8_[(opcode_ & 0x000F)]))();
 }
 
 void Chip8::decodeFuncTableE() {
-    // Only the last bit is different in 0xE opcodes
-    ((*this).*(funcTableE_[(opcode_ & 0x000Fu)]))();
+    // Only the lower 4 bits of the low byte are different in 0xE opcodes
+    ((*this).*(funcTableE_[(opcode_ & 0x000F)]))();
 }
 
 void Chip8::decodeFuncTableF() {
-    // The last two bits are different in in 0xF opcodes
-    ((*this).*(funcTableF_[(opcode_ & 0x00FFu)]))();
+    // Only the low byte is different in 0xF opcodes
+    ((*this).*(funcTableF_[(opcode_ & 0x00FF)]))();
 }
 
 void Chip8::opcodeUnknown() {
@@ -410,7 +410,7 @@ void Chip8::opcodeDXYN() {
         auto spritePixel = memory_[index_ + yLine];
 
         for (unsigned int xLine = 0; xLine < SPRITE_WIDTH; xLine++) {
-            // Check if sprite pixel is set to 1 (0x80 >> xline iterates through the byte one bit at a time)
+            // Check if sprite pixel is set to 1 (0x80 >> xLines iterates through the byte one bit at a time)
             if (spritePixel & (0x80 >> xLine)) {
                 // Get pointer to pixel in video buffer.
                 // "% (VIDEO_WIDTH * VIDEO_HEIGHT)" is necessary for wrapping the sprite around.
